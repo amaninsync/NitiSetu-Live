@@ -108,26 +108,45 @@ const AppSidebar: React.FC = () => {
   // Helper function to generate class names for links
   const getLinkClassName = ({ isActive }: { isActive: boolean }) => {
     return cn(
-      "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all", 
+      // Base styles for all nav items
+      "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-200",
+      // Active state styling
       isActive 
-        ? "bg-nitisetu-600 text-white hover:bg-nitisetu-700" 
-        : "text-gray-800 font-medium hover:bg-gray-100"
+        ? "bg-nitisetu-600/90 text-white font-medium shadow-sm" 
+        // Default state styling - ensuring visibility
+        : "text-gray-700 hover:bg-nitisetu-100 hover:text-nitisetu-800"
     );
   };
   
   return (
     <Sidebar
-      className={cn("border-r bg-sidebar", collapsed ? "w-[70px]" : "w-64")}
+      className={cn(
+        // Improved background color for better contrast
+        "border-r bg-gray-50",
+        collapsed ? "w-[70px]" : "w-64"
+      )}
     >
       <SidebarContent className="pt-2">
         <SidebarGroup>
           <SidebarMenu>
             {filteredNavItems.map((item) => (
-              <SidebarMenuItem key={item.path}>
+              <SidebarMenuItem key={item.path} className="mt-1">
                 <SidebarMenuButton asChild>
-                  <NavLink to={item.path} className={getLinkClassName} end={item.path === '/'}>
-                    <item.icon className={cn("h-5 w-5", collapsed && "mx-auto")} />
-                    {!collapsed && <span>{item.title}</span>}
+                  <NavLink 
+                    to={item.path} 
+                    className={getLinkClassName} 
+                    end={item.path === '/'}
+                  >
+                    <item.icon 
+                      className={cn(
+                        "h-5 w-5", 
+                        collapsed && "mx-auto", 
+                        isActive(item.path) ? "opacity-100" : "opacity-70"
+                      )} 
+                    />
+                    {!collapsed && (
+                      <span className="font-medium">{item.title}</span>
+                    )}
                   </NavLink>
                 </SidebarMenuButton>
               </SidebarMenuItem>
