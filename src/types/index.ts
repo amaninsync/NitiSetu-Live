@@ -1,4 +1,5 @@
 
+
 export type UserRole = 
   | "district_collector" 
   | "additional_collector" 
@@ -13,6 +14,7 @@ export interface User {
   email: string;
   role: UserRole;
   departmentId?: string;
+  departmentIds?: string[]; // For users mapped to multiple departments
   mandalId?: string;
   avatar?: string;
   active: boolean;
@@ -125,3 +127,31 @@ export interface ChartData {
   value: number;
   [key: string]: any;
 }
+
+export interface FileUpload {
+  id: string;
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  uploadedBy: string;
+  uploadDate: string;
+  status: "pending" | "processing" | "success" | "error";
+  department: string;
+  category: string;
+  metadata: Record<string, any>;
+}
+
+export interface ReportCard {
+  id: string;
+  departmentId: string;
+  period: string;
+  submittedBy: string;
+  submittedDate: string;
+  approvedBy?: string;
+  approvedDate?: string;
+  status: "draft" | "submitted" | "pending" | "approved" | "rejected";
+  score?: number;
+  comments?: string;
+  metrics: Record<string, any>;
+}
+

@@ -9,7 +9,9 @@ import {
   BarChart3, 
   Settings,
   FileCheck,
-  CheckSquare
+  CheckSquare,
+  Upload,
+  Table
 } from 'lucide-react';
 
 import {
@@ -31,6 +33,8 @@ interface NavItem {
   path: string;
   icon: React.ComponentType<{ className?: string }>;
   roles: UserRole[];
+  requiresDepartmentAccess?: boolean; // Whether this item requires specific department access
+  adminOnly?: boolean; // For items that should only be visible to admin or district_collector
 }
 
 const navItems: NavItem[] = [
@@ -44,43 +48,64 @@ const navItems: NavItem[] = [
     title: 'Department Dashboard', 
     path: '/departments', 
     icon: Building, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin']
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin'],
+    requiresDepartmentAccess: true
   },
   { 
     title: 'Project Dashboard', 
     path: '/projects', 
     icon: FileCheck, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin']
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin'],
+    requiresDepartmentAccess: true
   },
   { 
     title: 'SHG Financing', 
     path: '/shg-financing', 
     icon: Users, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin']
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin'],
+    requiresDepartmentAccess: true
   },
   { 
     title: 'M&E Dashboard', 
     path: '/monitoring', 
     icon: CheckSquare, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'admin']
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'admin'],
+    requiresDepartmentAccess: true
   },
   { 
     title: 'Reports', 
     path: '/reports', 
     icon: FileText, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin']
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin'],
+    requiresDepartmentAccess: true
+  },
+  { 
+    title: 'File Upload', 
+    path: '/upload', 
+    icon: Upload, 
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin'],
+    requiresDepartmentAccess: true
+  },
+  {
+    title: 'Table View',
+    path: '/table-view',
+    icon: Table,
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin'],
+    requiresDepartmentAccess: true
   },
   { 
     title: 'Analytics', 
     path: '/analytics', 
     icon: BarChart3, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'admin']
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'admin'],
+    requiresDepartmentAccess: true
   },
   { 
     title: 'Admin Panel', 
     path: '/admin', 
     icon: Settings, 
-    roles: ['admin', 'district_collector']
+    roles: ['admin', 'district_collector'],
+    adminOnly: true
   }
 ];
 
@@ -91,10 +116,25 @@ const AppSidebar: React.FC = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   
-  // Filter nav items based on user's role
-  const filteredNavItems = navItems.filter(item => 
-    user?.role && item.roles.includes(user.role)
-  );
+  // Filter nav items based on user's role AND department access
+  const filteredNavItems = navItems.filter(item => {
+    // Only show items if user has appropriate role
+    const hasRoleAccess = user?.role && item.roles.includes(user.role);
+    if (!hasRoleAccess) return false;
+    
+    // For admins and collectors, show everything
+    if (user.role === 'admin' || user.role === 'district_collector') return true;
+    
+    // For other users, check department access if required
+    if (item.requiresDepartmentAccess) {
+      // Check if user has department access
+      // The departmentId check ensures they can only see departments they're mapped to
+      return user.departmentId !== undefined;
+    }
+    
+    // For items that don't require department access
+    return true;
+  });
   
   // Helper function to check if a route or its child routes are active
   const isActive = (path: string) => {
