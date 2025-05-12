@@ -86,7 +86,7 @@ const navItems: NavItem[] = [
 
 const AppSidebar: React.FC = () => {
   const { state } = useSidebar();
-  const collapsed = state.collapsed === 'collapsed';
+  const collapsed = state === "collapsed";
   const { user } = useAuth();
   const location = useLocation();
   const currentPath = location.pathname;
