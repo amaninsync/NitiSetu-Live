@@ -19,7 +19,7 @@ const AppHeader: React.FC = () => {
   };
   
   return (
-    <header className="bg-card border-b border-border h-16 flex items-center px-6 shadow-sm">
+    <header className="bg-white border-b border-border h-16 flex items-center px-6 shadow-sm">
       <div className="flex-1 flex items-center">
         <SidebarTrigger>
           <Button variant="ghost" size="icon" className="mr-4 text-foreground">
@@ -29,11 +29,10 @@ const AppHeader: React.FC = () => {
         
         <div className="flex items-center">
           <h1 className="font-bold text-lg">
-            <span className="text-primary">Niti</span>
-            <span className="text-primary-foreground bg-primary px-1 rounded">Setu</span>
+            <span className="text-sequence-teal-500">Sequence</span>
           </h1>
           <span className="ml-3 text-sm text-muted-foreground font-medium hidden md:inline-block">
-            District Administration Dashboard
+            Financial Management Dashboard
           </span>
         </div>
       </div>
@@ -49,7 +48,7 @@ const AppHeader: React.FC = () => {
             <Button variant="ghost" className="relative h-9 w-9 rounded-full">
               <Avatar className="h-9 w-9">
                 <AvatarImage src={user?.avatar} alt={user?.name} />
-                <AvatarFallback className="bg-primary text-primary-foreground">{user?.name ? getInitials(user.name) : 'U'}</AvatarFallback>
+                <AvatarFallback className="bg-sequence-teal-500 text-white">{user?.name ? getInitials(user.name) : 'U'}</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>

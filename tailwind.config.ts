@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,12 +18,48 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Helvetica', 'Arial', 'sans-serif'],
+				helvetica: ['Helvetica', 'Arial', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				
+				// New sequence brand colors - based on the uploaded brand guide
+				sequence: {
+					'teal': {
+						DEFAULT: '#025864',
+						50: '#E6F3F5',
+						100: '#CCE8EB',
+						200: '#99D1D7',
+						300: '#66B9C3',
+						400: '#33A2AF',
+						500: '#025864',
+						600: '#024857',
+						700: '#01374A',
+						800: '#01253C',
+						900: '#00121F',
+					},
+					'green': {
+						DEFAULT: '#00D47E',
+						50: '#E6FBF2',
+						100: '#CCF8E6',
+						200: '#99F1CC',
+						300: '#66EAB3',
+						400: '#33E399',
+						500: '#00D47E',
+						600: '#00AA65',
+						700: '#00804C',
+						800: '#005532',
+						900: '#002B19',
+					},
+				},
+				
+				// Keep existing color definitions
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
@@ -117,9 +152,6 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
-			},
-			fontFamily: {
-				sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
 			},
 			keyframes: {
 				'accordion-down': {

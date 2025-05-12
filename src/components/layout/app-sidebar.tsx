@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
@@ -157,19 +158,19 @@ const AppSidebar: React.FC = () => {
     return cn(
       // Base styles for all nav items
       "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-200",
-      // Active state styling - enhanced for better visibility
+      // Active state styling - using the new sequence teal colors
       isActive 
-        ? "bg-nitisetu-600 text-white font-medium shadow-sm" 
+        ? "bg-sequence-green-500 text-white font-medium shadow-sm" 
         // Default state styling - improved visibility with darker text
-        : "text-gray-800 hover:bg-nitisetu-100 hover:text-nitisetu-800"
+        : "text-white hover:bg-sequence-teal-600 hover:text-white"
     );
   };
   
   return (
     <Sidebar
       className={cn(
-        // Improved background color for better contrast
-        "border-r bg-gray-100",
+        // Updated to use the teal color from the brand guide
+        "border-r bg-sequence-teal-500 text-white",
         collapsed ? "w-[70px]" : "w-64"
       )}
     >
@@ -190,7 +191,7 @@ const AppSidebar: React.FC = () => {
                         collapsed && "mx-auto", 
                         isActive(item.path) 
                           ? "opacity-100 text-white" 
-                          : "opacity-80 text-gray-700"
+                          : "opacity-80 text-white"
                       )} 
                     />
                     {!collapsed && (
