@@ -5,83 +5,140 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base colors */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
 
+    /* Card colors */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222 47% 11%;
 
+    /* UI component colors */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 210 83.3% 34.1%;
+    /* Primary accent */
+    --primary: 210 83% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary accent */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Subtle elements */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Subtle accent */
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    /* Semantic: Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* UI boundaries */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 222 84% 5%;
 
+    /* Border radius */
     --radius: 0.5rem;
 
-    --sidebar-background: 210 33% 98%;
-    --sidebar-foreground: 222.2 47.4% 11.2%;
-    --sidebar-primary: 210 83.3% 34.1%;
+    /* Sidebar colors */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 210 83% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 40% 96.1%;
-    --sidebar-accent-foreground: 222.2 47.4% 11.2%;
-    --sidebar-border: 214.3 31.8% 91.4%;
-    --sidebar-ring: 222.2 84% 4.9%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 222 84% 5%;
+    
+    /* NitiSetu specific colors - refined for better contrast */
+    --nitisetu-50: 210 80% 95%;
+    --nitisetu-100: 210 80% 90%;
+    --nitisetu-200: 210 80% 80%;
+    --nitisetu-300: 210 80% 70%;
+    --nitisetu-400: 210 80% 60%;
+    --nitisetu-500: 210 83% 45%;
+    --nitisetu-600: 210 83% 40%;
+    --nitisetu-700: 210 83% 30%;
+    --nitisetu-800: 210 83% 20%;
+    --nitisetu-900: 210 83% 10%;
+    
+    /* Semantic colors with improved contrast */
+    --success-50: 142 76% 95%;
+    --success-100: 142 70% 90%;
+    --success-200: 142 70% 80%;
+    --success-300: 142 65% 70%;
+    --success-400: 142 60% 60%;
+    --success-500: 142 70% 45%;
+    --success-600: 142 71% 35%;
+    --success-700: 142 72% 25%;
+    --success-800: 142 73% 15%;
+    --success-900: 142 74% 10%;
+    
+    --warning-50: 48 100% 95%;
+    --warning-100: 48 96% 90%;
+    --warning-200: 48 96% 80%;
+    --warning-300: 48 96% 70%;
+    --warning-400: 48 96% 60%;
+    --warning-500: 40 96% 50%;
+    --warning-600: 36 100% 45%;
+    --warning-700: 32 100% 35%;
+    --warning-800: 28 100% 25%;
+    --warning-900: 24 100% 15%;
+    
+    --danger-50: 0 86% 95%;
+    --danger-100: 0 86% 90%;
+    --danger-200: 0 86% 80%;
+    --danger-300: 0 86% 70%;
+    --danger-400: 0 86% 60%;
+    --danger-500: 0 84% 60%;
+    --danger-600: 0 72% 50%;
+    --danger-700: 0 74% 40%;
+    --danger-800: 0 76% 30%;
+    --danger-900: 0 78% 20%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222 47% 11%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 222 47% 11%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 83.3% 45%;
+    --primary: 210 83% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 217 33% 17%;
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 213 27% 84%;
     
-    --sidebar-background: 222.2 47.4% 11.2%;
+    --sidebar-background: 222 47% 11%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 210 83.3% 45%;
+    --sidebar-primary: 210 83% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent: 217 33% 17%;
     --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217.2 32.6% 17.5%;
-    --sidebar-ring: 212.7 26.8% 83.9%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 213 27% 84%;
   }
 }
 
@@ -93,16 +150,17 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   }
 }
 
 @layer components {
   .nitisetu-card {
-    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm p-6;
   }
   
   .nitisetu-card-header {
-    @apply flex flex-col space-y-1.5 p-6;
+    @apply flex flex-col space-y-1.5 pb-4;
   }
   
   .nitisetu-card-title {
@@ -114,11 +172,11 @@
   }
   
   .nitisetu-card-content {
-    @apply p-6 pt-0;
+    @apply pt-0;
   }
   
   .nitisetu-card-footer {
-    @apply flex items-center p-6 pt-0;
+    @apply flex items-center pt-4;
   }
 
   .nitisetu-badge {
@@ -126,7 +184,7 @@
   }
   
   .nitisetu-badge-primary {
-    @apply bg-nitisetu-500 text-primary-foreground hover:bg-nitisetu-600;
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
   }
   
   .nitisetu-badge-secondary {
@@ -134,7 +192,7 @@
   }
   
   .nitisetu-badge-success {
-    @apply bg-success-500 text-primary-foreground;
+    @apply bg-success-500 text-white;
   }
   
   .nitisetu-badge-warning {
@@ -143,5 +201,43 @@
   
   .nitisetu-badge-danger {
     @apply bg-danger-500 text-white;
+  }
+  
+  /* Typography styles */
+  .h1 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+  
+  .h2 {
+    @apply text-xl font-semibold tracking-tight;
+  }
+  
+  .h3 {
+    @apply text-lg font-medium;
+  }
+  
+  .h4 {
+    @apply text-base font-medium;
+  }
+  
+  /* Metric styling */
+  .metric-value {
+    @apply text-2xl font-bold;
+  }
+  
+  .metric-label {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  .metric-change-positive {
+    @apply text-xs font-medium text-success-600 bg-success-50 rounded-sm px-1.5 py-0.5;
+  }
+  
+  .metric-change-negative {
+    @apply text-xs font-medium text-danger-600 bg-danger-50 rounded-sm px-1.5 py-0.5;
+  }
+  
+  .metric-change-neutral {
+    @apply text-xs font-medium text-muted-foreground bg-secondary rounded-sm px-1.5 py-0.5;
   }
 }

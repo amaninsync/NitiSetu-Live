@@ -63,60 +63,63 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// NitiSetu specific colors
+				// NitiSetu specific colors - using CSS variables for consistency
 				"nitisetu": {
-					50: "#e6f1f9",
-					100: "#ccdfef",
-					200: "#99c0df",
-					300: "#66a0cf",
-					400: "#3381bf",
-					500: "#0062af", // primary blue
-					600: "#004e8c",
-					700: "#003a69",
-					800: "#002746",
-					900: "#001323"
+					50: "hsl(var(--nitisetu-50))",
+					100: "hsl(var(--nitisetu-100))",
+					200: "hsl(var(--nitisetu-200))",
+					300: "hsl(var(--nitisetu-300))",
+					400: "hsl(var(--nitisetu-400))",
+					500: "hsl(var(--nitisetu-500))",
+					600: "hsl(var(--nitisetu-600))",
+					700: "hsl(var(--nitisetu-700))",
+					800: "hsl(var(--nitisetu-800))",
+					900: "hsl(var(--nitisetu-900))"
 				},
 				"success": {
-					50: "#e6f9e6",
-					100: "#ccf2cc",
-					200: "#99e699",
-					300: "#66d966",
-					400: "#33cd33",
-					500: "#00c000", // success green
-					600: "#009a00",
-					700: "#007300",
-					800: "#004d00",
-					900: "#002600"
+					50: "hsl(var(--success-50))",
+					100: "hsl(var(--success-100))",
+					200: "hsl(var(--success-200))",
+					300: "hsl(var(--success-300))",
+					400: "hsl(var(--success-400))",
+					500: "hsl(var(--success-500))",
+					600: "hsl(var(--success-600))",
+					700: "hsl(var(--success-700))",
+					800: "hsl(var(--success-800))",
+					900: "hsl(var(--success-900))"
 				},
 				"warning": {
-					50: "#fff8e6",
-					100: "#fff1cc",
-					200: "#ffe499",
-					300: "#ffd666",
-					400: "#ffc933",
-					500: "#ffbb00", // warning yellow
-					600: "#cc9600",
-					700: "#997000",
-					800: "#664b00",
-					900: "#332500"
+					50: "hsl(var(--warning-50))",
+					100: "hsl(var(--warning-100))",
+					200: "hsl(var(--warning-200))",
+					300: "hsl(var(--warning-300))",
+					400: "hsl(var(--warning-400))",
+					500: "hsl(var(--warning-500))",
+					600: "hsl(var(--warning-600))",
+					700: "hsl(var(--warning-700))",
+					800: "hsl(var(--warning-800))",
+					900: "hsl(var(--warning-900))"
 				},
 				"danger": {
-					50: "#fce6e6",
-					100: "#f9cccc",
-					200: "#f39999",
-					300: "#ec6666",
-					400: "#e63333",
-					500: "#e00000", // danger red
-					600: "#b30000",
-					700: "#860000",
-					800: "#590000",
-					900: "#2d0000"
+					50: "hsl(var(--danger-50))",
+					100: "hsl(var(--danger-100))",
+					200: "hsl(var(--danger-200))",
+					300: "hsl(var(--danger-300))",
+					400: "hsl(var(--danger-400))",
+					500: "hsl(var(--danger-500))",
+					600: "hsl(var(--danger-600))",
+					700: "hsl(var(--danger-700))",
+					800: "hsl(var(--danger-800))",
+					900: "hsl(var(--danger-900))"
 				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
 			},
 			keyframes: {
 				'accordion-down': {
@@ -134,11 +137,19 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out'
+			},
+			spacing: {
+				'18': '4.5rem',
 			}
 		}
 	},

@@ -6,22 +6,24 @@ import BudgetChart from '@/components/dashboard/budget-chart';
 import PerformanceChart from '@/components/dashboard/performance-chart';
 import ProjectStatusChart from '@/components/dashboard/project-status-chart';
 import { mockDistrictMetrics } from '@/lib/mock-data';
+import { CalendarIcon } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">District Dashboard</h1>
-        <div className="text-sm text-muted-foreground">
-          Last updated: {new Date().toLocaleDateString()}
+    <div className="space-y-8 max-w-[1600px] mx-auto animate-fade-in">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-semibold tracking-tight">District Dashboard</h1>
+        <div className="flex items-center text-sm text-muted-foreground gap-2 bg-muted px-3 py-1.5 rounded-md">
+          <CalendarIcon className="h-4 w-4" />
+          <span>Last updated: {new Date().toLocaleDateString()}</span>
         </div>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
         {mockDistrictMetrics.map((metric) => (
-          <MetricCard key={metric.id} metric={metric} />
+          <MetricCard key={metric.id} metric={metric} className="shadow-sm" />
         ))}
       </div>
       
@@ -32,51 +34,50 @@ const Dashboard: React.FC = () => {
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <PerformanceChart />
-        <div className="nitisetu-card overflow-hidden">
-          <div className="nitisetu-card-header">
-            <h3 className="nitisetu-card-title">Recent Activity</h3>
+        <div className="card bg-card rounded-lg border shadow-sm overflow-hidden">
+          <div className="px-6 pt-6 pb-2">
+            <h3 className="text-lg font-semibold">Recent Activity</h3>
           </div>
-          <div className="nitisetu-card-content">
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <div className="mr-4 mt-1 rounded-full bg-primary/10 p-2">
-                  <div className="h-2 w-2 rounded-full bg-primary"></div>
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Budget allocation for Q3 approved</p>
-                  <p className="text-sm text-muted-foreground">2 hours ago</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="mr-4 mt-1 rounded-full bg-primary/10 p-2">
-                  <div className="h-2 w-2 rounded-full bg-primary"></div>
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Rural Road Connectivity project updated</p>
-                  <p className="text-sm text-muted-foreground">5 hours ago</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="mr-4 mt-1 rounded-full bg-primary/10 p-2">
-                  <div className="h-2 w-2 rounded-full bg-primary"></div>
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Monthly department reports submitted</p>
-                  <p className="text-sm text-muted-foreground">Yesterday</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="mr-4 mt-1 rounded-full bg-primary/10 p-2">
-                  <div className="h-2 w-2 rounded-full bg-primary"></div>
-                </div>
-                <div>
-                  <p className="text-sm font-medium">New user accounts created for Health department</p>
-                  <p className="text-sm text-muted-foreground">2 days ago</p>
-                </div>
-              </div>
+          <div className="px-6 pb-6">
+            <div className="space-y-6">
+              <ActivityItem 
+                title="Budget allocation for Q3 approved"
+                time="2 hours ago"
+              />
+              <ActivityItem 
+                title="Rural Road Connectivity project updated"
+                time="5 hours ago"
+              />
+              <ActivityItem 
+                title="Monthly department reports submitted"
+                time="Yesterday"
+              />
+              <ActivityItem 
+                title="New user accounts created for Health department"
+                time="2 days ago"
+              />
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+interface ActivityItemProps {
+  title: string;
+  time: string;
+}
+
+const ActivityItem: React.FC<ActivityItemProps> = ({ title, time }) => {
+  return (
+    <div className="flex items-start gap-4">
+      <div className="mt-1.5 rounded-full bg-primary/10 p-1.5">
+        <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>
+      </div>
+      <div>
+        <p className="text-sm font-medium">{title}</p>
+        <p className="text-xs text-muted-foreground mt-1">{time}</p>
       </div>
     </div>
   );
