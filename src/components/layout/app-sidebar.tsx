@@ -11,7 +11,8 @@ import {
   FileCheck,
   CheckSquare,
   Upload,
-  Table
+  Table,
+  FileContract
 } from 'lucide-react';
 
 import {
@@ -42,20 +43,20 @@ const navItems: NavItem[] = [
     title: 'District Dashboard', 
     path: '/', 
     icon: LayoutDashboard, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin'] 
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin', 'contract'] 
   },
   { 
     title: 'Department Dashboard', 
     path: '/departments', 
     icon: Building, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin'],
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin', 'contract'],
     requiresDepartmentAccess: true
   },
   { 
     title: 'Project Dashboard', 
     path: '/projects', 
     icon: FileCheck, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin'],
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin', 'contract'],
     requiresDepartmentAccess: true
   },
   { 
@@ -83,14 +84,14 @@ const navItems: NavItem[] = [
     title: 'File Upload', 
     path: '/upload', 
     icon: Upload, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin'],
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin', 'contract'],
     requiresDepartmentAccess: true
   },
   {
     title: 'Table View',
     path: '/table-view',
     icon: Table,
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin'],
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin', 'contract'],
     requiresDepartmentAccess: true
   },
   { 
@@ -98,6 +99,13 @@ const navItems: NavItem[] = [
     path: '/analytics', 
     icon: BarChart3, 
     roles: ['district_collector', 'additional_collector', 'department_lead', 'admin'],
+    requiresDepartmentAccess: true
+  },
+  { 
+    title: 'Contracts', 
+    path: '/contracts', 
+    icon: FileContract, 
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'admin', 'contract'],
     requiresDepartmentAccess: true
   },
   { 
@@ -150,11 +158,11 @@ const AppSidebar: React.FC = () => {
     return cn(
       // Base styles for all nav items
       "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-200",
-      // Active state styling
+      // Active state styling - enhanced for better visibility
       isActive 
-        ? "bg-nitisetu-600/90 text-white font-medium shadow-sm" 
-        // Default state styling - ensuring visibility
-        : "text-gray-700 hover:bg-nitisetu-100 hover:text-nitisetu-800"
+        ? "bg-nitisetu-600 text-white font-medium shadow-sm" 
+        // Default state styling - improved visibility with darker text
+        : "text-gray-800 hover:bg-nitisetu-100 hover:text-nitisetu-800"
     );
   };
   
@@ -162,7 +170,7 @@ const AppSidebar: React.FC = () => {
     <Sidebar
       className={cn(
         // Improved background color for better contrast
-        "border-r bg-gray-50",
+        "border-r bg-gray-100",
         collapsed ? "w-[70px]" : "w-64"
       )}
     >
@@ -181,7 +189,9 @@ const AppSidebar: React.FC = () => {
                       className={cn(
                         "h-5 w-5", 
                         collapsed && "mx-auto", 
-                        isActive(item.path) ? "opacity-100" : "opacity-70"
+                        isActive(item.path) 
+                          ? "opacity-100 text-white" 
+                          : "opacity-80 text-gray-700"
                       )} 
                     />
                     {!collapsed && (
