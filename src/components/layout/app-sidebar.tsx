@@ -12,7 +12,7 @@ import {
   CheckSquare,
   Upload,
   Table,
-  FileContract
+  FileDigital
 } from 'lucide-react';
 
 import {
@@ -104,7 +104,7 @@ const navItems: NavItem[] = [
   { 
     title: 'Contracts', 
     path: '/contracts', 
-    icon: FileContract, 
+    icon: FileDigital, 
     roles: ['district_collector', 'additional_collector', 'department_lead', 'admin', 'contract'],
     requiresDepartmentAccess: true
   },

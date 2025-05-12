@@ -1,12 +1,11 @@
-
-
 export type UserRole = 
   | "district_collector" 
   | "additional_collector" 
   | "department_lead" 
   | "government_official" 
   | "external_worker" 
-  | "admin";
+  | "admin"
+  | "contract";
 
 export interface User {
   id: string;
@@ -154,4 +153,3 @@ export interface ReportCard {
   comments?: string;
   metrics: Record<string, any>;
 }
-
