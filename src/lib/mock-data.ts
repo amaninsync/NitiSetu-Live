@@ -1,4 +1,3 @@
-
 import { 
   User, 
   Department, 
@@ -72,6 +71,28 @@ export const mockUsers: User[] = [
     active: true,
     lastLogin: "2023-05-10T11:00:00",
     permissions: ["all"]
+  },
+  {
+    id: "u7",
+    name: "Sanjay Verma",
+    email: "employee@nitisetu.gov.in",
+    role: "government_official",
+    departmentId: "d1",
+    avatar: "/avatars/employee.jpg",
+    active: true,
+    lastLogin: "2023-05-10T09:30:00",
+    permissions: ["view_assigned", "edit_assigned", "upload_reports"]
+  },
+  {
+    id: "u8",
+    name: "Rahul Mishra",
+    email: "contractor@nitisetu.gov.in",
+    role: "external_worker",
+    departmentId: "d2",
+    avatar: "/avatars/contractor.jpg",
+    active: true,
+    lastLogin: "2023-05-09T14:15:00",
+    permissions: ["view_limited", "upload_reports"]
   }
 ];
 

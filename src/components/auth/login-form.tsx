@@ -104,6 +104,14 @@ const LoginForm: React.FC = () => {
               <div className="font-medium">Admin:</div>
               <div>admin@nitisetu.gov.in</div>
             </div>
+            <div>
+              <div className="font-medium">Government Official:</div>
+              <div>employee@nitisetu.gov.in</div>
+            </div>
+            <div>
+              <div className="font-medium">Contract Worker:</div>
+              <div>contractor@nitisetu.gov.in</div>
+            </div>
           </div>
           <p className="mt-2 text-xs">Password: any text will work</p>
         </div>

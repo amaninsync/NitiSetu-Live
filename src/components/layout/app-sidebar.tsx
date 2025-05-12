@@ -86,7 +86,7 @@ const navItems: NavItem[] = [
 
 const AppSidebar: React.FC = () => {
   const { state } = useSidebar();
-  const collapsed = state.collapsed;
+  const collapsed = state.collapsed === 'collapsed';
   const { user } = useAuth();
   const location = useLocation();
   const currentPath = location.pathname;
@@ -117,7 +117,7 @@ const AppSidebar: React.FC = () => {
   
   return (
     <Sidebar
-      className={cn("border-r bg-white", collapsed ? "w-[70px]" : "w-64")}
+      className={cn("border-r bg-[#CCCCCC]", collapsed ? "w-[70px]" : "w-64")}
     >
       <SidebarContent className="pt-2">
         <SidebarGroup>
