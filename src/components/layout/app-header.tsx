@@ -19,11 +19,11 @@ const AppHeader: React.FC = () => {
   };
   
   return (
-    <header className="bg-[#CCCCCC] border-b border-gray-300 shadow-sm h-16 flex items-center px-4">
+    <header className="bg-background border-b border-border shadow-sm h-16 flex items-center px-4">
       <div className="flex-1 flex items-center">
         <SidebarTrigger>
           <Button variant="ghost" size="icon" className="mr-4">
-            <Menu className="h-6 w-6 text-gray-800" />
+            <Menu className="h-6 w-6" />
           </Button>
         </SidebarTrigger>
         
@@ -32,7 +32,7 @@ const AppHeader: React.FC = () => {
             <span className="text-nitisetu-600">Niti</span>
             <span className="text-nitisetu-800">Setu</span>
           </h1>
-          <span className="ml-2 text-sm text-gray-800 font-medium hidden md:inline-block">
+          <span className="ml-2 text-sm text-muted-foreground font-medium hidden md:inline-block">
             District Administration Dashboard
           </span>
         </div>
@@ -40,8 +40,8 @@ const AppHeader: React.FC = () => {
       
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5 text-gray-800" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          <Bell className="h-5 w-5" />
+          <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
         </Button>
         
         <DropdownMenu>
