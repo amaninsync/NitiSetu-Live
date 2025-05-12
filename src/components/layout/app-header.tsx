@@ -21,15 +21,18 @@ const AppHeader: React.FC = () => {
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm h-16 flex items-center px-4">
       <div className="flex-1 flex items-center">
-        <SidebarTrigger className="mr-4">
-          <Menu className="h-6 w-6" />
+        <SidebarTrigger>
+          <Button variant="ghost" size="icon" className="mr-4">
+            <Menu className="h-6 w-6 text-gray-800" />
+          </Button>
         </SidebarTrigger>
         
         <div className="flex items-center">
-          <h1 className="font-bold text-lg text-nitisetu-700">
-            <span className="text-nitisetu-500">Niti</span>Setu
+          <h1 className="font-bold text-lg">
+            <span className="text-nitisetu-600">Niti</span>
+            <span className="text-nitisetu-800">Setu</span>
           </h1>
-          <span className="ml-2 text-sm text-muted-foreground hidden md:inline-block">
+          <span className="ml-2 text-sm text-gray-700 hidden md:inline-block">
             District Administration Dashboard
           </span>
         </div>
@@ -37,7 +40,7 @@ const AppHeader: React.FC = () => {
       
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
+          <Bell className="h-5 w-5 text-gray-700" />
           <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
         </Button>
         

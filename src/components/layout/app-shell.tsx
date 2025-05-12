@@ -15,7 +15,7 @@ const AppShell: React.FC = () => {
   }
 
   return (
-    <SidebarProvider collapsedWidth={70}>
+    <SidebarProvider>
       <div className="min-h-screen flex flex-col w-full">
         <AppHeader />
         <div className="flex flex-1 w-full">

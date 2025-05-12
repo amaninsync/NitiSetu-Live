@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -16,8 +16,6 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
@@ -87,7 +85,8 @@ const navItems: NavItem[] = [
 ];
 
 const AppSidebar: React.FC = () => {
-  const { collapsed } = useSidebar();
+  const { state } = useSidebar();
+  const collapsed = state.collapsed;
   const { user } = useAuth();
   const location = useLocation();
   const currentPath = location.pathname;
@@ -111,15 +110,14 @@ const AppSidebar: React.FC = () => {
     return cn(
       "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all", 
       isActive 
-        ? "bg-nitisetu-500 text-white hover:bg-nitisetu-600" 
-        : "hover:bg-secondary"
+        ? "bg-nitisetu-600 text-white hover:bg-nitisetu-700" 
+        : "text-gray-800 font-medium hover:bg-gray-200"
     );
   };
   
   return (
     <Sidebar
-      className={cn("border-r bg-sidebar", collapsed ? "w-[70px]" : "w-64")}
-      collapsible
+      className={cn("border-r bg-white", collapsed ? "w-[70px]" : "w-64")}
     >
       <SidebarContent className="pt-2">
         <SidebarGroup>
