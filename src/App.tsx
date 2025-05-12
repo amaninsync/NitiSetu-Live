@@ -16,35 +16,38 @@ import NotFound from "./pages/NotFound";
 import UploadPage from "./pages/UploadPage";
 import TableViewPage from "./pages/TableViewPage";
 
+// Create a new QueryClient instance
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/login" element={<LoginPage />} />
-            
-            {/* Protected Routes */}
-            <Route element={<AppShell />}>
-              <Route path="/" element={<Index />} />
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/upload" element={<UploadPage />} />
-              <Route path="/table-view" element={<TableViewPage />} />
-              {/* Other routes will be added here */}
-            </Route>
-            
-            {/* Catch-all route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/login" element={<LoginPage />} />
+              
+              {/* Protected Routes */}
+              <Route element={<AppShell />}>
+                <Route path="/" element={<Index />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/upload" element={<UploadPage />} />
+                <Route path="/table-view" element={<TableViewPage />} />
+                {/* Other routes will be added here */}
+              </Route>
+              
+              {/* Catch-all route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;
