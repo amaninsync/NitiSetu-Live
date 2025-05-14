@@ -21,6 +21,7 @@ import ProjectDashboardPage from "./pages/ProjectDashboardPage";
 // New pages
 import DepartmentView from "./pages/dashboard/DepartmentView";
 import DistrictStats from "./pages/dashboard/DistrictStats";
+import DistrictDashboard from "./pages/dashboard/DistrictDashboard";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -48,6 +49,7 @@ function App() {
                 {/* New Routes */}
                 <Route path="/department-view" element={<DepartmentView />} />
                 <Route path="/district-stats" element={<DistrictStats />} />
+                <Route path="/district-dashboard" element={<DistrictDashboard />} />
               </Route>
               
               {/* Catch-all route */}

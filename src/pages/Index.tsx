@@ -25,7 +25,7 @@ const Dashboard: React.FC = () => {
       </div>
       
       {/* Dashboard navigation cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 mb-8">
         <Link to="/department">
           <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
             <CardHeader className="pb-2">
@@ -101,6 +101,22 @@ const Dashboard: React.FC = () => {
             <CardContent>
               <p className="text-sm text-muted-foreground">
                 View population, revenue, and demographic statistics
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+        
+        <Link to="/district-dashboard">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center justify-between">
+                District Dashboard
+                <ArrowRight className="h-4 w-4" />
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Comprehensive district data with export options
               </p>
             </CardContent>
           </Card>
