@@ -23,13 +23,13 @@ const MetricCard: React.FC<MetricCardProps> = ({ metric, className }) => {
       </CardHeader>
       <CardContent className="p-4 pt-2">
         <div className="flex items-center justify-between">
-          <div className="metric-value">{value}</div>
+          <div className="text-2xl font-semibold">{value}</div>
           {change !== 0 && (
             <div className={cn(
               "flex items-center gap-1 rounded-sm px-2 py-1 text-xs font-medium",
-              status === "positive" && "metric-change-positive",
-              status === "negative" && "metric-change-negative",
-              status === "neutral" && "metric-change-neutral"
+              status === "positive" && "bg-success-500/20 text-success-500",
+              status === "negative" && "bg-destructive/20 text-destructive",
+              status === "neutral" && "bg-muted text-muted-foreground"
             )}>
               <span className="inline-flex items-center">
                 {status === "positive" && <ArrowUp className="mr-0.5 h-3 w-3" />}

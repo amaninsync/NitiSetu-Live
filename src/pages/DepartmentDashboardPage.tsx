@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,8 +6,11 @@ import MetricCard from '@/components/dashboard/metric-card';
 import BudgetChart from '@/components/dashboard/budget-chart';
 import PerformanceChart from '@/components/dashboard/performance-chart';
 import ProjectStatusChart from '@/components/dashboard/project-status-chart';
+import DepartmentKPIChart from '@/components/dashboard/department-kpi-chart';
+import RecentActivitiesCard from '@/components/dashboard/recent-activities-card';
 import { ChevronRight, Users, Briefcase, BarChart3, FileText, CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { DashboardMetric } from '@/types';
 
 // Sample department data - in a real app, this would come from an API
 const departments = [
@@ -19,8 +21,8 @@ const departments = [
   { id: 'agriculture', name: 'Agriculture', color: 'bg-success-500' },
 ];
 
-// Sample department metrics
-const departmentMetrics = (departmentId: string) => [
+// Sample department metrics - now with correct status type
+const departmentMetrics = (departmentId: string): DashboardMetric[] => [
   {
     id: `${departmentId}-budget`,
     title: 'Budget Allocation',
