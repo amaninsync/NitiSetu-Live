@@ -15,6 +15,8 @@ import AdminPage from "./pages/AdminPage";
 import NotFound from "./pages/NotFound";
 import UploadPage from "./pages/UploadPage";
 import TableViewPage from "./pages/TableViewPage";
+import DepartmentDashboardPage from "./pages/DepartmentDashboardPage";
+import ProjectDashboardPage from "./pages/ProjectDashboardPage";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -37,6 +39,8 @@ function App() {
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/upload" element={<UploadPage />} />
                 <Route path="/table-view" element={<TableViewPage />} />
+                <Route path="/department" element={<DepartmentDashboardPage />} />
+                <Route path="/project" element={<ProjectDashboardPage />} />
                 {/* Other routes will be added here */}
               </Route>
               

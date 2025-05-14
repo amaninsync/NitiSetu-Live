@@ -1,12 +1,15 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/auth-context';
 import MetricCard from '@/components/dashboard/metric-card';
 import BudgetChart from '@/components/dashboard/budget-chart';
 import PerformanceChart from '@/components/dashboard/performance-chart';
 import ProjectStatusChart from '@/components/dashboard/project-status-chart';
 import { mockDistrictMetrics } from '@/lib/mock-data';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
@@ -19,6 +22,57 @@ const Dashboard: React.FC = () => {
           <CalendarIcon className="h-4 w-4" />
           <span>Last updated: {new Date().toLocaleDateString()}</span>
         </div>
+      </div>
+      
+      {/* Dashboard navigation cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mb-8">
+        <Link to="/department">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center justify-between">
+                Department Dashboard
+                <ArrowRight className="h-4 w-4" />
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                View detailed department-wise performance, budgets, and projects
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+        
+        <Link to="/project">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center justify-between">
+                Project Dashboard
+                <ArrowRight className="h-4 w-4" />
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Track progress, timelines, and resources for all district projects
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+        
+        <Link to="/table-view">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center justify-between">
+                Reports & Data
+                <ArrowRight className="h-4 w-4" />
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Access and manage all district reports and data tables
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
