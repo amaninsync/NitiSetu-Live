@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +18,9 @@ import UploadPage from "./pages/UploadPage";
 import TableViewPage from "./pages/TableViewPage";
 import DepartmentDashboardPage from "./pages/DepartmentDashboardPage";
 import ProjectDashboardPage from "./pages/ProjectDashboardPage";
+// New pages
+import DepartmentView from "./pages/dashboard/DepartmentView";
+import DistrictStats from "./pages/dashboard/DistrictStats";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -41,7 +45,9 @@ function App() {
                 <Route path="/table-view" element={<TableViewPage />} />
                 <Route path="/department" element={<DepartmentDashboardPage />} />
                 <Route path="/project" element={<ProjectDashboardPage />} />
-                {/* Other routes will be added here */}
+                {/* New Routes */}
+                <Route path="/department-view" element={<DepartmentView />} />
+                <Route path="/district-stats" element={<DistrictStats />} />
               </Route>
               
               {/* Catch-all route */}
