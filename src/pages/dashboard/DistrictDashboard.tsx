@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, Tooltip, Legend } from 'recharts';
 import { Button } from "@/components/ui/button";
-import { Download, Printer, ChevronDown } from "lucide-react";
+import { Download, Printer } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +16,6 @@ import { useReactToPrint } from 'react-to-print';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Sample district data - unchanged from original file
 const districtOverview = {
@@ -95,7 +94,7 @@ const monthlyData = [
  */
 const exportUtils = {
   // Export component as image (PNG or JPG)
-  exportAsImage: async (elementRef, fileName, format = 'png') => {
+  exportAsImage: async (elementRef: React.RefObject<HTMLElement>, fileName: string, format = 'png') => {
     if (!elementRef.current) return;
     
     try {
@@ -117,7 +116,7 @@ const exportUtils = {
   },
   
   // Export component as PDF
-  exportAsPDF: async (elementRef, fileName) => {
+  exportAsPDF: async (elementRef: React.RefObject<HTMLElement>, fileName: string) => {
     if (!elementRef.current) return;
     
     try {
@@ -146,7 +145,7 @@ const exportUtils = {
   },
   
   // Export table data as Excel/CSV
-  exportTableData: (data, fileName, format = 'xlsx') => {
+  exportTableData: (data: any[], fileName: string, format = 'xlsx') => {
     try {
       const worksheet = XLSX.utils.json_to_sheet(data);
       const workbook = XLSX.utils.book_new();
@@ -166,7 +165,7 @@ const exportUtils = {
 /**
  * Exportable Card Component
  */
-const ExportableCard = ({ children, title, className = "", exportOptions = true }) => {
+const ExportableCard = ({ children, title, className = "", exportOptions = true }: { children: React.ReactNode, title: string, className?: string, exportOptions?: boolean }) => {
   const cardRef = useRef(null);
   
   const handleExport = (format) => {
@@ -217,7 +216,7 @@ const ExportableCard = ({ children, title, className = "", exportOptions = true 
 /**
  * Exportable Table Component
  */
-const ExportableTable = ({ data, title, children }) => {
+const ExportableTable = ({ data, title, children }: { data: any[], title: string, children: React.ReactNode }) => {
   const tableRef = useRef(null);
   
   const handleExport = (format) => {
@@ -273,7 +272,7 @@ const ExportableTable = ({ data, title, children }) => {
 /**
  * Exportable Chart Component
  */
-const ExportableChart = ({ title, children }) => {
+const ExportableChart = ({ title, children }: { title: string, children: React.ReactNode }) => {
   const chartRef = useRef(null);
   
   const handleExport = (format) => {
@@ -323,7 +322,7 @@ const ExportableChart = ({ title, children }) => {
  * NITI Aayog View Component
  */
 export const NITIAayogView = () => {
-  const dashboardRef = useRef(null);
+  const dashboardRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
     content: () => dashboardRef.current,
     documentTitle: `${asifabadOverview.name} Aspirational District Report`,
@@ -541,7 +540,7 @@ export const NITIAayogView = () => {
         </CardHeader>
         <CardContent>
           <ExportableChart title="Delta Ranking Chart">
-            <ChartContainer>
+            <ChartContainer config={deltaRankingChartConfig}>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart
                   data={[
@@ -555,9 +554,9 @@ export const NITIAayogView = () => {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis domain={[0, 100]} reversed />
-                  <Tooltip />
+                  <Tooltip content={<ChartTooltipContent />} />
                   <Legend />
-                  <Bar dataKey="rank" name="Overall Rank" fill="#8884d8" />
+                  <Bar dataKey="rank" name="Overall Rank" fill="var(--color-rank)" />
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>
@@ -572,7 +571,7 @@ export const NITIAayogView = () => {
  * District View Component
  */
 export const DistrictView = () => {
-  const dashboardRef = useRef(null);
+  const dashboardRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
     content: () => dashboardRef.current,
     documentTitle: `${districtOverview.name} District Dashboard Report`,
@@ -784,7 +783,7 @@ export const DistrictView = () => {
 
 const DistrictDashboard = () => {
   const [activeView, setActiveView] = useState('district');
-  const dashboardRef = useRef(null);
+  const dashboardRef = useRef<HTMLDivElement>(null); 
   
   const handlePrint = useReactToPrint({
     content: () => dashboardRef.current,
@@ -807,30 +806,31 @@ const DistrictDashboard = () => {
           <div className="inline-flex items-center rounded-md border border-gray-200 bg-white px-1">
             <button
               onClick={() => setActiveView('district')}
-              className={`rounded-sm px-3 py-1.5 text-sm font-medium ${
+              className={`rounded-sm px-3 py-1.5 text-sm font-medium transition-colors ${
                 activeView === 'district' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-primary text-primary-foreground' // Using theme variables
+                  : 'text-muted-foreground hover:bg-muted/50'
               }`}
             >
               District View
             </button>
             <button
               onClick={() => setActiveView('niti')}
-              className={`rounded-sm px-3 py-1.5 text-sm font-medium ${
+              className={`rounded-sm px-3 py-1.5 text-sm font-medium transition-colors ${
                 activeView === 'niti' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-primary text-primary-foreground' // Using theme variables
+                  : 'text-muted-foreground hover:bg-muted/50'
               }`}
             >
               NITI Aayog View
             </button>
           </div>
         </div>
-        <Button onClick={handlePrint} variant="default" className="flex items-center gap-2">
+        {/* Print button for the entire dashboard - consider if this is needed given sub-view print buttons */}
+        {/* <Button onClick={handlePrint} variant="default" className="flex items-center gap-2">
           <Printer className="h-4 w-4" />
-          Print Dashboard
-        </Button>
+          Print Full Dashboard
+        </Button> */}
       </div>
       
       {/* Render appropriate view based on state */}
