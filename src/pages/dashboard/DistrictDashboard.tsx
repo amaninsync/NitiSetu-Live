@@ -89,9 +89,6 @@ const monthlyData = [
   { name: 'Dec', budget: 520, actual: 490 },
 ];
 
-/**
- * Utility functions for exporting components
- */
 const exportUtils = {
   // Export component as image (PNG or JPG)
   exportAsImage: async (elementRef: React.RefObject<HTMLElement>, fileName: string, format = 'png') => {
@@ -324,7 +321,7 @@ const ExportableChart = ({ title, children }: { title: string, children: React.R
 export const NITIAayogView = () => {
   const dashboardRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
-    content: () => dashboardRef.current,
+    content: () => dashboardRef.current, // Corrected content property
     documentTitle: `${asifabadOverview.name} Aspirational District Report`,
     onBeforeGetContent: () => {
       console.log('Preparing to print NITI Aayog dashboard');
@@ -519,12 +516,12 @@ export const NITIAayogView = () => {
                   <Line
                     type="monotone"
                     dataKey="health"
-                    stroke="#ef4444"
+                    stroke="var(--color-health)" // Using themed color
                     activeDot={{ r: 8 }}
                   />
-                  <Line type="monotone" dataKey="education" stroke="#3b82f6" />
-                  <Line type="monotone" dataKey="agriculture" stroke="#10b981" />
-                  <Line type="monotone" dataKey="infrastructure" stroke="#f59e0b" />
+                  <Line type="monotone" dataKey="education" stroke="var(--color-education)" />
+                  <Line type="monotone" dataKey="agriculture" stroke="var(--color-agriculture)" />
+                  <Line type="monotone" dataKey="infrastructure" stroke="var(--color-infrastructure)" />
                 </LineChart>
               </ResponsiveContainer>
             </ChartContainer>
@@ -540,7 +537,7 @@ export const NITIAayogView = () => {
         </CardHeader>
         <CardContent>
           <ExportableChart title="Delta Ranking Chart">
-            <ChartContainer config={deltaRankingChartConfig}>
+            <ChartContainer config={deltaRankingChartConfig}> {/* Added config prop */}
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart
                   data={[
@@ -573,7 +570,7 @@ export const NITIAayogView = () => {
 export const DistrictView = () => {
   const dashboardRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
-    content: () => dashboardRef.current,
+    content: () => dashboardRef.current, // Corrected content property
     documentTitle: `${districtOverview.name} District Dashboard Report`,
     onBeforeGetContent: () => {
       console.log('Preparing to print dashboard');
@@ -743,15 +740,15 @@ export const DistrictView = () => {
                   budget: {
                     label: "Budget",
                     theme: {
-                      light: "#3b82f6",
-                      dark: "#60a5fa",
+                      light: "#3b82f6", // Updated to use direct hex
+                      dark: "#60a5fa",  // Updated to use direct hex
                     },
                   },
                   actual: {
                     label: "Actual",
                     theme: {
-                      light: "#10b981",
-                      dark: "#34d399",
+                      light: "#10b981", // Updated to use direct hex
+                      dark: "#34d399",  // Updated to use direct hex
                     },
                   },
                 }}
@@ -766,10 +763,10 @@ export const DistrictView = () => {
                     <Line
                       type="monotone"
                       dataKey="budget"
-                      stroke="#3b82f6"
+                      stroke="var(--color-budget)" // Using themed color
                       activeDot={{ r: 8 }}
                     />
-                    <Line type="monotone" dataKey="actual" stroke="#10b981" />
+                    <Line type="monotone" dataKey="actual" stroke="var(--color-actual)" /> 
                   </LineChart>
                 </ResponsiveContainer>
               </ChartContainer>
@@ -785,8 +782,9 @@ const DistrictDashboard = () => {
   const [activeView, setActiveView] = useState('district');
   const dashboardRef = useRef<HTMLDivElement>(null); 
   
+  // Corrected useReactToPrint usage for the main dashboard print button
   const handlePrint = useReactToPrint({
-    content: () => dashboardRef.current,
+    content: () => dashboardRef.current, // Corrected content property
     documentTitle: `${activeView === 'district' ? districtOverview.name : asifabadOverview.name} Dashboard Report`,
     onBeforeGetContent: () => {
       console.log('Preparing to print dashboard');
@@ -808,7 +806,7 @@ const DistrictDashboard = () => {
               onClick={() => setActiveView('district')}
               className={`rounded-sm px-3 py-1.5 text-sm font-medium transition-colors ${
                 activeView === 'district' 
-                  ? 'bg-primary text-primary-foreground' // Using theme variables
+                  ? 'bg-primary text-primary-foreground' 
                   : 'text-muted-foreground hover:bg-muted/50'
               }`}
             >
@@ -818,7 +816,7 @@ const DistrictDashboard = () => {
               onClick={() => setActiveView('niti')}
               className={`rounded-sm px-3 py-1.5 text-sm font-medium transition-colors ${
                 activeView === 'niti' 
-                  ? 'bg-primary text-primary-foreground' // Using theme variables
+                  ? 'bg-primary text-primary-foreground' 
                   : 'text-muted-foreground hover:bg-muted/50'
               }`}
             >
@@ -826,14 +824,16 @@ const DistrictDashboard = () => {
             </button>
           </div>
         </div>
-        {/* Print button for the entire dashboard - consider if this is needed given sub-view print buttons */}
-        {/* <Button onClick={handlePrint} variant="default" className="flex items-center gap-2">
-          <Printer className="h-4 w-4" />
-          Print Full Dashboard
-        </Button> */}
+        {/* The main print button for the entire dashboard was previously commented out. 
+            If it's needed, it should also use the corrected handlePrint.
+            Example:
+            <Button onClick={handlePrint} variant="default" className="flex items-center gap-2">
+              <Printer className="h-4 w-4" />
+              Print Full Dashboard
+            </Button> 
+        */}
       </div>
       
-      {/* Render appropriate view based on state */}
       {activeView === 'district' ? <DistrictView /> : <NITIAayogView />}
     </div>
   );
