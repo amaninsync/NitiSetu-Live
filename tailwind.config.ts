@@ -19,8 +19,10 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Helvetica', 'Arial', 'sans-serif'],
-				helvetica: ['Helvetica', 'Arial', 'sans-serif'],
+			  heading: ['Gabarito', 'sans-serif'],
+			  body: ['Noto Serif', 'serif'],
+			  sans: ['Noto Serif', 'serif'], // optional: redefine default sans if desired
+			  serif: ['Noto Serif', 'serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

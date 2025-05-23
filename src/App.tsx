@@ -42,11 +42,11 @@ function App() {
           <BrowserRouter>
             <Routes>
               {/* Public Routes */}
+              <Route path="/" element={<Index />} />
               <Route path="/login" element={<LoginPage />} />
               
               {/* Protected Routes */}
               <Route element={<AppShell />}>
-                <Route path="/" element={<Index />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/upload" element={<UploadPage />} />
                 <Route path="/table-view" element={<TableViewPage />} />
