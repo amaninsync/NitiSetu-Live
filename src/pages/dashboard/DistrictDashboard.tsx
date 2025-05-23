@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, ReactElement } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartConfig, ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, Tooltip, Legend } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { Download, Printer } from "lucide-react";
@@ -89,6 +89,20 @@ const monthlyData = [
   { name: 'Dec', budget: 520, actual: 490 },
 ];
 
+// Define chart configurations
+const deltaRankingChartConfig: ChartConfig = {
+  rank: {
+    label: "Overall Rank",
+    theme: {
+      light: "#8884d8",
+      dark: "#a78bfa",
+    },
+  }
+};
+
+/**
+ * Utility functions for exporting components
+ */
 const exportUtils = {
   // Export component as image (PNG or JPG)
   exportAsImage: async (elementRef: React.RefObject<HTMLElement>, fileName: string, format = 'png') => {
@@ -156,16 +170,16 @@ const exportUtils = {
     } catch (error) {
       console.error('Error exporting table data:', error);
     }
-  },
+  }
 };
 
 /**
  * Exportable Card Component
  */
 const ExportableCard = ({ children, title, className = "", exportOptions = true }: { children: React.ReactNode, title: string, className?: string, exportOptions?: boolean }) => {
-  const cardRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   
-  const handleExport = (format) => {
+  const handleExport = (format: string) => {
     const sanitizedTitle = title.replace(/\s+/g, '-').toLowerCase();
     
     switch (format) {
@@ -214,9 +228,9 @@ const ExportableCard = ({ children, title, className = "", exportOptions = true 
  * Exportable Table Component
  */
 const ExportableTable = ({ data, title, children }: { data: any[], title: string, children: React.ReactNode }) => {
-  const tableRef = useRef(null);
+  const tableRef = useRef<HTMLDivElement>(null);
   
-  const handleExport = (format) => {
+  const handleExport = (format: string) => {
     const sanitizedTitle = title.replace(/\s+/g, '-').toLowerCase();
     
     switch (format) {
@@ -270,9 +284,9 @@ const ExportableTable = ({ data, title, children }: { data: any[], title: string
  * Exportable Chart Component
  */
 const ExportableChart = ({ title, children }: { title: string, children: React.ReactNode }) => {
-  const chartRef = useRef(null);
+  const chartRef = useRef<HTMLDivElement>(null);
   
-  const handleExport = (format) => {
+  const handleExport = (format: string) => {
     const sanitizedTitle = title.replace(/\s+/g, '-').toLowerCase();
     
     switch (format) {
@@ -320,14 +334,18 @@ const ExportableChart = ({ title, children }: { title: string, children: React.R
  */
 export const NITIAayogView = () => {
   const dashboardRef = useRef<HTMLDivElement>(null);
+  
   const handlePrint = useReactToPrint({
-    content: () => dashboardRef.current, // Corrected content property
     documentTitle: `${asifabadOverview.name} Aspirational District Report`,
     onBeforeGetContent: () => {
       console.log('Preparing to print NITI Aayog dashboard');
       return Promise.resolve();
     },
-    onAfterPrint: () => console.log('NITI Aayog dashboard printed successfully')
+    onAfterPrint: () => console.log('NITI Aayog dashboard printed successfully'),
+    // Fix for the TS error by using a function that returns the element directly
+    documentToCanvas: async (element) => {
+      return await html2canvas(element);
+    }
   });
   
   return (
@@ -335,7 +353,7 @@ export const NITIAayogView = () => {
       {/* Header with Print Button */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Aspirational District Dashboard</h1>
-        <Button onClick={handlePrint} className="bg-blue-600 hover:bg-blue-700">
+        <Button onClick={() => handlePrint(dashboardRef.current)} className="bg-blue-600 hover:bg-blue-700">
           <Printer className="h-4 w-4 mr-2" /> Print Report
         </Button>
       </div>
@@ -516,12 +534,12 @@ export const NITIAayogView = () => {
                   <Line
                     type="monotone"
                     dataKey="health"
-                    stroke="var(--color-health)" // Using themed color
+                    stroke="#ef4444"
                     activeDot={{ r: 8 }}
                   />
-                  <Line type="monotone" dataKey="education" stroke="var(--color-education)" />
-                  <Line type="monotone" dataKey="agriculture" stroke="var(--color-agriculture)" />
-                  <Line type="monotone" dataKey="infrastructure" stroke="var(--color-infrastructure)" />
+                  <Line type="monotone" dataKey="education" stroke="#3b82f6" />
+                  <Line type="monotone" dataKey="agriculture" stroke="#10b981" />
+                  <Line type="monotone" dataKey="infrastructure" stroke="#f59e0b" />
                 </LineChart>
               </ResponsiveContainer>
             </ChartContainer>
@@ -537,7 +555,9 @@ export const NITIAayogView = () => {
         </CardHeader>
         <CardContent>
           <ExportableChart title="Delta Ranking Chart">
-            <ChartContainer config={deltaRankingChartConfig}> {/* Added config prop */}
+            <ChartContainer 
+              config={deltaRankingChartConfig}
+            >
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart
                   data={[
@@ -553,7 +573,7 @@ export const NITIAayogView = () => {
                   <YAxis domain={[0, 100]} reversed />
                   <Tooltip content={<ChartTooltipContent />} />
                   <Legend />
-                  <Bar dataKey="rank" name="Overall Rank" fill="var(--color-rank)" />
+                  <Bar dataKey="rank" name="Overall Rank" fill="#8884d8" />
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>
@@ -569,14 +589,18 @@ export const NITIAayogView = () => {
  */
 export const DistrictView = () => {
   const dashboardRef = useRef<HTMLDivElement>(null);
+  
   const handlePrint = useReactToPrint({
-    content: () => dashboardRef.current, // Corrected content property
     documentTitle: `${districtOverview.name} District Dashboard Report`,
     onBeforeGetContent: () => {
       console.log('Preparing to print dashboard');
       return Promise.resolve();
     },
-    onAfterPrint: () => console.log('Dashboard printed successfully')
+    onAfterPrint: () => console.log('Dashboard printed successfully'),
+    // Fix for the TS error by using a function that returns the element directly
+    documentToCanvas: async (element) => {
+      return await html2canvas(element);
+    }
   });
   
   return (
@@ -584,7 +608,7 @@ export const DistrictView = () => {
       {/* Header with Print Button */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">District View</h1>
-        <Button onClick={handlePrint} className="bg-blue-600 hover:bg-blue-700">
+        <Button onClick={() => handlePrint(dashboardRef.current)} className="bg-blue-600 hover:bg-blue-700">
           <Printer className="h-4 w-4 mr-2" /> Print Report
         </Button>
       </div>
@@ -740,15 +764,15 @@ export const DistrictView = () => {
                   budget: {
                     label: "Budget",
                     theme: {
-                      light: "#3b82f6", // Updated to use direct hex
-                      dark: "#60a5fa",  // Updated to use direct hex
+                      light: "#3b82f6",
+                      dark: "#60a5fa",
                     },
                   },
                   actual: {
                     label: "Actual",
                     theme: {
-                      light: "#10b981", // Updated to use direct hex
-                      dark: "#34d399",  // Updated to use direct hex
+                      light: "#10b981",
+                      dark: "#34d399",
                     },
                   },
                 }}
@@ -763,10 +787,10 @@ export const DistrictView = () => {
                     <Line
                       type="monotone"
                       dataKey="budget"
-                      stroke="var(--color-budget)" // Using themed color
+                      stroke="#3b82f6"
                       activeDot={{ r: 8 }}
                     />
-                    <Line type="monotone" dataKey="actual" stroke="var(--color-actual)" /> 
+                    <Line type="monotone" dataKey="actual" stroke="#10b981" />
                   </LineChart>
                 </ResponsiveContainer>
               </ChartContainer>
@@ -779,18 +803,20 @@ export const DistrictView = () => {
 };
 
 const DistrictDashboard = () => {
-  const [activeView, setActiveView] = useState('district');
-  const dashboardRef = useRef<HTMLDivElement>(null); 
+  const [activeView, setActiveView] = useState<'district' | 'niti'>('district');
+  const dashboardRef = useRef<HTMLDivElement>(null);
   
-  // Corrected useReactToPrint usage for the main dashboard print button
   const handlePrint = useReactToPrint({
-    content: () => dashboardRef.current, // Corrected content property
     documentTitle: `${activeView === 'district' ? districtOverview.name : asifabadOverview.name} Dashboard Report`,
     onBeforeGetContent: () => {
       console.log('Preparing to print dashboard');
       return Promise.resolve();
     },
-    onAfterPrint: () => console.log('Dashboard printed successfully')
+    onAfterPrint: () => console.log('Dashboard printed successfully'),
+    // Fix for the TS error by using a function that returns the element directly
+    documentToCanvas: async (element) => {
+      return await html2canvas(element);
+    }
   });
   
   return (
@@ -824,14 +850,6 @@ const DistrictDashboard = () => {
             </button>
           </div>
         </div>
-        {/* The main print button for the entire dashboard was previously commented out. 
-            If it's needed, it should also use the corrected handlePrint.
-            Example:
-            <Button onClick={handlePrint} variant="default" className="flex items-center gap-2">
-              <Printer className="h-4 w-4" />
-              Print Full Dashboard
-            </Button> 
-        */}
       </div>
       
       {activeView === 'district' ? <DistrictView /> : <NITIAayogView />}

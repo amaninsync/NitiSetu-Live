@@ -1,209 +1,184 @@
 
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
-  LayoutDashboard, 
-  Users, 
-  Building, 
-  FileText, 
   BarChart3, 
-  Settings,
-  FileCheck,
-  CheckSquare,
-  Upload,
-  Table,
-  FileDigit
+  Building2, 
+  Home, 
+  LineChart, 
+  Menu, 
+  ChevronDown,
+  ChevronRight,
+  Lightbulb,
+  Map,
+  HandCoins,
+  Stethoscope,
+  PieChart
 } from 'lucide-react';
-
+import { cn } from '@/lib/utils';
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarTrigger,
   useSidebar
-} from '@/components/ui/sidebar';
-
-import { useAuth } from '@/contexts/auth-context';
-import { cn } from '@/lib/utils';
-import { UserRole } from '@/types';
-
-interface NavItem {
-  title: string;
-  path: string;
-  icon: React.ComponentType<{ className?: string }>;
-  roles: UserRole[];
-  requiresDepartmentAccess?: boolean; // Whether this item requires specific department access
-  adminOnly?: boolean; // For items that should only be visible to admin or district_collector
-}
-
-const navItems: NavItem[] = [
-  { 
-    title: 'District Dashboard', 
-    path: '/', 
-    icon: LayoutDashboard, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin', 'contract'] 
-  },
-  { 
-    title: 'Department Dashboard', 
-    path: '/departments', 
-    icon: Building, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin', 'contract'],
-    requiresDepartmentAccess: true
-  },
-  { 
-    title: 'Project Dashboard', 
-    path: '/projects', 
-    icon: FileCheck, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin', 'contract'],
-    requiresDepartmentAccess: true
-  },
-  { 
-    title: 'SHG Financing', 
-    path: '/shg-financing', 
-    icon: Users, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin'],
-    requiresDepartmentAccess: true
-  },
-  { 
-    title: 'M&E Dashboard', 
-    path: '/monitoring', 
-    icon: CheckSquare, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'admin'],
-    requiresDepartmentAccess: true
-  },
-  { 
-    title: 'Reports', 
-    path: '/reports', 
-    icon: FileText, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin'],
-    requiresDepartmentAccess: true
-  },
-  { 
-    title: 'File Upload', 
-    path: '/upload', 
-    icon: Upload, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin', 'contract'],
-    requiresDepartmentAccess: true
-  },
-  {
-    title: 'Table View',
-    path: '/table-view',
-    icon: Table,
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin', 'contract'],
-    requiresDepartmentAccess: true
-  },
-  { 
-    title: 'Analytics', 
-    path: '/analytics', 
-    icon: BarChart3, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'admin'],
-    requiresDepartmentAccess: true
-  },
-  { 
-    title: 'Contracts', 
-    path: '/contracts', 
-    icon: FileDigit, 
-    roles: ['district_collector', 'additional_collector', 'department_lead', 'admin', 'contract'],
-    requiresDepartmentAccess: true
-  },
-  { 
-    title: 'Admin Panel', 
-    path: '/admin', 
-    icon: Settings, 
-    roles: ['admin', 'district_collector'],
-    adminOnly: true
-  }
-];
+} from "@/components/ui/sidebar";
 
 const AppSidebar: React.FC = () => {
-  const { state } = useSidebar();
-  const collapsed = state === "collapsed";
-  const { user } = useAuth();
+  const { collapsed } = useSidebar();
   const location = useLocation();
-  const currentPath = location.pathname;
-  
-  // Filter nav items based on user's role AND department access
-  const filteredNavItems = navItems.filter(item => {
-    // Only show items if user has appropriate role
-    const hasRoleAccess = user?.role && item.roles.includes(user.role);
-    if (!hasRoleAccess) return false;
-    
-    // For admins and collectors, show everything
-    if (user.role === 'admin' || user.role === 'district_collector') return true;
-    
-    // For other users, check department access if required
-    if (item.requiresDepartmentAccess) {
-      // Check if user has department access
-      // The departmentId check ensures they can only see departments they're mapped to
-      return user.departmentId !== undefined;
-    }
-    
-    // For items that don't require department access
-    return true;
+  const [expandedGroups, setExpandedGroups] = React.useState({
+    district: false,
+    projects: false,
+    monitoring: false
   });
   
-  // Helper function to check if a route or its child routes are active
-  const isActive = (path: string) => {
-    // Exact match for home
-    if (path === '/' && currentPath === '/') return true;
-    // For other routes, check if currentPath starts with path
-    if (path !== '/' && currentPath.startsWith(path)) return true;
+  // Define nested menu structure
+  const navItems = [
+    { 
+      id: 'district',
+      label: 'District View', 
+      icon: <Home size={18} />,
+      path: '/district-dashboard',
+      children: [
+        { path: '/district-stats', label: 'District Stats', icon: <PieChart size={18} /> }
+      ]
+    },
+    { 
+      id: 'health',
+      label: 'Health Data', 
+      icon: <Stethoscope size={18} />,
+      path: '/health-data'
+    },
+    { 
+      id: 'projects',
+      label: 'Projects', 
+      icon: <LineChart size={18} />,
+      path: '/project',
+      children: [
+        { path: '/shg-financing', label: 'SHG Financing', icon: <HandCoins size={18} /> }
+      ]
+    },
+    { 
+      id: 'departments',
+      label: 'Departments', 
+      icon: <Building2 size={18} />,
+      path: '/department'
+    },
+    { 
+      id: 'monitoring',
+      label: 'Monitoring & Evaluation', 
+      icon: <BarChart3 size={18} />,
+      path: '/table-view',
+      children: [
+        { path: '/road-network', label: 'Road Network', icon: <Map size={18} /> }
+      ]
+    },
+    { 
+      id: 'insights',
+      label: 'Insights', 
+      icon: <Lightbulb size={18} />,
+      path: '/department-view'
+    },
+  ];
+
+  // Toggle expand/collapse for parent items
+  const toggleExpand = (groupId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setExpandedGroups(prev => ({
+      ...prev,
+      [groupId]: !prev[groupId]
+    }));
+  };
+
+  // Check if a route is active (either exact match or a child route)
+  const isRouteActive = (path: string) => {
+    // Direct match
+    if (location.pathname === path) {
+      return true;
+    }
+    
+    // Check if any child route is active
+    const item = navItems.find(item => item.path === path);
+    if (item?.children) {
+      return item.children.some(child => child.path === location.pathname);
+    }
+    
     return false;
   };
-  
-  // Helper function to generate class names for links
-  const getLinkClassName = ({ isActive }: { isActive: boolean }) => {
-    return cn(
-      // Base styles for all nav items
-      "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-200",
-      // Active state styling - using the new sequence teal colors
-      isActive 
-        ? "bg-sequence-green-500 text-white font-medium shadow-sm" 
-        // Default state styling - improved visibility with darker text
-        : "text-white hover:bg-sequence-teal-600 hover:text-white"
-    );
-  };
-  
+
   return (
-    <Sidebar
-      className={cn(
-        // Updated to use the teal color from the brand guide
-        "border-r bg-sequence-teal-500 text-white",
-        collapsed ? "w-[70px]" : "w-64"
-      )}
-    >
-      <SidebarContent className="pt-2">
-        <SidebarGroup>
-          <SidebarMenu>
-            {filteredNavItems.map((item) => (
-              <SidebarMenuItem key={item.path} className="mt-1">
-                <SidebarMenuButton asChild>
-                  <NavLink 
-                    to={item.path} 
-                    className={getLinkClassName} 
-                    end={item.path === '/'}
-                  >
-                    <item.icon 
-                      className={cn(
-                        "h-5 w-5", 
-                        collapsed && "mx-auto", 
-                        isActive(item.path) 
-                          ? "opacity-100 text-white" 
-                          : "opacity-80 text-white"
-                      )} 
-                    />
-                    {!collapsed && (
-                      <span className="font-medium">{item.title}</span>
+    <Sidebar className={cn("bg-white border-r border-border", collapsed ? "w-14" : "w-64")}>
+      <SidebarContent>
+        {navItems.map((item) => {
+          const hasChildren = item.children && item.children.length > 0;
+          const isActive = isRouteActive(item.path);
+          const isExpanded = expandedGroups[item.id];
+          
+          return (
+            <SidebarGroup key={item.id} defaultOpen={isExpanded}>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <Link
+                    to={item.path}
+                    className={cn(
+                      "flex items-center px-3 py-2 rounded-md w-full",
+                      isActive ? "bg-primary text-primary-foreground" : "hover:bg-muted"
                     )}
-                  </NavLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
+                    onClick={(e) => {
+                      if (hasChildren) {
+                        e.preventDefault();
+                        toggleExpand(item.id, e);
+                      }
+                    }}
+                  >
+                    <span className="mr-2">{item.icon}</span>
+                    {!collapsed && (
+                      <>
+                        <span className="flex-grow">{item.label}</span>
+                        {hasChildren && (
+                          <span className="ml-2">
+                            {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </Link>
+                </SidebarMenuItem>
+                
+                {/* Child menu items */}
+                {hasChildren && isExpanded && !collapsed && (
+                  <div className="ml-6 space-y-1 mt-1">
+                    {item.children.map((child) => (
+                      <SidebarMenuItem key={child.path}>
+                        <Link
+                          to={child.path}
+                          className={cn(
+                            "flex items-center px-3 py-2 rounded-md",
+                            location.pathname === child.path 
+                              ? "bg-primary/10 text-primary" 
+                              : "hover:bg-muted"
+                          )}
+                        >
+                          <span className="mr-2">{child.icon}</span>
+                          <span>{child.label}</span>
+                        </Link>
+                      </SidebarMenuItem>
+                    ))}
+                  </div>
+                )}
+              </SidebarMenu>
+            </SidebarGroup>
+          );
+        })}
       </SidebarContent>
+      <SidebarTrigger className="absolute bottom-4 right-4" />
     </Sidebar>
   );
 };
