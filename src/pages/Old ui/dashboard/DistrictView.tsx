@@ -1,22 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState, useRef } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, Tooltip, Legend } from 'recharts';
-import { Button } from "@/components/ui/button";
-import { Download, Printer, ChevronDown } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { Download, Printer, MapPin, Users, TrendingUp, BarChart2, PieChart as PieIcon, DollarSign, BookOpen, Droplets, Sprout, Building2, Factory, CloudRain, Users2 as DemographicsIcon, Info } from 'lucide-react';
 import { useReactToPrint } from 'react-to-print';
 import html2canvas from 'html2canvas';
-import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import * as XLSX from 'xlsx';
+import { ChartConfig, ChartContainer } from "@/components/ui/chart"; // Added ChartConfig
 
 // Sample district data - unchanged from original file
 const districtOverview = {
@@ -586,212 +580,353 @@ export const NITIAayogView = () => {
  */
 export const DistrictView = () => {
   const dashboardRef = useRef(null);
-  const handlePrint = useReactToPrint({
-    content: () => dashboardRef.current,
-    documentTitle: `${districtOverview.name} District Dashboard Report`,
-    onBeforeGetContent: () => {
-      // Add any preparation steps before printing
-      console.log('Preparing to print dashboard');
-      return Promise.resolve();
-    },
-    onAfterPrint: () => console.log('Dashboard printed successfully')
-  });
+  const [activeTab, setActiveTab] = useState('overview');
+  const [selectedMandal, setSelectedMandal] = useState('all');
+  const [selectedPanchayat, setSelectedPanchayat] = useState('all');
+
+  const overviewRef = useRef<HTMLDivElement>(null);
+  const projectsRef = useRef<HTMLDivElement>(null);
+  const financialsRef = useRef<HTMLDivElement>(null);
+  const demographicsRef = useRef<HTMLDivElement>(null);
+  const sectorsRef = useRef<HTMLDivElement>(null);
+
+  const getCurrentRef = () => {
+    switch (activeTab) {
+      case 'overview': return overviewRef;
+      case 'projects': return projectsRef;
+      case 'financials': return financialsRef;
+      case 'demographics': return demographicsRef;
+      case 'sectors': return sectorsRef;
+      default: return overviewRef;
+    }
+  };
   
-  return (
-    <div className="space-y-6" ref={dashboardRef}>
-      {/* Header with Print Button */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">District View</h1>
-        <Button onClick={handlePrint} className="bg-blue-600 hover:bg-blue-700">
-          <Printer className="h-4 w-4 mr-2" /> Print Report
-        </Button>
-      </div>
-      
-      {/* District Overview */}
-      <div className="grid md:grid-cols-3 gap-6">
-        <ExportableCard title="District Profile">
-          <CardHeader className="pb-2">
-            <CardTitle>District Profile</CardTitle>
-            <CardDescription>Key metrics for {districtOverview.name}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Population</span>
-                <span className="font-medium">{districtOverview.population}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Area</span>
-                <span className="font-medium">{districtOverview.area}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Literacy Rate</span>
-                <span className="font-medium">{districtOverview.literacy}</span>
-              </div>
-            </div>
-          </CardContent>
-        </ExportableCard>
-        
-        <ExportableCard title="Budget Utilization">
-          <CardHeader className="pb-2">
-            <CardTitle>Budget Utilization</CardTitle>
-            <CardDescription>Current fiscal year</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center h-[calc(100%-80px)]">
-            <div className="relative h-36 w-36">
-              <div className="absolute inset-0 flex items-center justify-center flex-col">
-                <span className="text-3xl font-bold">{districtOverview.budgetUtilization}%</span>
-                <span className="text-sm text-gray-500">Utilized</span>
-              </div>
-              <svg className="w-full h-full" viewBox="0 0 100 100">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="none"
-                  stroke="#e6e6e6"
-                  strokeWidth="10"
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="none"
-                  stroke="#3b82f6"
-                  strokeWidth="10"
-                  strokeDasharray={`${districtOverview.budgetUtilization * 2.51} 251`}
-                  strokeLinecap="round"
-                  transform="rotate(-90 50 50)"
-                />
-              </svg>
-            </div>
-          </CardContent>
-        </ExportableCard>
-        
-        <ExportableCard title="Impact Score">
-          <CardHeader className="pb-2">
-            <CardTitle>Impact Score</CardTitle>
-            <CardDescription>Overall development impact</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center h-[calc(100%-80px)]">
-            <div className="w-full mt-2">
-              <div className="flex justify-between mb-2">
-                <span className="text-sm text-gray-500">Score</span>
-                <span className="text-sm font-medium">{districtOverview.impactScore}/100</span>
-              </div>
-              <Progress value={districtOverview.impactScore} className="h-3" />
-              <div className="flex justify-between text-xs text-gray-500 mt-2">
-                <span>Needs Improvement</span>
-                <span>Average</span>
-                <span>Excellent</span>
-              </div>
-            </div>
-          </CardContent>
-        </ExportableCard>
-      </div>
-      
-      {/* Key Indicators */}
-      <ExportableCard title="Key District Indicators">
-        <CardHeader>
-          <CardTitle>Key District Indicators</CardTitle>
-          <CardDescription>Development metrics across sectors</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-5 gap-4">
-            {keyIndicators.map((indicator) => (
-              <div key={indicator.name} className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-500">{indicator.name}</span>
-                  <span className="text-sm font-medium">{indicator.count}</span>
-                </div>
-                <Progress value={indicator.progress} className="h-2" />
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </ExportableCard>
-      
-      {/* Department Performance */}
+  const handlePrint = useReactToPrint({
+    content: () => getCurrentRef().current,
+    documentTitle: `DistrictView-${districtData.name}-${activeTab}`,
+    pageStyle: `
+      @media print {
+        body { padding: 20px; font-family: Arial, sans-serif; }
+        .no-print { display: none; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        h1, h2, h3 { color: #333; }
+        .print-container { padding: 10mm; }
+      }
+    `,
+  });
+
+  const exportToPDF = async () => {
+    const currentRef = getCurrentRef();
+    if (currentRef.current) {
+      const canvas = await html2canvas(currentRef.current, { scale: 2, useCORS: true, allowTaint: true });
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l', 'mm', 'a4'); // landscape
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 10;
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save(`DistrictView-${districtData.name}-${activeTab}.pdf`);
+    }
+  };
+  
+  const exportToExcel = () => {
+    // This is a simplified example. You'd likely want to export specific table data
+    // based on the active tab or a more complex data structure.
+    let dataToExport: any[][] = [];
+    let sheetName = "Sheet1";
+
+    if (activeTab === 'overview') {
+        dataToExport = [
+            ["District Overview"],
+            ["Name", districtData.name],
+            ["Population", districtData.population],
+            ["Area", districtData.area],
+            ["Literacy Rate", districtData.literacyRate],
+            [],
+            ["KPIs"],
+            ["Indicator", "Value", "Target"],
+            ...kpiData.map(kpi => [kpi.name, kpi.value, kpi.target])
+        ];
+        sheetName = "Overview";
+    } else if (activeTab === 'projects') {
+         dataToExport = [
+            ["Project Status"],
+            ["Status", "Count"],
+            ...projectStatusData.map(p => [p.name, p.value])
+         ];
+         sheetName = "Projects";
+    }
+    // Add more conditions for other tabs if needed
+
+    if(dataToExport.length === 0) {
+        alert("No data to export for the current view or export not implemented for this tab.");
+        return;
+    }
+
+    const ws = XLSX.utils.aoa_to_sheet(dataToExport);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+    XLSX.writeFile(wb, `DistrictView-${districtData.name}-${activeTab}.xlsx`);
+  };
+
+  const renderOverview = () => (
+    <div ref={overviewRef} className="print-container space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Department Performance</CardTitle>
-          <CardDescription>Budget allocation vs utilization by department</CardDescription>
+          <CardTitle className="text-2xl">District at a Glance: {districtData.name}</CardTitle>
+          <CardDescription>Key statistics and overall performance summary.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <ExportableTable data={departmentPerformance} title="Department Performance Table">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Department</TableHead>
-                    <TableHead className="text-right">Budget (Cr)</TableHead>
-                    <TableHead className="text-right">Spent (Cr)</TableHead>
-                    <TableHead className="text-right">Progress</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {departmentPerformance.map((dept) => (
-                    <TableRow key={dept.name}>
-                      <TableCell className="font-medium">{dept.name}</TableCell>
-                      <TableCell className="text-right">₹{dept.budget}</TableCell>
-                      <TableCell className="text-right">₹{dept.spent}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end">
-                          <span className="mr-2 text-sm">{dept.progress}%</span>
-                          <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div 
-                              className="h-full bg-gov-blue" 
-                              style={{ width: `${dept.progress}%` }}
-                            />
-                          </div>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ExportableTable>
-            
-            <ExportableChart title="Monthly Budget Performance">
-              <ChartContainer 
-                config={{
-                  budget: {
-                    label: "Budget",
-                    theme: {
-                      light: "#3b82f6",
-                      dark: "#60a5fa",
-                    },
-                  },
-                  actual: {
-                    label: "Actual",
-                    theme: {
-                      light: "#10b981",
-                      dark: "#34d399",
-                    },
-                  },
-                }}
-              >
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={monthlyData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip content={<ChartTooltipContent />} />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="budget"
-                      stroke="#3b82f6"
-                      activeDot={{ r: 8 }}
-                    />
-                    <Line type="monotone" dataKey="actual" stroke="#10b981" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </ChartContainer>
-            </ExportableChart>
-          </div>
+        <CardContent className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* ... keep existing code (overview stat cards) ... */}
+          <Card className="bg-blue-50">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-700">Population</CardTitle>
+              <Users className="h-5 w-5 text-blue-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-800">{districtData.population.toLocaleString()}</div>
+              <p className="text-xs text-blue-700">Total inhabitants</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-green-50">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-green-700">Area</CardTitle>
+              <MapPin className="h-5 w-5 text-green-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-800">{districtData.area}</div>
+              <p className="text-xs text-green-700">Geographical coverage</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-yellow-50">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-yellow-700">Literacy Rate</CardTitle>
+              <BookOpen className="h-5 w-5 text-yellow-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-yellow-800">{districtData.literacyRate}%</div>
+              <p className="text-xs text-yellow-700">Average literacy</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-purple-50">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-purple-700">Impact Score</CardTitle>
+              <TrendingUp className="h-5 w-5 text-purple-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-purple-800">{districtData.overallImpactScore}/10</div>
+              <p className="text-xs text-purple-700">Overall development impact</p>
+            </CardContent>
+          </Card>
         </CardContent>
       </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Key Performance Indicators (KPIs)</CardTitle>
+          <CardDescription>Tracking progress towards district goals.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {kpiData.map((kpi) => (
+            <Card key={kpi.name} className="flex flex-col items-center justify-center p-4 text-center">
+              <div className="mb-2">{kpi.icon}</div>
+              <p className="text-sm font-medium">{kpi.name}</p>
+              <p className="text-2xl font-bold my-1">{kpi.value}%</p>
+              <Progress value={kpi.value} className="w-full h-2 my-1" />
+              <p className="text-xs text-muted-foreground">Target: {kpi.target}%</p>
+            </Card>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  );
+  
+  const renderProjects = () => (
+    <div ref={projectsRef} className="print-container space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Project Status Overview</CardTitle>
+          <CardDescription>Distribution of projects by their current status.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie data={projectStatusData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
+                {projectStatusData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.fill} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Detailed Project List (Sample)</CardTitle>
+           <CardDescription>A table showing more project details would go here.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <p className="text-muted-foreground">Detailed project table to be implemented.</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const renderFinancials = () => (
+    <div ref={financialsRef} className="print-container space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Financial Summary</CardTitle>
+          <CardDescription>Monthly budget allocation vs. expenditure (in Lakhs).</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <ChartContainer config={defaultChartConfig} className="min-h-[200px] w-full">
+              <LineChart data={financialSummaryData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="allocated" stroke={defaultChartConfig.allocated.color} />
+                <Line type="monotone" dataKey="spent" stroke={defaultChartConfig.spent.color} />
+              </LineChart>
+            </ChartContainer>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+            <CardTitle>Budget Utilization Rate</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center">
+            <div className="text-4xl font-bold text-primary">{districtData.budgetUtilization}%</div>
+            <Progress value={districtData.budgetUtilization} className="w-3/4 mt-4 h-3" />
+            <p className="text-sm text-muted-foreground mt-2">Overall budget spent against allocation.</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const renderDemographics = () => (
+    <div ref={demographicsRef} className="print-container space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Demographic Distribution</CardTitle>
+          <CardDescription>Population breakdown by various groups.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+             <ChartContainer config={defaultChartConfig} className="min-h-[200px] w-full">
+                <BarChart data={demographicData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" />
+                  <YAxis dataKey="group" type="category" width={80} />
+                  <Tooltip formatter={(value: number) => value.toLocaleString()} />
+                  <Bar dataKey="value" fill="hsl(var(--chart-1))" radius={[0, 4, 4, 0]} />
+                </BarChart>
+            </ChartContainer>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const renderSectors = () => (
+    <div ref={sectorsRef} className="print-container space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Sectoral Performance Scores</CardTitle>
+          <CardDescription>Performance scores for key development sectors (out of 10).</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <ChartContainer config={defaultChartConfig} className="min-h-[200px] w-full">
+                <BarChart data={sectoralPerformanceData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="sector" />
+                    <YAxis domain={[0, 10]} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="score" fill="hsl(var(--chart-2))" radius={[4, 4, 0, 0]} />
+                </BarChart>
+            </ChartContainer>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: <Info size={18}/>, content: renderOverview },
+    { id: 'projects', label: 'Projects', icon: <Briefcase size={18}/>, content: renderProjects },
+    { id: 'financials', label: 'Financials', icon: <DollarSign size={18}/>, content: renderFinancials },
+    { id: 'demographics', label: 'Demographics', icon: <DemographicsIcon size={18}/>, content: renderDemographics },
+    { id: 'sectors', label: 'Sectors', icon: <BarChart2 size={18}/>, content: renderSectors },
+  ];
+
+  return (
+    <div className="container mx-auto p-4 space-y-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 no-print">
+        <div>
+          <h1 className="text-3xl font-bold text-primary">District Comprehensive View</h1>
+          <p className="text-muted-foreground">Insights and performance metrics for {districtData.name}.</p>
+        </div>
+        <div className="flex items-center gap-2">
+            <Button variant="outline" onClick={handlePrint}><Printer className="mr-2 h-4 w-4" /> Print View</Button>
+            <Button variant="outline" onClick={exportToPDF}><Download className="mr-2 h-4 w-4" /> Export PDF</Button>
+            <Button variant="outline" onClick={exportToExcel}><Download className="mr-2 h-4 w-4" /> Export Excel</Button>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 no-print">
+        <div className="flex flex-wrap gap-2 border-b border-gray-200">
+            {tabs.map(tab => (
+            <Button
+                key={tab.id}
+                variant={activeTab === tab.id ? "default" : "ghost"}
+                onClick={() => setActiveTab(tab.id)}
+                className={`pb-2 ${activeTab === tab.id ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}
+            >
+                {tab.icon} <span className="ml-2">{tab.label}</span>
+            </Button>
+            ))}
+        </div>
+        <div className="flex items-center gap-2">
+            <Select value={selectedMandal} onValueChange={setSelectedMandal}>
+            <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select Mandal" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem value="all">All Mandals</SelectItem>
+                <SelectItem value="asifabad">Asifabad</SelectItem>
+                {/* Add other mandals */}
+            </SelectContent>
+            </Select>
+            <Select value={selectedPanchayat} onValueChange={setSelectedPanchayat}>
+            <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select Panchayat" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem value="all">All Panchayats</SelectItem>
+                {/* Add panchayats based on selected mandal */}
+            </SelectContent>
+            </Select>
+        </div>
+      </div>
+
+      {/* Content based on active tab */}
+      <div className="mt-6">
+        {tabs.find(tab => tab.id === activeTab)?.content()}
+      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { 
@@ -19,7 +20,7 @@ import {
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const location = useLocation();
-  const [expandedItems, setExpandedItems] = useState({
+  const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({
     '/dashboard/district': false,
     '/dashboard/projects': false,
     '/dashboard/monitoring': false
@@ -69,7 +70,7 @@ const Dashboard = () => {
   ];
 
   // Toggle expand/collapse for parent items
-  const toggleExpand = (path, e) => {
+  const toggleExpand = (path: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     e.stopPropagation();
     setExpandedItems(prev => ({
@@ -79,7 +80,7 @@ const Dashboard = () => {
   };
 
   // Check if a route is active (either exact match or a child route)
-  const isRouteActive = (path) => {
+  const isRouteActive = (path: string) => {
     // Check if it's a direct match
     if (location.pathname === path) {
       return true;
@@ -95,10 +96,10 @@ const Dashboard = () => {
   };
 
   // Render menu items recursively
-  const renderNavItem = (item, depth = 0) => {
+  const renderNavItem = (item: any, depth = 0) => {
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedItems[item.path];
-    const isActive = isRouteActive(item.path);
+    // const isActive = isRouteActive(item.path); // isActive was defined but not used
     
     return (
       <li key={item.path}>
@@ -106,14 +107,17 @@ const Dashboard = () => {
           to={item.path}
           className={`flex items-center px-4 py-3 rounded-lg transition-colors ${
             location.pathname === item.path
-              ? 'bg-gov-blue text-white'
+              ? 'bg-primary text-primary-foreground' // Updated to use primary theme colors
               : 'text-gray-700 hover:bg-gray-200'
           } ${depth > 0 ? 'ml-4' : ''}`}
           onClick={(e) => {
             if (hasChildren) {
-              // Only prevent default if we're toggling
-              if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
-                e.preventDefault();
+              // Only prevent default if we're toggling via the button
+              const target = e.target as HTMLElement;
+              if (target.tagName === 'BUTTON' || target.closest('button')) {
+                // This click is on the button, allow toggleExpand to handle it
+              } else {
+                // Click is on the link itself, allow navigation
               }
             }
           }}
@@ -124,7 +128,7 @@ const Dashboard = () => {
             <button
               className={`p-1 rounded-full ${
                 location.pathname === item.path
-                  ? 'text-white hover:bg-blue-700'
+                  ? 'text-white hover:bg-blue-700' // Consider primary theme colors
                   : 'hover:bg-gray-300'
               }`}
               onClick={(e) => toggleExpand(item.path, e)}
@@ -136,7 +140,7 @@ const Dashboard = () => {
         
         {hasChildren && isExpanded && (
           <ul className="mt-1 mb-2">
-            {item.children.map(child => renderNavItem(child, depth + 1))}
+            {item.children.map((child: any) => renderNavItem(child, depth + 1))}
           </ul>
         )}
       </li>
@@ -154,13 +158,13 @@ const Dashboard = () => {
           >
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <Link to="/" className="text-gov-blue font-heading font-bold text-xl">NitiSetu Asifabad</Link>
+          <Link to="/" className="text-primary font-heading font-bold text-xl">NitiSetu Asifabad</Link> {/* Updated to use primary color */}
         </div>
         <div className="flex items-center space-x-4">
           <select className="bg-gray-100 border border-gray-300 rounded px-3 py-1 text-sm">
             <option>Kumaram Bheem Asifabad District</option>
           </select>
-          <div className="h-8 w-8 rounded-full bg-gov-blue text-white flex items-center justify-center">
+          <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center"> {/* Updated to use primary theme colors */}
             <span className="text-sm font-medium">AD</span>
           </div>
         </div>

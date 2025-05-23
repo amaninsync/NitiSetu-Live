@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { ChartContainer } from '@/components/ui/chart';
+import { ChartContainer, ChartConfig } from '@/components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, Tooltip, Legend } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { Download, Printer } from "lucide-react";
@@ -84,25 +84,39 @@ const monthlyData = [
   { name: 'Dec', budget: 520, actual: 490 },
 ];
 
-// Define chart configurations
-const deltaRankingChartConfig = {
-  tooltip: {
-    formatter: (value) => `${value} ranks`
+// Define a default chart config for ChartContainer if needed, or pass specific configs
+const defaultBudgetChartConfig: ChartConfig = {
+  allocated: {
+    label: "Allocated Budget",
+    color: "hsl(var(--chart-1))",
   },
-  grid: {
-    top: 30,
-    bottom: 30,
-    left: 20,
-    right: 20
+  utilized: {
+    label: "Utilized Budget",
+    color: "hsl(var(--chart-2))",
   },
 };
+
+const defaultPerformanceChartConfig: ChartConfig = {
+  score: {
+    label: "Score",
+    color: "hsl(var(--chart-1))",
+  },
+};
+
+const defaultSectoralChartConfig: ChartConfig = {
+  health: { label: "Health & Nutrition", color: "hsl(var(--chart-1))" },
+  education: { label: "Education", color: "hsl(var(--chart-2))" },
+  agriculture: { label: "Agriculture & Water", color: "hsl(var(--chart-3))" },
+  infrastructure: { label: "Infrastructure", color: "hsl(var(--chart-4))" },
+};
+
 
 /**
  * Utility functions for exporting components
  */
 const exportUtils = {
   // Export component as image (PNG or JPG)
-  exportAsImage: async (elementRef, fileName, format = 'png') => {
+  exportAsImage: async (elementRef: React.RefObject<HTMLElement>, fileName: string, format = 'png') => {
     if (!elementRef.current) return;
     try {
       const canvas = await html2canvas(elementRef.current, {
@@ -121,7 +135,7 @@ const exportUtils = {
     }
   },
   // Export component as PDF
-  exportAsPDF: async (elementRef, fileName) => {
+  exportAsPDF: async (elementRef: React.RefObject<HTMLElement>, fileName: string) => {
     if (!elementRef.current) return;
     try {
       const canvas = await html2canvas(elementRef.current, {
@@ -145,7 +159,7 @@ const exportUtils = {
     }
   },
   // Export table data as Excel/CSV
-  exportTableData: (data, fileName, format = 'xlsx') => {
+  exportTableData: (data: any[], fileName: string, format = 'xlsx') => {
     try {
       const worksheet = XLSX.utils.json_to_sheet(data);
       const workbook = XLSX.utils.book_new();
@@ -153,7 +167,7 @@ const exportUtils = {
       if (format.toLowerCase() === 'xlsx') {
         XLSX.writeFile(workbook, `${fileName}.xlsx`);
       } else {
-        XLSX.writeFile(workbook, `${fileName}.csv`);
+        XLSX.writeFile(workbook, `${fileName}.csv`); // Note: This will still produce an xlsx file named .csv
       }
     } catch (error) {
       console.error('Error exporting table data:', error);
@@ -164,10 +178,10 @@ const exportUtils = {
 /**
  * Exportable Card Component
  */
-const ExportableCard = ({ children, title, className = "", exportOptions = true }) => {
-  const cardRef = useRef(null);
+const ExportableCard = ({ children, title, className = "", exportOptions = true }: { children: React.ReactNode, title: string, className?: string, exportOptions?: boolean }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
   
-  const handleExport = (format) => {
+  const handleExport = (format: 'png' | 'jpg' | 'pdf') => {
     const sanitizedTitle = title.replace(/\s+/g, '-').toLowerCase();
     switch (format) {
       case 'png':
@@ -185,7 +199,7 @@ const ExportableCard = ({ children, title, className = "", exportOptions = true 
   return (
     <Card className={`relative ${className}`} ref={cardRef}>
       {exportOptions && (
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-4 right-4 z-10 no-print">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -215,26 +229,25 @@ const ExportableCard = ({ children, title, className = "", exportOptions = true 
  * District Overview Component
  */
 const DistrictOverviewSection = () => {
-  const districtRef = useRef(null);
+  const districtRef = useRef<HTMLDivElement>(null);
   
   const handlePrint = useReactToPrint({
+    content: () => districtRef.current,
     documentTitle: "District-Overview",
     pageStyle: `
       @media print {
         body { padding: 20mm; }
+        .no-print { display: none; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 2mm; text-align: left; border: 0.5pt solid #ddd; }
         h1, h2 { margin-bottom: 4mm; }
       }
     `,
-    onPrintError: (error) => console.error('Error printing:', error),
-    removeAfterPrint: true,
+    onPrintError: (error: any) => console.error('Error printing:', error),
   });
 
   const printDocument = () => {
-    if (districtRef.current) {
-      handlePrint(null, () => districtRef.current);
-    }
+    handlePrint();
   };
 
   // ... keep existing code (deltaRankingData)
@@ -253,7 +266,7 @@ const DistrictOverviewSection = () => {
 
   return (
     <div ref={districtRef}>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 no-print">
         <h1 className="text-2xl font-bold">District Dashboard</h1>
         <Button variant="outline" size="sm" onClick={printDocument}>
           <Printer className="mr-2 h-4 w-4" /> Print Overview
@@ -261,7 +274,33 @@ const DistrictOverviewSection = () => {
       </div>
       
       <div className="grid md:grid-cols-3 gap-6 mb-6">
-        {/* ... keep existing code (District stat cards) */}
+        {/* ... keep existing code (District stat cards for Bangalore Urban from districtOverview) */}
+        <Card>
+          <CardHeader><CardTitle>Population</CardTitle></CardHeader>
+          <CardContent><p className="text-2xl font-bold">{districtOverview.population}</p></CardContent>
+        </Card>
+        <Card>
+          <CardHeader><CardTitle>Area</CardTitle></CardHeader>
+          <CardContent><p className="text-2xl font-bold">{districtOverview.area}</p></CardContent>
+        </Card>
+        <Card>
+          <CardHeader><CardTitle>Literacy</CardTitle></CardHeader>
+          <CardContent><p className="text-2xl font-bold">{districtOverview.literacy}</p></CardContent>
+        </Card>
+        <Card>
+          <CardHeader><CardTitle>Budget Utilization</CardTitle></CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">{districtOverview.budgetUtilization}%</p>
+            <Progress value={districtOverview.budgetUtilization} className="mt-2" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader><CardTitle>Impact Score</CardTitle></CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">{districtOverview.impactScore}/100</p>
+            <Progress value={districtOverview.impactScore} className="mt-2" />
+          </CardContent>
+        </Card>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -273,22 +312,25 @@ const DistrictOverviewSection = () => {
           <CardContent>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={[
-                    { name: 'Health', score: 78 },
-                    { name: 'Education', score: 82 },
-                    { name: 'Agriculture', score: 65 },
-                    { name: 'Infrastructure', score: 71 },
-                    { name: 'Social Welfare', score: 79 }
-                  ]}
-                  margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis domain={[0, 100]} />
-                  <Tooltip formatter={(value) => `${value}/100`} />
-                  <Bar dataKey="score" fill="#4f46e5" radius={[4, 4, 0, 0]} />
-                </BarChart>
+                {/* ChartContainer's config is for its own theming/labeling, not direct Recharts config */}
+                <ChartContainer config={defaultPerformanceChartConfig} className="min-h-[200px] w-full">
+                  <BarChart
+                    data={[
+                      { name: 'Health', score: 78 },
+                      { name: 'Education', score: 82 },
+                      { name: 'Agriculture', score: 65 },
+                      { name: 'Infrastructure', score: 71 },
+                      { name: 'Social Welfare', score: 79 }
+                    ]}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis domain={[0, 100]} />
+                    <Tooltip formatter={(value: number) => `${value}/100`} />
+                    <Bar dataKey="score" fill="hsl(var(--chart-1))" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ChartContainer>
               </ResponsiveContainer>
             </div>
           </CardContent>
@@ -302,7 +344,8 @@ const DistrictOverviewSection = () => {
           <CardContent>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <ChartContainer config={deltaRankingChartConfig}>
+                 {/* Removed problematic deltaRankingChartConfig from ChartContainer */}
+                <ChartContainer config={defaultBudgetChartConfig} className="min-h-[200px] w-full">
                   <LineChart
                     data={[
                       { month: 'Jan', allocated: 450, utilized: 380 },
@@ -317,10 +360,10 @@ const DistrictOverviewSection = () => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
                     <YAxis />
-                    <Tooltip formatter={(value) => `₹${value}L`} />
+                    <Tooltip formatter={(value: number) => `₹${value}L`} />
                     <Legend />
-                    <Line type="monotone" dataKey="allocated" stroke="#8884d8" name="Allocated" />
-                    <Line type="monotone" dataKey="utilized" stroke="#82ca9d" name="Utilized" />
+                    <Line type="monotone" dataKey="allocated" stroke="hsl(var(--chart-1))" name="Allocated" />
+                    <Line type="monotone" dataKey="utilized" stroke="hsl(var(--chart-2))" name="Utilized" />
                   </LineChart>
                 </ChartContainer>
               </ResponsiveContainer>
@@ -336,26 +379,25 @@ const DistrictOverviewSection = () => {
  * NITI Aayog Aspirational District Component
  */
 const NitiAayogSection = () => {
-  const nitiRef = useRef(null);
+  const nitiRef = useRef<HTMLDivElement>(null);
   
   const handlePrint = useReactToPrint({
+    content: () => nitiRef.current,
     documentTitle: "Aspirational-District-Report",
     pageStyle: `
       @media print {
         body { padding: 20mm; }
+        .no-print { display: none; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 2mm; text-align: left; border: 0.5pt solid #ddd; }
         h1, h2 { margin-bottom: 4mm; }
       }
     `,
-    onPrintError: (error) => console.error('Error printing:', error),
-    removeAfterPrint: true,
+    onPrintError: (error: any) => console.error('Error printing:', error),
   });
 
   const printDocument = () => {
-    if (nitiRef.current) {
-      handlePrint(null, () => nitiRef.current);
-    }
+    handlePrint();
   };
 
   // ... keep existing code (aspirationalIndicators)
@@ -364,7 +406,7 @@ const NitiAayogSection = () => {
 
   return (
     <div ref={nitiRef}>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 no-print">
         <h1 className="text-2xl font-bold">Aspirational District View</h1>
         <Button variant="outline" size="sm" onClick={printDocument}>
           <Printer className="mr-2 h-4 w-4" /> Print Report
@@ -372,7 +414,37 @@ const NitiAayogSection = () => {
       </div>
       
       <div className="grid md:grid-cols-3 gap-6 mb-6">
-        {/* ... keep existing code (District cards) */}
+        {/* ... keep existing code (District cards for Asifabad from asifabadOverview) */}
+        <Card>
+            <CardHeader><CardTitle>District Name</CardTitle></CardHeader>
+            <CardContent><p className="text-2xl font-bold">{asifabadOverview.name}</p></CardContent>
+        </Card>
+        <Card>
+            <CardHeader><CardTitle>Population</CardTitle></CardHeader>
+            <CardContent><p className="text-2xl font-bold">{asifabadOverview.population}</p></CardContent>
+        </Card>
+        <Card>
+            <CardHeader><CardTitle>Area</CardTitle></CardHeader>
+            <CardContent><p className="text-2xl font-bold">{asifabadOverview.area}</p></CardContent>
+        </Card>
+        <Card>
+            <CardHeader><CardTitle>Literacy</CardTitle></CardHeader>
+            <CardContent><p className="text-2xl font-bold">{asifabadOverview.literacy}</p></CardContent>
+        </Card>
+        <Card>
+            <CardHeader><CardTitle>Budget Utilization</CardTitle></CardHeader>
+            <CardContent>
+                <p className="text-2xl font-bold">{asifabadOverview.budgetUtilization}%</p>
+                <Progress value={asifabadOverview.budgetUtilization} className="mt-2"/>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader><CardTitle>Impact Score</CardTitle></CardHeader>
+            <CardContent>
+                <p className="text-2xl font-bold">{asifabadOverview.impactScore}/100</p>
+                <Progress value={asifabadOverview.impactScore} className="mt-2"/>
+            </CardContent>
+        </Card>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -413,20 +485,22 @@ const NitiAayogSection = () => {
           <CardContent>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                  data={sectoralImprovements}
-                  margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis domain={[0, 100]} />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="health" stroke="#8884d8" name="Health & Nutrition" />
-                  <Line type="monotone" dataKey="education" stroke="#82ca9d" name="Education" />
-                  <Line type="monotone" dataKey="agriculture" stroke="#ffc658" name="Agriculture & Water" />
-                  <Line type="monotone" dataKey="infrastructure" stroke="#ff7300" name="Infrastructure" />
-                </LineChart>
+                <ChartContainer config={defaultSectoralChartConfig} className="min-h-[200px] w-full">
+                  <LineChart
+                    data={sectoralImprovements}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis domain={[0, 100]} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="health" stroke="hsl(var(--chart-1))" name="Health & Nutrition" />
+                    <Line type="monotone" dataKey="education" stroke="hsl(var(--chart-2))" name="Education" />
+                    <Line type="monotone" dataKey="agriculture" stroke="hsl(var(--chart-3))" name="Agriculture & Water" />
+                    <Line type="monotone" dataKey="infrastructure" stroke="hsl(var(--chart-4))" name="Infrastructure" />
+                  </LineChart>
+                </ChartContainer>
               </ResponsiveContainer>
             </div>
           </CardContent>
@@ -440,35 +514,30 @@ const NitiAayogSection = () => {
  * Department & Infrastructure Component
  */
 const InfrastructureSection = () => {
-  const infraRef = useRef(null);
+  const infraRef = useRef<HTMLDivElement>(null);
   
   const handlePrint = useReactToPrint({
+    content: () => infraRef.current,
     documentTitle: "Infrastructure-Report",
     pageStyle: `
       @media print {
         body { padding: 20mm; }
+        .no-print { display: none; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 2mm; text-align: left; border: 0.5pt solid #ddd; }
         h1, h2 { margin-bottom: 4mm; }
       }
     `,
-    onPrintError: (error) => console.error('Error printing:', error),
-    removeAfterPrint: true,
+    onPrintError: (error: any) => console.error('Error printing:', error),
   });
 
   const printDocument = () => {
-    if (infraRef.current) {
-      handlePrint(null, () => infraRef.current);
-    }
+    handlePrint();
   };
-
-  // ... keep existing code (keyIndicators)
-
-  // ... keep existing code (departmentPerformance)
 
   return (
     <div ref={infraRef}>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 no-print">
         <h1 className="text-2xl font-bold">District Infrastructure</h1>
         <Button variant="outline" size="sm" onClick={printDocument}>
           <Printer className="mr-2 h-4 w-4" /> Print Report
@@ -481,13 +550,13 @@ const InfrastructureSection = () => {
           <CardDescription>Critical district infrastructure metrics</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-5 gap-6">
+          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6"> {/* Adjusted grid for potentially 5 items */}
             {keyIndicators.map((indicator, index) => (
-              <div key={index} className="space-y-2">
-                <h3 className="text-lg font-medium">{indicator.name}</h3>
-                <p className="text-2xl font-bold">{indicator.count}</p>
+              <div key={index} className="space-y-2 text-center md:text-left">
+                <h3 className="text-md font-medium">{indicator.name}</h3>
+                <p className="text-xl font-bold">{indicator.count}</p>
                 <Progress value={indicator.progress} className="h-2" />
-                <p className="text-sm text-muted-foreground">{indicator.progress}% Complete</p>
+                <p className="text-xs text-muted-foreground">{indicator.progress}% Complete</p>
               </div>
             ))}
           </div>
@@ -504,8 +573,8 @@ const InfrastructureSection = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Department</TableHead>
-                <TableHead>Budget (₹L)</TableHead>
-                <TableHead>Spent (₹L)</TableHead>
+                <TableHead className="text-right">Budget (₹L)</TableHead>
+                <TableHead className="text-right">Spent (₹L)</TableHead>
                 <TableHead>Progress</TableHead>
               </TableRow>
             </TableHeader>
@@ -513,11 +582,11 @@ const InfrastructureSection = () => {
               {departmentPerformance.map((dept, index) => (
                 <TableRow key={index}>
                   <TableCell>{dept.name}</TableCell>
-                  <TableCell>{dept.budget}</TableCell>
-                  <TableCell>{dept.spent}</TableCell>
+                  <TableCell className="text-right">{dept.budget}</TableCell>
+                  <TableCell className="text-right">{dept.spent}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Progress value={dept.progress} className="w-40" />
+                      <Progress value={dept.progress} className="w-24 md:w-40" />
                       <span className="text-sm">{dept.progress}%</span>
                     </div>
                   </TableCell>
@@ -539,7 +608,7 @@ const DistrictDashboard = () => {
   
   return (
     <div className="container mx-auto p-4 space-y-6">
-      <div className="flex space-x-2 mb-6">
+      <div className="flex space-x-2 mb-6 no-print">
         <Button 
           variant={activeView === 'overview' ? 'default' : 'outline'} 
           onClick={() => setActiveView('overview')}

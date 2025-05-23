@@ -1,12 +1,16 @@
-
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState, useMemo, useRef } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChartContainer } from '@/components/ui/chart';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, Tooltip, Legend } from 'recharts';
-import { Building2, Users, Landmark, ArrowUp, ArrowDown } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
+import { Download, Filter, Search, Users, Target, CheckCircle, Activity, FileText, Users2, Building, Briefcase } from 'lucide-react';
+import { useReactToPrint } from 'react-to-print';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import * as XLSX from 'xlsx';
 
 // Sample departments data
 const departmentSummary = {
@@ -100,254 +104,381 @@ const keyPersonnel = [
   { name: "", position: "District Intermediate Education Officer", email: "dieo.asifabad@gmail.com", phone: "" },
 ];
 
-const DepartmentView = () => {
-  const [selectedDepartment, setSelectedDepartment] = useState("All Departments");
+const departmentData = {
+  name: "Department of Rural Development",
+  head: "Dr. Anya Sharma",
+  totalProjects: 45,
+  activeProjects: 32,
+  completedProjects: 13,
+  budgetAllocated: 50000000, // in currency units
+  budgetSpent: 38500000,
+  overallProgress: 77, // percentage
+};
 
-  const filteredDepartments = selectedDepartment === "All Departments" 
-    ? departments 
-    : departments.filter(dept => dept.name === selectedDepartment);
+const kpiData = [
+  { name: 'Project Completion Rate', value: 72, target: 80 },
+  { name: 'Budget Utilization', value: departmentData.budgetSpent / departmentData.budgetAllocated * 100, target: 90 },
+  { name: 'Stakeholder Satisfaction', value: 85, target: 90 },
+  { name: 'Timeline Adherence', value: 65, target: 75 },
+  { name: 'Resource Efficiency', value: 78, target: 85 },
+];
+
+const projectData = [
+  { id: 'P001', name: 'Rural Road Construction', status: 'Active', progress: 60, budget: 500000, spent: 350000, startDate: '2023-01-15', endDate: '2024-01-15', manager: 'Rohan Singh' },
+  { id: 'P002', name: 'Clean Water Initiative', status: 'Active', progress: 80, budget: 750000, spent: 600000, startDate: '2023-03-01', endDate: '2024-03-01', manager: 'Priya Kulkarni' },
+  { id: 'P003', name: 'Skill Development Program', status: 'Completed', progress: 100, budget: 400000, spent: 380000, startDate: '2022-09-01', endDate: '2023-08-30', manager: 'Amit Patel' },
+  { id: 'P004', name: 'Digital Literacy Campaign', status: 'Planned', progress: 10, budget: 300000, spent: 25000, startDate: '2024-02-01', endDate: '2024-12-31', manager: 'Sunita Reddy' },
+  { id: 'P005', name: 'Affordable Housing Scheme', status: 'Active', progress: 45, budget: 1200000, spent: 500000, startDate: '2023-06-01', endDate: '2025-06-01', manager: 'Vikram Chauhan' },
+];
+
+const financialData = [
+  { month: 'Jan', allocated: 400000, spent: 350000 },
+  { month: 'Feb', allocated: 420000, spent: 380000 },
+  { month: 'Mar', allocated: 450000, spent: 410000 },
+  { month: 'Apr', allocated: 430000, spent: 390000 },
+  { month: 'May', allocated: 460000, spent: 420000 },
+  { month: 'Jun', allocated: 480000, spent: 450000 },
+];
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+
+const activityLog = [
+  { id: 'A001', timestamp: '2024-05-22 10:00 AM', user: 'Rohan Singh', action: 'Updated progress for Rural Road Construction to 60%.' },
+  { id: 'A002', timestamp: '2024-05-21 03:30 PM', user: 'Priya Kulkarni', action: 'Submitted Q2 report for Clean Water Initiative.' },
+  { id: 'A003', timestamp: '2024-05-21 09:15 AM', user: 'Admin', action: 'New project "Sanitation Drive" added.' },
+  { id: 'A004', timestamp: '2024-05-20 05:00 PM', user: 'Sunita Reddy', action: 'Allocated resources for Digital Literacy Campaign.' },
+];
+
+const teamMembers = [
+  { id: 'T001', name: 'Rohan Singh', position: 'Project Manager', email: 'rohan.singh@example.gov', phone: '+91-9876543210' },
+  { id: 'T002', name: 'Priya Kulkarni', position: 'Project Manager', email: 'priya.kulkarni@example.gov', phone: '+91-9876543211' },
+  { id: 'T003', name: 'Amit Patel', position: 'Senior Analyst', email: 'amit.patel@example.gov', phone: '+91-9876543212' },
+  { id: 'T004', name: 'Sunita Reddy', position: 'Coordinator', email: 'sunita.reddy@example.gov', phone: '+91-9876543213' },
+  { id: 'T005', name: 'Vikram Chauhan', position: 'Field Officer', email: 'vikram.chauhan@example.gov', phone: '+91-9876543214' },
+];
+
+const DepartmentView = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [sortConfig, setSortConfig] = useState<{ key: keyof typeof projectData[0] | null; direction: 'ascending' | 'descending' }>({ key: null, direction: 'ascending' });
+
+  const componentRef = useRef<HTMLDivElement>(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: `Department-Report-${departmentData.name}`,
+    pageStyle: `
+      @media print {
+        body { padding: 20px; font-family: Arial, sans-serif; }
+        .no-print { display: none; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        h1, h2, h3 { color: #333; }
+      }
+    `,
+  });
+
+  const exportToPDF = async () => {
+    if (componentRef.current) {
+      const canvas = await html2canvas(componentRef.current, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 10; 
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save(`Department-Report-${departmentData.name}.pdf`);
+    }
+  };
+
+  const exportToExcel = () => {
+    const ws_data = [
+      ["Department Overview"],
+      ["Name", departmentData.name],
+      ["Head", departmentData.head],
+      ["Total Projects", departmentData.totalProjects],
+      ["Active Projects", departmentData.activeProjects],
+      ["Completed Projects", departmentData.completedProjects],
+      ["Budget Allocated", departmentData.budgetAllocated],
+      ["Budget Spent", departmentData.budgetSpent],
+      ["Overall Progress", `${departmentData.overallProgress}%`],
+      [],
+      ["Key Performance Indicators"],
+      ["Indicator", "Value", "Target"],
+      ...kpiData.map(kpi => [kpi.name, kpi.value, kpi.target]),
+      [],
+      ["Projects"],
+      ["ID", "Name", "Status", "Progress", "Budget", "Spent", "Start Date", "End Date", "Manager"],
+      ...sortedFilteredData.map(p => [p.id, p.name, p.status, p.progress, p.budget, p.spent, p.startDate, p.endDate, p.manager]),
+    ];
+    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Department Report");
+    XLSX.writeFile(wb, `Department-Report-${departmentData.name}.xlsx`);
+  };
+
+  const filteredProjects = useMemo(() => {
+    return projectData.filter(project => {
+      const matchesSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            project.manager.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus = statusFilter === 'all' || project.status.toLowerCase() === statusFilter;
+      return matchesSearch && matchesStatus;
+    });
+  }, [searchTerm, statusFilter]);
+
+  const sortedFilteredData = useMemo(() => {
+    let sortableItems = [...filteredProjects];
+    if (sortConfig.key !== null) {
+      sortableItems.sort((a, b) => {
+        // Ensure a[sortConfig.key] and b[sortConfig.key] are not undefined
+        const valA = a[sortConfig.key!]; // Add non-null assertion
+        const valB = b[sortConfig.key!]; // Add non-null assertion
+
+        if (valA === undefined || valB === undefined) return 0;
+
+
+        if (typeof valA === 'number' && typeof valB === 'number') {
+          return sortConfig.direction === 'ascending' ? valA - valB : valB - valA;
+        }
+        if (typeof valA === 'string' && typeof valB === 'string') {
+          return sortConfig.direction === 'ascending' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [filteredProjects, sortConfig]);
+  
+  const requestSort = (key: keyof typeof projectData[0]) => {
+    let direction: 'ascending' | 'descending' = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Departments Dashboard</h1>
-        <select 
-          className="bg-white border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gov-blue focus:border-transparent"
-          value={selectedDepartment}
-          onChange={(e) => setSelectedDepartment(e.target.value)}
-        >
-          <option>All Departments</option>
-          {departments.map(dept => (
-            <option key={dept.name}>{dept.name}</option>
-          ))}
-        </select>
+    <div className="container mx-auto p-4 space-y-6" ref={componentRef}>
+      <div className="flex justify-between items-center no-print">
+        <h1 className="text-3xl font-bold text-primary">Department Dashboard: {departmentData.name}</h1>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={handlePrint}><FileText className="mr-2 h-4 w-4" /> Print</Button>
+          <Button variant="outline" onClick={exportToPDF}><Download className="mr-2 h-4 w-4" /> Export PDF</Button>
+          <Button variant="outline" onClick={exportToExcel}><Download className="mr-2 h-4 w-4" /> Export Excel</Button>
+        </div>
       </div>
-      
-      {/* Department Summary */}
-      <div className="grid md:grid-cols-4 gap-6">
+
+      {/* Overview Section */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* ... keep existing code (overview cards: Total Projects, Active Projects, Budget Utilization, Overall Progress) */}
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
-                <Building2 size={24} className="text-indigo-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Total Departments</p>
-                <p className="text-2xl font-bold">{departmentSummary.total}</p>
-              </div>
-            </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
+            <Briefcase className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{departmentData.totalProjects}</div>
+            <p className="text-xs text-muted-foreground">Managed by the department</p>
           </CardContent>
         </Card>
-        
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                <Users size={24} className="text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Total Employees</p>
-                <p className="text-2xl font-bold">{departmentSummary.employees}</p>
-              </div>
-            </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Projects</CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{departmentData.activeProjects}</div>
+            <p className="text-xs text-muted-foreground">Currently in progress</p>
           </CardContent>
         </Card>
-        
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
-                <Landmark size={24} className="text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Total Budget</p>
-                <p className="text-2xl font-bold">{departmentSummary.totalBudget}</p>
-              </div>
-            </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Budget Utilization</CardTitle>
+            <Target className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{(departmentData.budgetSpent / departmentData.budgetAllocated * 100).toFixed(1)}%</div>
+            <Progress value={departmentData.budgetSpent / departmentData.budgetAllocated * 100} className="mt-2 h-2" />
           </CardContent>
         </Card>
-        
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-purple-600">
-                  <path d="M12 2L21 7V17L12 22L3 17V7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M12 22V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M12 12L21 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M12 12L3 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Budget Utilized</p>
-                <p className="text-2xl font-bold">{departmentSummary.utilized}</p>
-              </div>
-            </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Overall Progress</CardTitle>
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{departmentData.overallProgress}%</div>
+             <Progress value={departmentData.overallProgress} className="mt-2 h-2" />
           </CardContent>
         </Card>
       </div>
+
+      {/* KPIs and Financials Section */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Key Performance Indicators (KPIs)</CardTitle>
+            <CardDescription>Department performance against targets</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {kpiData.map((kpi, index) => (
+              <div key={index}>
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-sm font-medium">{kpi.name}</span>
+                  <span className={`text-sm font-semibold ${kpi.value >= kpi.target ? 'text-green-600' : 'text-red-600'}`}>
+                    {kpi.value.toFixed(1)}% (Target: {kpi.target}%)
+                  </span>
+                </div>
+                <Progress value={kpi.value} max={100} className="h-2" />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Monthly Financial Overview</CardTitle>
+            <CardDescription>Allocated vs. Spent budget over time</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={financialData} margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis tickFormatter={(value) => `₹${value/100000}L`} />
+                <Tooltip formatter={(value: number) => `₹${value.toLocaleString()}`} />
+                <Legend />
+                <Bar dataKey="allocated" fill="#8884d8" name="Allocated Budget" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="spent" fill="#82ca9d" name="Spent Budget" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
       
-      {/* Department Performance Chart */}
+      {/* Projects Table Section */}
       <Card>
         <CardHeader>
-          <CardTitle>Quarterly Performance Trend</CardTitle>
-          <CardDescription>Department performance scores over the past quarters</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer 
-            config={{
-              healthcare: {
-                label: "Healthcare",
-                theme: {
-                  light: "#3b82f6",
-                  dark: "#60a5fa",
-                },
-              },
-              education: {
-                label: "Education",
-                theme: {
-                  light: "#10b981",
-                  dark: "#34d399",
-                },
-              },
-              infrastructure: {
-                label: "Infrastructure",
-                theme: {
-                  light: "#f97316",
-                  dark: "#fb923c",
-                },
-              },
-              agriculture: {
-                label: "Agriculture",
-                theme: {
-                  light: "#a855f7",
-                  dark: "#c084fc",
-                },
-              },
-              welfare: {
-                label: "Social Welfare",
-                theme: {
-                  light: "#ec4899",
-                  dark: "#f472b6",
-                },
-              },
-            }}
-            className="h-[300px]"
-          >
-            <LineChart
-              data={quarterlyPerformance}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="quarter" />
-              <YAxis domain={[60, 100]} />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="healthcare" stroke="#3b82f6" activeDot={{ r: 8 }} />
-              <Line type="monotone" dataKey="education" stroke="#10b981" />
-              <Line type="monotone" dataKey="infrastructure" stroke="#f97316" />
-              <Line type="monotone" dataKey="agriculture" stroke="#a855f7" />
-              <Line type="monotone" dataKey="welfare" stroke="#ec4899" />
-            </LineChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
-      
-      {/* Department List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Department Details</CardTitle>
-          <CardDescription>Performance metrics for each department</CardDescription>
+          <CardTitle>Projects Overview</CardTitle>
+          <CardDescription>Detailed list of all projects managed by the department.</CardDescription>
+          <div className="flex items-center gap-4 pt-4 no-print">
+            <div className="relative flex-grow">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search projects or managers..."
+                className="pl-8 sm:w-[300px] md:w-[400px] lg:w-[500px]"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="planned">Planned</SelectItem>
+                <SelectItem value="on-hold">On Hold</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Department</TableHead>
-                <TableHead>Projects</TableHead>
-                <TableHead>Employees</TableHead>
-                <TableHead>Budget (₹ Cr)</TableHead>
-                <TableHead>Spent (₹ Cr)</TableHead>
-                <TableHead>Utilization</TableHead>
-                <TableHead>Performance</TableHead>
+                <TableHead onClick={() => requestSort('id')} className="cursor-pointer">ID</TableHead>
+                <TableHead onClick={() => requestSort('name')} className="cursor-pointer">Project Name</TableHead>
+                <TableHead onClick={() => requestSort('status')} className="cursor-pointer">Status</TableHead>
+                <TableHead onClick={() => requestSort('progress')} className="cursor-pointer">Progress</TableHead>
+                <TableHead onClick={() => requestSort('budget')} className="cursor-pointer">Budget</TableHead>
+                <TableHead onClick={() => requestSort('spent')} className="cursor-pointer">Spent</TableHead>
+                <TableHead onClick={() => requestSort('startDate')} className="cursor-pointer">Start Date</TableHead>
+                <TableHead onClick={() => requestSort('endDate')} className="cursor-pointer">End Date</TableHead>
+                <TableHead onClick={() => requestSort('manager')} className="cursor-pointer">Manager</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredDepartments.map((dept) => (
-                <TableRow key={dept.name}>
-                  <TableCell className="font-medium">{dept.name}</TableCell>
-                  <TableCell>{dept.projects}</TableCell>
-                  <TableCell>{dept.employees}</TableCell>
-                  <TableCell>{dept.budget}</TableCell>
-                  <TableCell>{dept.spent}</TableCell>
+              {sortedFilteredData.map((project) => (
+                <TableRow key={project.id}>
+                  <TableCell>{project.id}</TableCell>
+                  <TableCell className="font-medium">{project.name}</TableCell>
+                  <TableCell>
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      project.status === 'Active' ? 'bg-blue-100 text-blue-700' :
+                      project.status === 'Completed' ? 'bg-green-100 text-green-700' :
+                      project.status === 'Planned' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {project.status}
+                    </span>
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Progress value={(dept.spent/dept.budget)*100} className="h-2 w-20" />
-                      <span className="text-sm">{Math.round((dept.spent/dept.budget)*100)}%</span>
+                      <Progress value={project.progress} className="w-20 h-2" />
+                      <span>{project.progress}%</span>
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <span className={`px-2 py-1 rounded text-xs ${
-                        dept.performance >= 90 ? 'bg-green-100 text-green-800' : 
-                        dept.performance >= 75 ? 'bg-blue-100 text-blue-800' : 
-                        dept.performance >= 60 ? 'bg-yellow-100 text-yellow-800' : 
-                        'bg-red-100 text-red-800'
-                      }`}>
-                        {dept.performance}%
-                      </span>
-                      {dept.performance > 80 ? (
-                        <ArrowUp size={14} className="text-green-600" />
-                      ) : (
-                        <ArrowDown size={14} className="text-red-600" />
-                      )}
-                    </div>
-                  </TableCell>
+                  <TableCell>₹{project.budget.toLocaleString()}</TableCell>
+                  <TableCell>₹{project.spent.toLocaleString()}</TableCell>
+                  <TableCell>{project.startDate}</TableCell>
+                  <TableCell>{project.endDate}</TableCell>
+                  <TableCell>{project.manager}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
-      
-      {/* Key Personnel */}
-      {selectedDepartment !== "All Departments" && (
+
+      {/* Team and Activity Log Section */}
+      <div className="grid md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Key Personnel</CardTitle>
-            <CardDescription>Leadership and contact information</CardDescription>
+            <CardTitle>Team Members</CardTitle>
+            <CardDescription>Key personnel in the department</CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Position</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Phone</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {keyPersonnel
-                  .filter(person => person.position.includes(selectedDepartment))
-                  .map((person) => (
-                    <TableRow key={person.id}>
-                      <TableCell className="font-medium">{person.name}</TableCell>
-                      <TableCell>{person.position}</TableCell>
-                      <TableCell>{person.email}</TableCell>
-                      <TableCell>{person.phone}</TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
+            <div className="space-y-4">
+              {teamMembers.map((member) => (
+                <div key={member.id} className="flex items-center space-x-4">
+                  <div className="flex-shrink-0 h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-semibold">
+                    {member.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium leading-none">{member.name}</p>
+                    <p className="text-sm text-muted-foreground">{member.position}</p>
+                    <p className="text-xs text-muted-foreground">{member.email} | {member.phone}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
-      )}
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Activity Log</CardTitle>
+            <CardDescription>Latest updates and actions</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-3">
+              {activityLog.slice(0, 5).map((log) => ( // Show top 5 recent activities
+                <li key={log.id} className="text-sm">
+                  <span className="font-semibold">{log.user}</span>: {log.action}
+                  <p className="text-xs text-muted-foreground">{log.timestamp}</p>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

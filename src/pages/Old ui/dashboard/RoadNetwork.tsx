@@ -1,17 +1,19 @@
+
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
-import RoadMap from '@/components/RoadMap';
+import RoadMap from '@/components/dashboard/RoadMap'; // Corrected import path
 
 const RoadNetwork = () => {
   return (
     <div className="container mx-auto p-4 space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gov-blue">Road Network Expansion</h1>
+        <h1 className="text-3xl font-bold text-primary">Road Network Expansion</h1> {/* Use primary color */}
         <div className="flex items-center gap-4">
           <Card className="p-4">
-            <span className="button-secondary">Audit Form</span>
+            {/* Assuming "button-secondary" was a custom class, using text style now or replace with Button component */}
+            <span className="text-sm font-medium text-primary">Audit Form</span>
           </Card>
         </div>
       </div>
@@ -20,9 +22,9 @@ const RoadNetwork = () => {
         <Card className="p-6 space-y-4">
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium">Auditor Name</label>
+              <label htmlFor="auditorName" className="text-sm font-medium">Auditor Name</label>
               <Select defaultValue="arjun">
-                <SelectTrigger>
+                <SelectTrigger id="auditorName">
                   <SelectValue placeholder="Select Auditor" />
                 </SelectTrigger>
                 <SelectContent>
@@ -33,9 +35,9 @@ const RoadNetwork = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium">Department</label>
+                <label htmlFor="department" className="text-sm font-medium">Department</label>
                 <Select defaultValue="executive">
-                  <SelectTrigger>
+                  <SelectTrigger id="department">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -44,9 +46,9 @@ const RoadNetwork = () => {
                 </Select>
               </div>
               <div>
-                <label className="text-sm font-medium">Gram Panchayat</label>
+                <label htmlFor="gramPanchayat" className="text-sm font-medium">Gram Panchayat</label>
                 <Select defaultValue="gp1">
-                  <SelectTrigger>
+                  <SelectTrigger id="gramPanchayat">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -74,7 +76,7 @@ const RoadNetwork = () => {
             <div>
               <label className="text-sm font-medium">Progress Score</label>
               <Progress value={45} className="mt-2" />
-              <div className="flex justify-between text-sm text-gray-500 mt-1">
+              <div className="flex justify-between text-sm text-muted-foreground mt-1"> {/* Use muted-foreground */}
                 <span>15</span>
                 <span>400</span>
               </div>
