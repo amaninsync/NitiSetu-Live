@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -35,25 +34,25 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <a href="#" className="flex items-center">
+        <a href="/" className="flex items-center">
           <span className="text-gov-blue font-heading font-bold text-xl">NitiSetu Asifabad</span>
         </a>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#features" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
+          <a href="/#features" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
             Features
           </a>
-          <a href="#users" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
+          <a href="/#users" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
             Who We Serve
           </a>
-          <a href="#technology" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
+          <a href="/#technology" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
             Technology
           </a>
-          <Link to="/dashboard" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
+          <Link to="/district-dashboard" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
             Dashboard
           </Link>
-          <a href="#contact" className="button-secondary" >
+          <a href="/#contact" className="button-secondary" >
             Contact Us
           </a>
           <button 
@@ -78,43 +77,43 @@ const Navbar = () => {
         <div className="md:hidden bg-white">
           <div className="container mx-auto px-6 py-4 flex flex-col space-y-4">
             <a 
-              href="#features" 
+              href="/#features" 
               className="text-gray-800 hover:text-gov-blue transition-colors font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Features
             </a>
             <a 
-              href="#users" 
+              href="/#users" 
               className="text-gray-800 hover:text-gov-blue transition-colors font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Who We Serve
             </a>
             <a 
-              href="#technology" 
+              href="/#technology" 
               className="text-gray-800 hover:text-gov-blue transition-colors font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Technology
             </a>
             <Link 
-              to="/dashboard" 
+              to="/district-dashboard" 
               className="text-gray-800 hover:text-gov-blue transition-colors font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Dashboard
             </Link>
             <a 
-              href="#contact" 
-              className="button-primary inline-block text-center"
+              href="/#contact" 
+              className="text-gray-800 hover:text-gov-blue transition-colors font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
-              Log In
+              Contact Us
             </a>
             <button 
-            onClick={handleLogin}
-            className="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-md"
+            onClick={() => { navigate('/login'); setIsMenuOpen(false); }}
+            className="button-primary"
              >
             Log In
              </button>
