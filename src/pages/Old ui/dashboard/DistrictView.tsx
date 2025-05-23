@@ -1,412 +1,336 @@
-import React, { useRef } from 'react';
+
+import React, { useRef, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import {
-  Download, Printer, Users, Briefcase, Target, TrendingUp, DollarSign, Settings, MapPin, BookOpen, BarChart2, Building, PieChart as PieChartIcon, AlertTriangle, CheckCircle2, Clock
-} from "lucide-react";
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
+import { Download, Printer, Users, Briefcase, Target, TrendingUp, DollarSign, Settings, Building, Tractor, Cloud, Users2, Factory, Home, BarChart3, LayoutGrid, LineChart, Lightbulb, MapPin, FileText, BarChartBig, PieChart as PieChartIcon, ShieldCheck, UserCog, ChevronDown, ChevronRight } from "lucide-react";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell } from 'recharts';
 import { useReactToPrint } from 'react-to-print';
-import { ChartContainer, ChartConfig, ChartTooltipContent } from '@/components/ui/chart'; // Added ChartTooltipContent
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"; // Added DropdownMenu imports
+import { ChartConfig, ChartContainer } from '@/components/ui/chart'; // Assuming this path exists
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Mock Data (similar to DistrictDashboard.tsx for consistency)
-const districtData = {
-  name: "Kumuram Bheem Asifabad",
-  population: "5.15 Lakhs",
-  area: "4,878 sq km",
-  literacyRate: "66.5%",
-  collector: "Sri Rahul Raj P S, IAS",
-  sp: "Sri K Suresh Kumar, IPS",
-  budget: "₹250 Cr",
-  utilization: 75,
-  projects: 120,
-  impactScore: 78,
-  description: "Kumuram Bheem Asifabad is an aspirational district in Telangana, India. It is undergoing significant development initiatives across various sectors to improve socio-economic indicators."
+
+// Mock data (can be replaced with actual data fetching)
+const districtOverviewData = {
+  totalPopulation: "5.2 Lakhs",
+  literacyRate: "78%",
+  area: "2,780 sq km",
+  mandals: 15,
+  gramPanchayats: 300,
+  revenueVillages: 450,
 };
 
-const kpiData = [
-  { id: "health", name: 'Health & Nutrition', value: 70, target: 85, icon: <Users className="h-4 w-4" />, color: "hsl(var(--chart-1))" },
-  { id: "education", name: 'Education', value: 65, target: 80, icon: <BookOpen className="h-4 w-4" />, color: "hsl(var(--chart-2))" },
-  { id: "agri", name: 'Agriculture & Water', value: 75, target: 90, icon: <Briefcase className="h-4 w-4" />, color: "hsl(var(--chart-3))" },
-  { id: "infra", name: 'Basic Infrastructure', value: 60, target: 75, icon: <Building className="h-4 w-4" />, color: "hsl(var(--chart-4))" },
-  { id: "finance", name: 'Financial Inclusion', value: 80, target: 90, icon: <DollarSign className="h-4 w-4" />, color: "hsl(var(--chart-5))" },
+const departmentSummary = [
+  { name: "Education", budget: "₹1.2Cr", utilization: 78, projects: 15, head: "Dr. Anjali Sharma" },
+  { name: "Health", budget: "₹90L", utilization: 85, projects: 22, head: "Dr. Vikram Singh" },
+  { name: "Agriculture", budget: "₹75L", utilization: 70, projects: 18, head: "Smt. Priya Patel" },
+  { name: "Infrastructure", budget: "₹2.5Cr", utilization: 65, projects: 12, head: "Shri. Rajesh Kumar" },
+  { name: "Social Welfare", budget: "₹60L", utilization: 90, projects: 25, head: "Smt. Meena Kumari" },
 ];
 
-const projectStatusData = [
-  { name: 'Completed', value: 70, fill: "hsl(var(--chart-1))", icon: <CheckCircle2 /> },
-  { name: 'In Progress', value: 35, fill: "hsl(var(--chart-2))", icon: <Clock /> },
-  { name: 'Delayed', value: 10, fill: "hsl(var(--chart-3))", icon: <AlertTriangle /> },
-  { name: 'Upcoming', value: 5, fill: "hsl(var(--chart-4))", icon: <Target /> },
+const keyProjects = [
+  { id: 1, name: "Digital Literacy Program", department: "Education", status: "Ongoing", progress: 60, deadline: "Dec 2024" },
+  { id: 2, name: "Rural Health Camps", department: "Health", status: "Completed", progress: 100, deadline: "Mar 2024" },
+  { id: 3, name: "Irrigation Modernization", department: "Agriculture", status: "Planning", progress: 20, deadline: "Jun 2025" },
+  { id: 4, name: "Smart Village Initiative", department: "Infrastructure", status: "Ongoing", progress: 45, deadline: "Sep 2025" },
 ];
 
-const financialSummaryData = [
-  { month: 'Jan', allocated: 20, utilized: 18 },
-  { month: 'Feb', allocated: 22, utilized: 20 },
-  { month: 'Mar', allocated: 25, utilized: 23 },
-  { month: 'Apr', allocated: 18, utilized: 15 },
-  { month: 'May', allocated: 24, utilized: 22 },
-  { month: 'Jun', allocated: 30, utilized: 28 },
-];
-
-const demographicData = [
-    { name: 'Male', value: 260000, fill: "hsl(var(--chart-1))" },
-    { name: 'Female', value: 255835, fill: "hsl(var(--chart-2))" },
-];
-
-const sectoralPerformanceData = [
-  { sector: 'Health', score: 70, budget: 50, utilization: 80 },
-  { sector: 'Education', score: 65, budget: 60, utilization: 75 },
-  { sector: 'Agriculture', score: 75, budget: 40, utilization: 85 },
-  { sector: 'Infrastructure', score: 60, budget: 70, utilization: 70 },
-  { sector: 'Finance', score: 80, budget: 30, utilization: 90 },
+const budgetAllocationData = [
+  { name: 'Education', value: 120, color: "hsl(var(--chart-1))" },
+  { name: 'Health', value: 90, color: "hsl(var(--chart-2))" },
+  { name: 'Agriculture', value: 75, color: "hsl(var(--chart-3))" },
+  { name: 'Infrastructure', value: 250, color: "hsl(var(--chart-4))" },
+  { name: 'Social Welfare', value: 60, color: "hsl(var(--chart-5))" },
 ];
 
 const defaultChartConfig: ChartConfig = {
-  value: { label: "Value", color: "hsl(var(--chart-1))" },
-  allocated: { label: "Allocated (Cr)", color: "hsl(var(--chart-1))" },
-  utilized: { label: "Utilized (Cr)", color: "hsl(var(--chart-2))" },
-  score: { label: "Score", color: "hsl(var(--chart-1))"},
-  budget: { label: "Budget (Cr)", color: "hsl(var(--chart-2))"},
-  utilization: { label: "Utilization (%)", color: "hsl(var(--chart-3))"},
-  default: {
-    label: "Count",
+  value: {
+    label: "Value",
+  },
+  budget: {
+    label: "Budget (Lakhs)",
     color: "hsl(var(--chart-1))",
   },
-  male: { label: "Male", color: "hsl(var(--chart-1))" },
-  female: { label: "Female", color: "hsl(var(--chart-2))" },
-  // Add other keys from kpiData with their respective colors for ChartContainer if needed
-  health: { label: kpiData.find(k=>k.id==='health')?.name, color: kpiData.find(k=>k.id==='health')?.color },
-  education: { label: kpiData.find(k=>k.id==='education')?.name, color: kpiData.find(k=>k.id==='education')?.color },
-  agri: { label: kpiData.find(k=>k.id==='agri')?.name, color: kpiData.find(k=>k.id==='agri')?.color },
-  infra: { label: kpiData.find(k=>k.id==='infra')?.name, color: kpiData.find(k=>k.id==='infra')?.color },
-  finance: { label: kpiData.find(k=>k.id==='finance')?.name, color: kpiData.find(k=>k.id==='finance')?.color },
+  utilization: {
+    label: "Utilization (%)",
+    color: "hsl(var(--chart-2))",
+  },
+  projects: {
+    label: "No. of Projects",
+    color: "hsl(var(--chart-3))",
+  },
 };
+budgetAllocationData.forEach(item => {
+  if (!defaultChartConfig[item.name.toLowerCase()]) {
+    defaultChartConfig[item.name.toLowerCase()] = { label: item.name, color: item.color };
+  }
+});
 
 
-const ExportableCard = ({ children, title }: { children: React.ReactNode, title: string }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  // Dummy export functions for now
-  const exportToPNG = () => console.log(`Exporting ${title} to PNG...`);
-  const exportToPDF = () => console.log(`Exporting ${title} to PDF...`);
-
-  return (
-    <Card ref={cardRef} className="shadow-sm hover:shadow-md transition-shadow relative">
-       <div className="absolute top-2 right-2 z-10">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-7 w-7">
-              <Download className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={exportToPNG}>Export as PNG</DropdownMenuItem>
-            <DropdownMenuItem onClick={exportToPDF}>Export as PDF</DropdownMenuItem>
-            {/* Add more export options if needed */}
-          </DropdownMenuContent>
-        </DropdownMenu>
+const ExportableCard = ({ title, description, children, onPrint, onExport }: { title: string, description?: string, children: React.ReactNode, onPrint?: () => void, onExport?: () => void }) => (
+  <Card className="shadow-sm hover:shadow-md transition-shadow">
+    <CardHeader>
+      <div className="flex justify-between items-start">
+        <div>
+          <CardTitle>{title}</CardTitle>
+          {description && <CardDescription>{description}</CardDescription>}
+        </div>
+        <div className="flex space-x-2">
+          {onPrint && <Button variant="ghost" size="icon" onClick={onPrint}><Printer className="h-4 w-4" /></Button>}
+          {onExport && <Button variant="ghost" size="icon" onClick={onExport}><Download className="h-4 w-4" /></Button>}
+        </div>
       </div>
+    </CardHeader>
+    <CardContent>
       {children}
-    </Card>
-  );
-};
-
+    </CardContent>
+  </Card>
+);
 
 const DistrictView = () => {
   const printRef = useRef<HTMLDivElement>(null);
-  const kpiChartRef = useRef<HTMLDivElement>(null);
-  const projectStatusChartRef = useRef<HTMLDivElement>(null);
-  const financialChartRef = useRef<HTMLDivElement>(null);
+  const overviewRef = useRef<HTMLDivElement>(null);
+  const departmentsRef = useRef<HTMLDivElement>(null);
+  const projectsRef = useRef<HTMLDivElement>(null);
+  const budgetRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
-    content: () => printRef.current, // Corrected
-    documentTitle: `${districtData.name}-District-Report`,
+    content: () => printRef.current,
+    documentTitle: `District-View-Report-${new Date().toISOString().split('T')[0]}`,
   });
-  
+
+  const createPrintHandler = (ref: React.RefObject<HTMLDivElement>, title: string) => {
+    return useReactToPrint({
+      content: () => ref.current,
+      documentTitle: `${title}-Report-${new Date().toISOString().split('T')[0]}`,
+    });
+  };
+
+  const handleGenericExport = (data: any, filename: string) => {
+    console.log(`Exporting ${filename}:`, data);
+    // Placeholder for actual export logic (e.g., CSV, Excel)
+    alert(`Data for ${filename} logged to console. Implement actual export.`);
+  };
+
+
+  const printOverview = createPrintHandler(overviewRef, "DistrictOverview");
+  const printDepartments = createPrintHandler(departmentsRef, "DepartmentSummary");
+  const printProjects = createPrintHandler(projectsRef, "KeyProjects");
+  const printBudget = createPrintHandler(budgetRef, "BudgetAllocation");
+
+
+  // State for filters
+  const [selectedMandal, setSelectedMandal] = useState<string>("all");
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("all");
+
+  const mandals = ["All", "Asifabad", "Jainoor", "Kerameri", "Rebbena", "Sirpur (T)", "Tiryani", "Wankidi"]; // Example mandals
+  const departments = ["All", ...departmentSummary.map(d => d.name)];
+
 
   return (
     <div ref={printRef} className="container mx-auto p-4 md:p-6 space-y-6 bg-background text-foreground">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 space-y-4 md:space-y-0">
         <div>
-          <h1 className="text-3xl font-bold text-primary flex items-center">
-            <MapPin className="mr-3 h-8 w-8 text-primary/80" />
-            {districtData.name}
-          </h1>
-          <p className="text-muted-foreground ml-11">Aspirational District Dashboard</p>
+          <h1 className="text-3xl font-bold text-primary">District Dashboard: Kumuram Bheem Asifabad</h1>
+          <p className="text-muted-foreground">Comprehensive overview of district operations and performance.</p>
         </div>
         <div className="flex space-x-2">
           <Button variant="outline" onClick={handlePrint}>
-            <Printer className="mr-2 h-4 w-4" /> Print Report
+            <Printer className="mr-2 h-4 w-4" /> Print Full Report
           </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button>
-                <Download className="mr-2 h-4 w-4" /> Export
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => console.log("Exporting Full Report PDF")}>Full Report (PDF)</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => console.log("Exporting Data (Excel)")}>All Data (Excel)</DropdownMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Export Chart...</DropdownMenuItem>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="right">
-                    <DropdownMenuItem onClick={() => console.log("Exporting KPI Chart")}>KPI Chart (PNG)</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => console.log("Exporting Project Status Chart")}>Project Status (PNG)</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => console.log("Exporting Financial Chart")}>Financial Chart (PNG)</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button onClick={() => handleGenericExport({ districtOverviewData, departmentSummary, keyProjects, budgetAllocationData }, "FullDistrictReport")}>
+            <Download className="mr-2 h-4 w-4" /> Export All Data
+          </Button>
         </div>
       </div>
 
-      {/* Key Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <Card className="shadow-sm">
-          <CardHeader className="pb-2">
-            <CardDescription>Population</CardDescription>
-            <CardTitle className="text-3xl">{districtData.population}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-xs text-muted-foreground">As per census 2023</div>
-          </CardContent>
-        </Card>
-        <Card className="shadow-sm">
-          <CardHeader className="pb-2">
-            <CardDescription>Area</CardDescription>
-            <CardTitle className="text-3xl">{districtData.area}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-xs text-muted-foreground">Geographical coverage</div>
-          </CardContent>
-        </Card>
-        <Card className="shadow-sm">
-          <CardHeader className="pb-2">
-            <CardDescription>Literacy Rate</CardDescription>
-            <CardTitle className="text-3xl">{districtData.literacyRate}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Progress value={parseFloat(districtData.literacyRate)} className="h-2" />
-          </CardContent>
-        </Card>
-        <Card className="shadow-sm">
-          <CardHeader className="pb-2">
-            <CardDescription>Overall Impact</CardDescription>
-            <CardTitle className="text-3xl">{districtData.impactScore}/100</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Progress value={districtData.impactScore} indicatorColor="hsl(var(--primary))" className="h-2" />
-          </CardContent>
-        </Card>
-      </div>
-      
-      {/* District Overview & Collector/SP Info */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <Card className="md:col-span-2 shadow-sm">
-          <CardHeader>
-            <CardTitle>District Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground leading-relaxed">{districtData.description}</p>
-          </CardContent>
-        </Card>
-        <Card className="shadow-sm">
-          <CardHeader>
-            <CardTitle>Key Officials</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div>
-              <p className="text-sm font-medium">District Collector & Magistrate</p>
-              <p className="text-muted-foreground">{districtData.collector}</p>
+      {/* Filters */}
+      <Card className="p-4 mb-6">
+        <CardHeader className="p-0 pb-4">
+            <CardTitle className="text-lg">Filters</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Select value={selectedMandal} onValueChange={setSelectedMandal}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Mandal" />
+            </SelectTrigger>
+            <SelectContent>
+              {mandals.map(m => <SelectItem key={m} value={m.toLowerCase()}>{m}</SelectItem>)}
+            </SelectContent>
+          </Select>
+          <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Department" />
+            </SelectTrigger>
+            <SelectContent>
+              {departments.map(d => <SelectItem key={d} value={d.toLowerCase()}>{d}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </div>
+        </CardContent>
+      </Card>
+
+
+      {/* District Overview Stats */}
+      <div ref={overviewRef}>
+        <ExportableCard
+          title="District at a Glance"
+          description="Key demographic and administrative statistics."
+          onPrint={printOverview}
+          onExport={() => handleGenericExport(districtOverviewData, "DistrictOverview")}
+        >
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
+            <div className="p-4 bg-muted rounded-lg">
+              <Users className="mx-auto h-8 w-8 text-primary mb-2" />
+              <p className="text-sm text-muted-foreground">Total Population</p>
+              <p className="text-xl font-semibold">{districtOverviewData.totalPopulation}</p>
             </div>
-            <div>
-              <p className="text-sm font-medium">Superintendent of Police</p>
-              <p className="text-muted-foreground">{districtData.sp}</p>
+            <div className="p-4 bg-muted rounded-lg">
+              <ShieldCheck className="mx-auto h-8 w-8 text-green-500 mb-2" />
+              <p className="text-sm text-muted-foreground">Literacy Rate</p>
+              <p className="text-xl font-semibold">{districtOverviewData.literacyRate}</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="p-4 bg-muted rounded-lg">
+              <MapPin className="mx-auto h-8 w-8 text-blue-500 mb-2" />
+              <p className="text-sm text-muted-foreground">Area</p>
+              <p className="text-xl font-semibold">{districtOverviewData.area}</p>
+            </div>
+            <div className="p-4 bg-muted rounded-lg">
+              <LayoutGrid className="mx-auto h-8 w-8 text-purple-500 mb-2" />
+              <p className="text-sm text-muted-foreground">Mandals</p>
+              <p className="text-xl font-semibold">{districtOverviewData.mandals}</p>
+            </div>
+            <div className="p-4 bg-muted rounded-lg">
+              <Home className="mx-auto h-8 w-8 text-orange-500 mb-2" />
+              <p className="text-sm text-muted-foreground">Gram Panchayats</p>
+              <p className="text-xl font-semibold">{districtOverviewData.gramPanchayats}</p>
+            </div>
+          </div>
+        </ExportableCard>
       </div>
 
-      {/* KPIs Section */}
-      <ExportableCard title="Key Performance Indicators">
-        <CardHeader ref={kpiChartRef}>
-          <CardTitle>Key Performance Indicators (KPIs)</CardTitle>
-          <CardDescription>Tracking progress across vital sectors.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {kpiData.map((kpi) => (
-              <Card key={kpi.name} className="shadow-sm">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-base font-medium flex items-center">
-                    {React.cloneElement(kpi.icon, { className: `mr-2 h-5 w-5 text-[${kpi.color}]`})}
-                    {kpi.name}
-                  </CardTitle>
-                  <span className={`text-xs font-semibold px-2 py-1 rounded-full text-white bg-[${kpi.color}]`}>
-                    {((kpi.value / kpi.target) * 100).toFixed(0)}%
-                  </span>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-foreground">{kpi.value}
-                    <span className="text-sm text-muted-foreground"> / {kpi.target}</span>
+
+      {/* Department Summaries */}
+      <div ref={departmentsRef}>
+        <ExportableCard
+          title="Department Performance Summary"
+          description="Overview of key departments, their budget, utilization, and projects."
+          onPrint={printDepartments}
+          onExport={() => handleGenericExport(departmentSummary, "DepartmentSummary")}
+        >
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Department</TableHead>
+                  <TableHead>Head</TableHead>
+                  <TableHead>Budget</TableHead>
+                  <TableHead>Projects</TableHead>
+                  <TableHead>Utilization</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {departmentSummary
+                  .filter(dept => selectedDepartment === "all" || dept.name.toLowerCase() === selectedDepartment)
+                  .map((dept) => (
+                  <TableRow key={dept.name}>
+                    <TableCell className="font-medium">{dept.name}</TableCell>
+                    <TableCell>{dept.head}</TableCell>
+                    <TableCell>{dept.budget}</TableCell>
+                    <TableCell>{dept.projects}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Progress value={dept.utilization} className="w-24 h-2" indicatorColor={dept.utilization > 75 ? "hsl(var(--chart-2))" : "hsl(var(--chart-4))"} />
+                        <span>{dept.utilization}%</span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </ExportableCard>
+      </div>
+
+      {/* Key Projects Overview */}
+      <div ref={projectsRef}>
+        <ExportableCard
+          title="Key District Projects"
+          description="Status and progress of major ongoing and completed projects."
+          onPrint={printProjects}
+          onExport={() => handleGenericExport(keyProjects, "KeyProjects")}
+        >
+          <div className="space-y-4">
+            {keyProjects
+              .filter(proj => selectedDepartment === "all" || proj.department.toLowerCase() === selectedDepartment)
+              .map((project) => (
+              <Card key={project.id} className="p-4">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                  <div>
+                    <h4 className="font-semibold">{project.name}</h4>
+                    <p className="text-sm text-muted-foreground">Department: {project.department} | Deadline: {project.deadline}</p>
                   </div>
-                  <Progress value={(kpi.value / kpi.target) * 100} className="mt-2 h-2" indicatorColor={kpi.color} />
-                </CardContent>
+                  <Badge variant={project.status === "Completed" ? "default" : "secondary"} className={project.status === "Completed" ? "bg-green-500 hover:bg-green-600" : ""}>{project.status}</Badge>
+                </div>
+                <div className="mt-2">
+                  <Progress value={project.progress} className="h-2" />
+                  <p className="text-xs text-muted-foreground mt-1 text-right">{project.progress}% Complete</p>
+                </div>
               </Card>
             ))}
           </div>
-        </CardContent>
-      </ExportableCard>
-
-      {/* Charts Section - Project Status & Financial Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <ExportableCard title="Project Status">
-          <CardHeader ref={projectStatusChartRef}>
-            <CardTitle>Project Status Distribution</CardTitle>
-            <CardDescription>Overview of all developmental projects.</CardDescription>
-          </CardHeader>
-          <CardContent className="h-[350px] p-0 flex items-center justify-center">
-             <ChartContainer config={defaultChartConfig} className="w-full h-full min-h-[200px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <RechartsTooltip 
-                    cursor={{ fill: "hsl(var(--muted))" }} 
-                    content={<ChartTooltipContent hideLabel />} 
-                  />
-                  <Pie 
-                    data={projectStatusData} 
-                    dataKey="value" 
-                    nameKey="name" 
-                    cx="50%" 
-                    cy="50%" 
-                    outerRadius={100} 
-                    innerRadius={70}
-                    labelLine={false}
-                    label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-                      const RADIAN = Math.PI / 180;
-                      const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
-                      return (
-                        <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize="12px">
-                          {`${(percent * 100).toFixed(0)}%`}
-                        </text>
-                      );
-                    }}
-                  >
-                    {projectStatusData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.fill} />
-                    ))}
-                  </Pie>
-                   <Legend content={({ payload }) => (
-                    <div className="flex items-center justify-center gap-4 mt-4">
-                      {payload?.map((entry: any, index: number) => (
-                        <div key={`item-${index}`} className="flex items-center gap-1.5">
-                          <div className="w-2.5 h-2.5 rounded-full" style={{backgroundColor: entry.color }}/>
-                          <span className="text-xs text-muted-foreground">{entry.value} ({projectStatusData.find(p=>p.name === entry.value)?.value})</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}/>
-                </PieChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </CardContent>
-        </ExportableCard>
-
-        <ExportableCard title="Financial Summary">
-          <CardHeader ref={financialChartRef}>
-            <CardTitle>Monthly Financial Summary</CardTitle>
-            <CardDescription>Allocated vs. Utilized Budget (in Crores)</CardHeader>
-          </CardHeader>
-          <CardContent className="h-[350px] p-0">
-            <ChartContainer config={defaultChartConfig} className="w-full h-full min-h-[200px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={financialSummaryData} margin={{ top: 20, right: 20, left: 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="month" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `₹${value}Cr`} />
-                  <RechartsTooltip
-                    cursor={{ fill: 'hsl(var(--muted))' }}
-                    content={<ChartTooltipContent />}
-                    contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))', borderRadius: 'var(--radius)' }}
-                  />
-                  <Legend wrapperStyle={{ paddingTop: '10px' }} />
-                  <Bar dataKey="allocated" fill={defaultChartConfig.allocated.color} radius={[4, 4, 0, 0]} name="Allocated" />
-                  <Bar dataKey="utilized" fill={defaultChartConfig.utilized.color} radius={[4, 4, 0, 0]} name="Utilized" />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </CardContent>
-        </ExportableCard>
-      </div>
-      
-      {/* Demographics and Sectoral Performance */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <ExportableCard title="Demographics">
-          <CardHeader>
-            <CardTitle>District Demographics</CardTitle>
-            <CardDescription>Population distribution by gender (approx.)</CardDescription>
-          </CardHeader>
-          <CardContent className="h-[300px] flex items-center justify-center p-0">
-            <ChartContainer config={defaultChartConfig} className="w-full h-full min-h-[200px]">
-                <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                        <RechartsTooltip content={<ChartTooltipContent hideLabel />} />
-                        <Pie data={demographicData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
-                            {demographicData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.fill} />
-                            ))}
-                        </Pie>
-                        <Legend />
-                    </PieChart>
-                </ResponsiveContainer>
-            </ChartContainer>
-          </CardContent>
-        </ExportableCard>
-
-        <ExportableCard title="Sectoral Performance">
-          <CardHeader>
-            <CardTitle>Sectoral Performance Overview</CardTitle>
-            <CardDescription>Scores, budget, and utilization across key sectors.</CardDescription>
-          </CardHeader>
-          <CardContent className="h-[300px] p-0">
-             <ChartContainer config={defaultChartConfig} className="w-full h-full min-h-[200px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={sectoralPerformanceData} layout="vertical" margin={{ top: 5, right: 20, left: 40, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                  <XAxis type="number" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis dataKey="sector" type="category" fontSize={12} tickLine={false} axisLine={false} width={80} />
-                  <RechartsTooltip 
-                    cursor={{ fill: 'hsl(var(--muted))' }} 
-                    content={<ChartTooltipContent />} 
-                  />
-                  <Legend wrapperStyle={{ paddingTop: '10px' }}/>
-                  <Bar dataKey="score" fill={defaultChartConfig.score.color} name="Score" barSize={15} radius={[0, 4, 4, 0]} />
-                  <Bar dataKey="budget" fill={defaultChartConfig.budget.color} name="Budget (Cr)" barSize={15} radius={[0, 4, 4, 0]} />
-                  {/* <Bar dataKey="utilization" fill={defaultChartConfig.utilization.color} name="Utilization (%)" barSize={15} radius={[0,4,4,0]}/> */}
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </CardContent>
         </ExportableCard>
       </div>
 
+      {/* Budget Allocation Chart */}
+      <div ref={budgetRef}>
+        <ExportableCard
+          title="District Budget Allocation"
+          description="Visual representation of budget distribution across departments."
+          onPrint={printBudget}
+          onExport={() => handleGenericExport(budgetAllocationData, "BudgetAllocation")}
+        >
+          <ChartContainer config={defaultChartConfig} className="min-h-[300px] w-full">
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <RechartsTooltip
+                  cursor={{ fill: 'hsl(var(--muted))' }}
+                  contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))', borderRadius: 'var(--radius)' }}
+                />
+                <Pie
+                  data={budgetAllocationData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                >
+                  {budgetAllocationData.map((entry) => (
+                    <Cell key={`cell-${entry.name}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </ExportableCard>
+      </div>
 
-      {/* Action Buttons / Quick Links */}
+      {/* Call to Action / Quick Links */}
       <Card className="shadow-sm">
         <CardHeader>
           <CardTitle>Quick Actions & Reports</CardTitle>
+          <CardDescription>Access specific functionalities or generate detailed reports.</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-wrap gap-3">
-          <Button variant="default"><Briefcase className="mr-2 h-4 w-4" /> View All Projects</Button>
-          <Button variant="outline"><BarChart2 className="mr-2 h-4 w-4" /> Detailed Analytics</Button>
-          <Button variant="outline"><Users className="mr-2 h-4 w-4" /> Department Views</Button>
-          <Button variant="secondary"><Settings className="mr-2 h-4 w-4" /> Configure Dashboard</Button>
+        <CardContent className="flex flex-wrap gap-4">
+          <Button><FileText className="mr-2 h-4 w-4" /> Generate Financial Report</Button>
+          <Button variant="outline"><BarChartBig className="mr-2 h-4 w-4" /> View KPI Dashboard</Button>
+          <Button variant="outline"><UserCog className="mr-2 h-4 w-4" /> Manage User Access</Button>
+          <Button variant="secondary"><Settings className="mr-2 h-4 w-4" /> District Configuration</Button>
         </CardContent>
       </Card>
     </div>
