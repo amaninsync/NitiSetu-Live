@@ -9,7 +9,7 @@ const LoginPage: React.FC = () => {
 
   // Redirect to dashboard if already authenticated
   if (isAuthenticated) {
-    return <Navigate to="/district-dashboard" replace />; {/* Updated redirect path */}
+    return <Navigate to="/" replace />;
   }
 
   return (

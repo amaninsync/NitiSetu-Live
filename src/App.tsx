@@ -18,16 +18,10 @@ import UploadPage from "./pages/UploadPage";
 import TableViewPage from "./pages/TableViewPage";
 import DepartmentDashboardPage from "./pages/DepartmentDashboardPage";
 import ProjectDashboardPage from "./pages/ProjectDashboardPage";
-
-// Dashboard pages
+// New pages
 import DepartmentView from "./pages/dashboard/DepartmentView";
 import DistrictStats from "./pages/dashboard/DistrictStats";
 import DistrictDashboard from "./pages/dashboard/DistrictDashboard";
-import HealthData from "./pages/dashboard/HealthData";
-import RoadNetwork from "./pages/dashboard/RoadNetwork";
-import SHGFinancing from "./pages/dashboard/SHGFinancing";
-import MonitoringView from "./pages/dashboard/MonitoringView";
-import InsightsView from "./pages/dashboard/InsightsView";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -42,27 +36,20 @@ function App() {
           <BrowserRouter>
             <Routes>
               {/* Public Routes */}
-              <Route path="/" element={<Index />} />
               <Route path="/login" element={<LoginPage />} />
               
               {/* Protected Routes */}
               <Route element={<AppShell />}>
+                <Route path="/" element={<Index />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/upload" element={<UploadPage />} />
                 <Route path="/table-view" element={<TableViewPage />} />
                 <Route path="/department" element={<DepartmentDashboardPage />} />
                 <Route path="/project" element={<ProjectDashboardPage />} />
-                
-                {/* Dashboard Routes */}
+                {/* New Routes */}
                 <Route path="/department-view" element={<DepartmentView />} />
                 <Route path="/district-stats" element={<DistrictStats />} />
                 <Route path="/district-dashboard" element={<DistrictDashboard />} />
-                <Route path="/district-view" element={<DistrictDashboard />} />
-                <Route path="/health-data" element={<HealthData />} />
-                <Route path="/road-network" element={<RoadNetwork />} />
-                <Route path="/shg-financing" element={<SHGFinancing />} />
-                <Route path="/monitoring-view" element={<MonitoringView />} />
-                <Route path="/insights" element={<InsightsView />} />
               </Route>
               
               {/* Catch-all route */}
