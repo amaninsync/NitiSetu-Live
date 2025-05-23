@@ -13,7 +13,10 @@ import {
   Map,
   HandCoins,
   Stethoscope,
-  PieChart
+  PieChart,
+  AreaChart,
+  FileBarChart,
+  FileStack
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -23,19 +26,20 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
   useSidebar
 } from "@/components/ui/sidebar";
 
 const AppSidebar: React.FC = () => {
-  const { collapsed } = useSidebar();
+  const { state } = useSidebar();
+  const collapsed = state === "collapsed";
   const location = useLocation();
   const [expandedGroups, setExpandedGroups] = React.useState({
     district: false,
     projects: false,
-    monitoring: false
+    monitoring: false,
+    health: false
   });
   
   // Define nested menu structure
@@ -46,7 +50,8 @@ const AppSidebar: React.FC = () => {
       icon: <Home size={18} />,
       path: '/district-dashboard',
       children: [
-        { path: '/district-stats', label: 'District Stats', icon: <PieChart size={18} /> }
+        { path: '/district-stats', label: 'District Stats', icon: <PieChart size={18} /> },
+        { path: '/district-view', label: 'District View', icon: <AreaChart size={18} /> }
       ]
     },
     { 
@@ -68,7 +73,10 @@ const AppSidebar: React.FC = () => {
       id: 'departments',
       label: 'Departments', 
       icon: <Building2 size={18} />,
-      path: '/department'
+      path: '/department',
+      children: [
+        { path: '/department-view', label: 'Department View', icon: <FileStack size={18} /> }
+      ]
     },
     { 
       id: 'monitoring',
@@ -83,7 +91,10 @@ const AppSidebar: React.FC = () => {
       id: 'insights',
       label: 'Insights', 
       icon: <Lightbulb size={18} />,
-      path: '/department-view'
+      path: '/insights',
+      children: [
+        { path: '/monitoring-view', label: 'Monitoring View', icon: <FileBarChart size={18} /> }
+      ]
     },
   ];
 
@@ -122,7 +133,7 @@ const AppSidebar: React.FC = () => {
           const isExpanded = expandedGroups[item.id];
           
           return (
-            <SidebarGroup key={item.id} defaultOpen={isExpanded}>
+            <SidebarGroup key={item.id}>
               <SidebarMenu>
                 <SidebarMenuItem>
                   <Link

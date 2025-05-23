@@ -1,17 +1,12 @@
-import React, { useRef, useState, ReactElement } from 'react';
+import React, { useRef, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { ChartConfig, ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartContainer } from '@/components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, Tooltip, Legend } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { Download, Printer } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useReactToPrint } from 'react-to-print';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
@@ -90,14 +85,16 @@ const monthlyData = [
 ];
 
 // Define chart configurations
-const deltaRankingChartConfig: ChartConfig = {
-  rank: {
-    label: "Overall Rank",
-    theme: {
-      light: "#8884d8",
-      dark: "#a78bfa",
-    },
-  }
+const deltaRankingChartConfig = {
+  tooltip: {
+    formatter: (value) => `${value} ranks`
+  },
+  grid: {
+    top: 30,
+    bottom: 30,
+    left: 20,
+    right: 20
+  },
 };
 
 /**
@@ -105,17 +102,15 @@ const deltaRankingChartConfig: ChartConfig = {
  */
 const exportUtils = {
   // Export component as image (PNG or JPG)
-  exportAsImage: async (elementRef: React.RefObject<HTMLElement>, fileName: string, format = 'png') => {
+  exportAsImage: async (elementRef, fileName, format = 'png') => {
     if (!elementRef.current) return;
-    
     try {
       const canvas = await html2canvas(elementRef.current, {
-        scale: 2, // Higher scale for better quality
+        scale: 2,
         logging: false,
         useCORS: true,
         allowTaint: true
       });
-      
       const image = canvas.toDataURL(`image/${format.toLowerCase()}`);
       const link = document.createElement('a');
       link.href = image;
@@ -125,11 +120,9 @@ const exportUtils = {
       console.error('Error exporting image:', error);
     }
   },
-  
   // Export component as PDF
-  exportAsPDF: async (elementRef: React.RefObject<HTMLElement>, fileName: string) => {
+  exportAsPDF: async (elementRef, fileName) => {
     if (!elementRef.current) return;
-    
     try {
       const canvas = await html2canvas(elementRef.current, {
         scale: 2,
@@ -137,31 +130,26 @@ const exportUtils = {
         useCORS: true,
         allowTaint: true
       });
-      
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'mm',
         format: 'a4'
       });
-      
       const imgWidth = 280; // mm
       const imgHeight = canvas.height * imgWidth / canvas.width;
-      
       pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
       pdf.save(`${fileName}.pdf`);
     } catch (error) {
       console.error('Error exporting PDF:', error);
     }
   },
-  
   // Export table data as Excel/CSV
-  exportTableData: (data: any[], fileName: string, format = 'xlsx') => {
+  exportTableData: (data, fileName, format = 'xlsx') => {
     try {
       const worksheet = XLSX.utils.json_to_sheet(data);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-      
       if (format.toLowerCase() === 'xlsx') {
         XLSX.writeFile(workbook, `${fileName}.xlsx`);
       } else {
@@ -176,12 +164,11 @@ const exportUtils = {
 /**
  * Exportable Card Component
  */
-const ExportableCard = ({ children, title, className = "", exportOptions = true }: { children: React.ReactNode, title: string, className?: string, exportOptions?: boolean }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
+const ExportableCard = ({ children, title, className = "", exportOptions = true }) => {
+  const cardRef = useRef(null);
   
-  const handleExport = (format: string) => {
+  const handleExport = (format) => {
     const sanitizedTitle = title.replace(/\s+/g, '-').toLowerCase();
-    
     switch (format) {
       case 'png':
       case 'jpg':
@@ -194,7 +181,7 @@ const ExportableCard = ({ children, title, className = "", exportOptions = true 
         console.error('Unsupported export format');
     }
   };
-  
+
   return (
     <Card className={`relative ${className}`} ref={cardRef}>
       {exportOptions && (
@@ -225,634 +212,357 @@ const ExportableCard = ({ children, title, className = "", exportOptions = true 
 };
 
 /**
- * Exportable Table Component
+ * District Overview Component
  */
-const ExportableTable = ({ data, title, children }: { data: any[], title: string, children: React.ReactNode }) => {
-  const tableRef = useRef<HTMLDivElement>(null);
-  
-  const handleExport = (format: string) => {
-    const sanitizedTitle = title.replace(/\s+/g, '-').toLowerCase();
-    
-    switch (format) {
-      case 'png':
-      case 'jpg':
-        exportUtils.exportAsImage(tableRef, sanitizedTitle, format);
-        break;
-      case 'pdf':
-        exportUtils.exportAsPDF(tableRef, sanitizedTitle);
-        break;
-      case 'xlsx':
-      case 'csv':
-        exportUtils.exportTableData(data, sanitizedTitle, format);
-        break;
-      default:
-        console.error('Unsupported export format');
-    }
-  };
-  
-  return (
-    <div className="relative" ref={tableRef}>
-      <div className="absolute top-0 right-0 z-10">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <Download className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleExport('png')}>
-              Export as PNG
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleExport('pdf')}>
-              Export as PDF
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleExport('xlsx')}>
-              Export as Excel
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleExport('csv')}>
-              Export as CSV
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      {children}
-    </div>
-  );
-};
-
-/**
- * Exportable Chart Component
- */
-const ExportableChart = ({ title, children }: { title: string, children: React.ReactNode }) => {
-  const chartRef = useRef<HTMLDivElement>(null);
-  
-  const handleExport = (format: string) => {
-    const sanitizedTitle = title.replace(/\s+/g, '-').toLowerCase();
-    
-    switch (format) {
-      case 'png':
-      case 'jpg':
-        exportUtils.exportAsImage(chartRef, sanitizedTitle, format);
-        break;
-      case 'pdf':
-        exportUtils.exportAsPDF(chartRef, sanitizedTitle);
-        break;
-      default:
-        console.error('Unsupported export format');
-    }
-  };
-  
-  return (
-    <div className="relative" ref={chartRef}>
-      <div className="absolute top-0 right-0 z-10">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <Download className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleExport('png')}>
-              Export as PNG
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleExport('jpg')}>
-              Export as JPG
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleExport('pdf')}>
-              Export as PDF
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      {children}
-    </div>
-  );
-};
-
-/**
- * NITI Aayog View Component
- */
-export const NITIAayogView = () => {
-  const dashboardRef = useRef<HTMLDivElement>(null);
+const DistrictOverviewSection = () => {
+  const districtRef = useRef(null);
   
   const handlePrint = useReactToPrint({
-    documentTitle: `${asifabadOverview.name} Aspirational District Report`,
-    onBeforeGetContent: () => {
-      console.log('Preparing to print NITI Aayog dashboard');
-      return Promise.resolve();
-    },
-    onAfterPrint: () => console.log('NITI Aayog dashboard printed successfully'),
-    // Fix for the TS error by using a function that returns the element directly
-    documentToCanvas: async (element) => {
-      return await html2canvas(element);
-    }
+    documentTitle: "District-Overview",
+    pageStyle: `
+      @media print {
+        body { padding: 20mm; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 2mm; text-align: left; border: 0.5pt solid #ddd; }
+        h1, h2 { margin-bottom: 4mm; }
+      }
+    `,
+    onPrintError: (error) => console.error('Error printing:', error),
+    removeAfterPrint: true,
   });
-  
+
+  const printDocument = () => {
+    if (districtRef.current) {
+      handlePrint(null, () => districtRef.current);
+    }
+  };
+
+  // ... keep existing code (deltaRankingData)
+
+  const deltaRankingChartConfig = {
+    tooltip: {
+      formatter: (value) => `${value} ranks`
+    },
+    grid: {
+      top: 30,
+      bottom: 30,
+      left: 20,
+      right: 20
+    },
+  };
+
   return (
-    <div className="space-y-6" ref={dashboardRef}>
-      {/* Header with Print Button */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Aspirational District Dashboard</h1>
-        <Button onClick={() => handlePrint(dashboardRef.current)} className="bg-blue-600 hover:bg-blue-700">
-          <Printer className="h-4 w-4 mr-2" /> Print Report
+    <div ref={districtRef}>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">District Dashboard</h1>
+        <Button variant="outline" size="sm" onClick={printDocument}>
+          <Printer className="mr-2 h-4 w-4" /> Print Overview
         </Button>
       </div>
       
-      {/* District Overview */}
-      <div className="grid md:grid-cols-3 gap-6">
-        <ExportableCard title="District Profile">
-          <CardHeader className="pb-2">
-            <CardTitle>District Profile</CardTitle>
-            <CardDescription>Key metrics for {asifabadOverview.name}</CardDescription>
+      <div className="grid md:grid-cols-3 gap-6 mb-6">
+        {/* ... keep existing code (District stat cards) */}
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <ExportableCard title="District Performance Index">
+          <CardHeader>
+            <CardTitle>District Performance Index</CardTitle>
+            <CardDescription>Overall performance scores across key metrics</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Population</span>
-                <span className="font-medium">{asifabadOverview.population}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Area</span>
-                <span className="font-medium">{asifabadOverview.area}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Literacy Rate</span>
-                <span className="font-medium">{asifabadOverview.literacy}</span>
-              </div>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={[
+                    { name: 'Health', score: 78 },
+                    { name: 'Education', score: 82 },
+                    { name: 'Agriculture', score: 65 },
+                    { name: 'Infrastructure', score: 71 },
+                    { name: 'Social Welfare', score: 79 }
+                  ]}
+                  margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis domain={[0, 100]} />
+                  <Tooltip formatter={(value) => `${value}/100`} />
+                  <Bar dataKey="score" fill="#4f46e5" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </CardContent>
         </ExportableCard>
         
         <ExportableCard title="Budget Utilization">
-          <CardHeader className="pb-2">
+          <CardHeader>
             <CardTitle>Budget Utilization</CardTitle>
-            <CardDescription>Current fiscal year</CardDescription>
+            <CardDescription>Monthly allocated vs utilized budget</CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center h-[calc(100%-80px)]">
-            <div className="relative h-36 w-36">
-              <div className="absolute inset-0 flex items-center justify-center flex-col">
-                <span className="text-3xl font-bold">{asifabadOverview.budgetUtilization}%</span>
-                <span className="text-sm text-gray-500">Utilized</span>
-              </div>
-              <svg className="w-full h-full" viewBox="0 0 100 100">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="none"
-                  stroke="#e6e6e6"
-                  strokeWidth="10"
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="none"
-                  stroke="#3b82f6"
-                  strokeWidth="10"
-                  strokeDasharray={`${asifabadOverview.budgetUtilization * 2.51} 251`}
-                  strokeLinecap="round"
-                  transform="rotate(-90 50 50)"
-                />
-              </svg>
-            </div>
-          </CardContent>
-        </ExportableCard>
-        
-        <ExportableCard title="Impact Score">
-          <CardHeader className="pb-2">
-            <CardTitle>Impact Score</CardTitle>
-            <CardDescription>Overall development impact</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center h-[calc(100%-80px)]">
-            <div className="w-full mt-2">
-              <div className="flex justify-between mb-2">
-                <span className="text-sm text-gray-500">Score</span>
-                <span className="text-sm font-medium">{asifabadOverview.impactScore}/100</span>
-              </div>
-              <Progress value={asifabadOverview.impactScore} className="h-3" />
-              <div className="flex justify-between text-xs text-gray-500 mt-2">
-                <span>Needs Improvement</span>
-                <span>Average</span>
-                <span>Excellent</span>
-              </div>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <ChartContainer config={deltaRankingChartConfig}>
+                  <LineChart
+                    data={[
+                      { month: 'Jan', allocated: 450, utilized: 380 },
+                      { month: 'Feb', allocated: 500, utilized: 420 },
+                      { month: 'Mar', allocated: 580, utilized: 510 },
+                      { month: 'Apr', allocated: 620, utilized: 540 },
+                      { month: 'May', allocated: 700, utilized: 590 },
+                      { month: 'Jun', allocated: 680, utilized: 620 }
+                    ]}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip formatter={(value) => `₹${value}L`} />
+                    <Legend />
+                    <Line type="monotone" dataKey="allocated" stroke="#8884d8" name="Allocated" />
+                    <Line type="monotone" dataKey="utilized" stroke="#82ca9d" name="Utilized" />
+                  </LineChart>
+                </ChartContainer>
+              </ResponsiveContainer>
             </div>
           </CardContent>
         </ExportableCard>
       </div>
+    </div>
+  );
+};
+
+/**
+ * NITI Aayog Aspirational District Component
+ */
+const NitiAayogSection = () => {
+  const nitiRef = useRef(null);
+  
+  const handlePrint = useReactToPrint({
+    documentTitle: "Aspirational-District-Report",
+    pageStyle: `
+      @media print {
+        body { padding: 20mm; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 2mm; text-align: left; border: 0.5pt solid #ddd; }
+        h1, h2 { margin-bottom: 4mm; }
+      }
+    `,
+    onPrintError: (error) => console.error('Error printing:', error),
+    removeAfterPrint: true,
+  });
+
+  const printDocument = () => {
+    if (nitiRef.current) {
+      handlePrint(null, () => nitiRef.current);
+    }
+  };
+
+  // ... keep existing code (aspirationalIndicators)
+
+  // ... keep existing code (sectoralImprovements)
+
+  return (
+    <div ref={nitiRef}>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Aspirational District View</h1>
+        <Button variant="outline" size="sm" onClick={printDocument}>
+          <Printer className="mr-2 h-4 w-4" /> Print Report
+        </Button>
+      </div>
       
-      {/* Aspirational District Indicators */}
-      <ExportableCard title="Aspirational District Indicators">
-        <CardHeader>
-          <CardTitle>Aspirational District Indicators</CardTitle>
-          <CardDescription>NITI Aayog metrics across sectors</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ExportableTable data={aspirationalIndicators} title="Aspirational Indicators Table">
+      <div className="grid md:grid-cols-3 gap-6 mb-6">
+        {/* ... keep existing code (District cards) */}
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <ExportableCard title="Aspirational District KPIs">
+          <CardHeader>
+            <CardTitle>Aspirational District KPIs</CardTitle>
+            <CardDescription>Key Performance Indicators</CardDescription>
+          </CardHeader>
+          <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Sector</TableHead>
-                  <TableHead className="text-right">Score</TableHead>
-                  <TableHead className="text-right">Rank</TableHead>
-                  <TableHead className="text-right">Improvement (YoY)</TableHead>
-                  <TableHead className="text-right">Progress</TableHead>
+                  <TableHead>Indicator</TableHead>
+                  <TableHead>Score</TableHead>
+                  <TableHead>Rank</TableHead>
+                  <TableHead>Improvement</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {aspirationalIndicators.map((indicator) => (
-                  <TableRow key={indicator.name}>
-                    <TableCell className="font-medium">{indicator.name}</TableCell>
-                    <TableCell className="text-right">{indicator.score}/100</TableCell>
-                    <TableCell className="text-right">#{indicator.rank}</TableCell>
-                    <TableCell className="text-right">+{indicator.improvement}%</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end">
-                        <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-green-500" 
-                            style={{ width: `${indicator.score}%` }}
-                          />
-                        </div>
-                      </div>
-                    </TableCell>
+                {aspirationalIndicators.map((indicator, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{indicator.name}</TableCell>
+                    <TableCell>{indicator.score}/100</TableCell>
+                    <TableCell>{indicator.rank}</TableCell>
+                    <TableCell className="text-green-600">+{indicator.improvement}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          </ExportableTable>
-        </CardContent>
-      </ExportableCard>
-      
-      {/* Sectoral Performance Charts */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Sectoral Performance Trends</CardTitle>
-          <CardDescription>Progress over time across key sectors</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ExportableChart title="Sectoral Progress">
-            <ChartContainer 
-              config={{
-                health: {
-                  label: "Health & Nutrition",
-                  theme: {
-                    light: "#ef4444",
-                    dark: "#f87171",
-                  },
-                },
-                education: {
-                  label: "Education",
-                  theme: {
-                    light: "#3b82f6",
-                    dark: "#60a5fa",
-                  },
-                },
-                agriculture: {
-                  label: "Agriculture & Water",
-                  theme: {
-                    light: "#10b981",
-                    dark: "#34d399",
-                  },
-                },
-                infrastructure: {
-                  label: "Basic Infrastructure",
-                  theme: {
-                    light: "#f59e0b",
-                    dark: "#fbbf24",
-                  },
-                },
-              }}
-            >
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={sectoralImprovements}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis domain={[0, 100]} />
-                  <Tooltip content={<ChartTooltipContent />} />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="health"
-                    stroke="#ef4444"
-                    activeDot={{ r: 8 }}
-                  />
-                  <Line type="monotone" dataKey="education" stroke="#3b82f6" />
-                  <Line type="monotone" dataKey="agriculture" stroke="#10b981" />
-                  <Line type="monotone" dataKey="infrastructure" stroke="#f59e0b" />
-                </LineChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </ExportableChart>
-        </CardContent>
-      </Card>
-      
-      {/* Delta Ranking */}
-      <ExportableCard title="Delta Ranking">
-        <CardHeader>
-          <CardTitle>Delta Ranking Improvement</CardTitle>
-          <CardDescription>Changes in ranking over last 3 evaluation periods</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ExportableChart title="Delta Ranking Chart">
-            <ChartContainer 
-              config={deltaRankingChartConfig}
-            >
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart
-                  data={[
-                    { name: "Q1 2024", rank: 87 },
-                    { name: "Q2 2024", rank: 72 },
-                    { name: "Q3 2024", rank: 58 },
-                    { name: "Q4 2024", rank: 47 },
-                    { name: "Q1 2025", rank: 32 },
-                  ]}
+          </CardContent>
+        </ExportableCard>
+        
+        <ExportableCard title="Sectoral Improvements">
+          <CardHeader>
+            <CardTitle>Sectoral Improvements</CardTitle>
+            <CardDescription>Monthly trends by sector</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={sectoralImprovements}
+                  margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
-                  <YAxis domain={[0, 100]} reversed />
-                  <Tooltip content={<ChartTooltipContent />} />
+                  <YAxis domain={[0, 100]} />
+                  <Tooltip />
                   <Legend />
-                  <Bar dataKey="rank" name="Overall Rank" fill="#8884d8" />
-                </BarChart>
+                  <Line type="monotone" dataKey="health" stroke="#8884d8" name="Health & Nutrition" />
+                  <Line type="monotone" dataKey="education" stroke="#82ca9d" name="Education" />
+                  <Line type="monotone" dataKey="agriculture" stroke="#ffc658" name="Agriculture & Water" />
+                  <Line type="monotone" dataKey="infrastructure" stroke="#ff7300" name="Infrastructure" />
+                </LineChart>
               </ResponsiveContainer>
-            </ChartContainer>
-          </ExportableChart>
-        </CardContent>
-      </ExportableCard>
+            </div>
+          </CardContent>
+        </ExportableCard>
+      </div>
     </div>
   );
 };
 
 /**
- * District View Component
+ * Department & Infrastructure Component
  */
-export const DistrictView = () => {
-  const dashboardRef = useRef<HTMLDivElement>(null);
+const InfrastructureSection = () => {
+  const infraRef = useRef(null);
   
   const handlePrint = useReactToPrint({
-    documentTitle: `${districtOverview.name} District Dashboard Report`,
-    onBeforeGetContent: () => {
-      console.log('Preparing to print dashboard');
-      return Promise.resolve();
-    },
-    onAfterPrint: () => console.log('Dashboard printed successfully'),
-    // Fix for the TS error by using a function that returns the element directly
-    documentToCanvas: async (element) => {
-      return await html2canvas(element);
-    }
+    documentTitle: "Infrastructure-Report",
+    pageStyle: `
+      @media print {
+        body { padding: 20mm; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 2mm; text-align: left; border: 0.5pt solid #ddd; }
+        h1, h2 { margin-bottom: 4mm; }
+      }
+    `,
+    onPrintError: (error) => console.error('Error printing:', error),
+    removeAfterPrint: true,
   });
-  
+
+  const printDocument = () => {
+    if (infraRef.current) {
+      handlePrint(null, () => infraRef.current);
+    }
+  };
+
+  // ... keep existing code (keyIndicators)
+
+  // ... keep existing code (departmentPerformance)
+
   return (
-    <div className="space-y-6" ref={dashboardRef}>
-      {/* Header with Print Button */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">District View</h1>
-        <Button onClick={() => handlePrint(dashboardRef.current)} className="bg-blue-600 hover:bg-blue-700">
-          <Printer className="h-4 w-4 mr-2" /> Print Report
+    <div ref={infraRef}>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">District Infrastructure</h1>
+        <Button variant="outline" size="sm" onClick={printDocument}>
+          <Printer className="mr-2 h-4 w-4" /> Print Report
         </Button>
       </div>
       
-      {/* District Overview */}
-      <div className="grid md:grid-cols-3 gap-6">
-        <ExportableCard title="District Profile">
-          <CardHeader className="pb-2">
-            <CardTitle>District Profile</CardTitle>
-            <CardDescription>Key metrics for {districtOverview.name}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Population</span>
-                <span className="font-medium">{districtOverview.population}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Area</span>
-                <span className="font-medium">{districtOverview.area}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Literacy Rate</span>
-                <span className="font-medium">{districtOverview.literacy}</span>
-              </div>
-            </div>
-          </CardContent>
-        </ExportableCard>
-        
-        <ExportableCard title="Budget Utilization">
-          <CardHeader className="pb-2">
-            <CardTitle>Budget Utilization</CardTitle>
-            <CardDescription>Current fiscal year</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center h-[calc(100%-80px)]">
-            <div className="relative h-36 w-36">
-              <div className="absolute inset-0 flex items-center justify-center flex-col">
-                <span className="text-3xl font-bold">{districtOverview.budgetUtilization}%</span>
-                <span className="text-sm text-gray-500">Utilized</span>
-              </div>
-              <svg className="w-full h-full" viewBox="0 0 100 100">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="none"
-                  stroke="#e6e6e6"
-                  strokeWidth="10"
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="40"
-                  fill="none"
-                  stroke="#3b82f6"
-                  strokeWidth="10"
-                  strokeDasharray={`${districtOverview.budgetUtilization * 2.51} 251`}
-                  strokeLinecap="round"
-                  transform="rotate(-90 50 50)"
-                />
-              </svg>
-            </div>
-          </CardContent>
-        </ExportableCard>
-        
-        <ExportableCard title="Impact Score">
-          <CardHeader className="pb-2">
-            <CardTitle>Impact Score</CardTitle>
-            <CardDescription>Overall development impact</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center h-[calc(100%-80px)]">
-            <div className="w-full mt-2">
-              <div className="flex justify-between mb-2">
-                <span className="text-sm text-gray-500">Score</span>
-                <span className="text-sm font-medium">{districtOverview.impactScore}/100</span>
-              </div>
-              <Progress value={districtOverview.impactScore} className="h-3" />
-              <div className="flex justify-between text-xs text-gray-500 mt-2">
-                <span>Needs Improvement</span>
-                <span>Average</span>
-                <span>Excellent</span>
-              </div>
-            </div>
-          </CardContent>
-        </ExportableCard>
-      </div>
-      
-      {/* Key Indicators */}
-      <ExportableCard title="Key District Indicators">
+      <ExportableCard title="Key Infrastructure Indicators" className="mb-6">
         <CardHeader>
-          <CardTitle>Key District Indicators</CardTitle>
-          <CardDescription>Development metrics across sectors</CardDescription>
+          <CardTitle>Key Infrastructure Indicators</CardTitle>
+          <CardDescription>Critical district infrastructure metrics</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-5 gap-4">
-            {keyIndicators.map((indicator) => (
-              <div key={indicator.name} className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-500">{indicator.name}</span>
-                  <span className="text-sm font-medium">{indicator.count}</span>
-                </div>
+          <div className="grid md:grid-cols-5 gap-6">
+            {keyIndicators.map((indicator, index) => (
+              <div key={index} className="space-y-2">
+                <h3 className="text-lg font-medium">{indicator.name}</h3>
+                <p className="text-2xl font-bold">{indicator.count}</p>
                 <Progress value={indicator.progress} className="h-2" />
+                <p className="text-sm text-muted-foreground">{indicator.progress}% Complete</p>
               </div>
             ))}
           </div>
         </CardContent>
       </ExportableCard>
-      
-      {/* Department Performance */}
-      <Card>
+            
+      <ExportableCard title="Department Performance">
         <CardHeader>
           <CardTitle>Department Performance</CardTitle>
-          <CardDescription>Budget allocation vs utilization by department</CardDescription>
+          <CardDescription>Budget allocation and utilization by department</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 gap-6">
-            <ExportableTable data={departmentPerformance} title="Department Performance Table">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Department</TableHead>
-                    <TableHead className="text-right">Budget (Cr)</TableHead>
-                    <TableHead className="text-right">Spent (Cr)</TableHead>
-                    <TableHead className="text-right">Progress</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {departmentPerformance.map((dept) => (
-                    <TableRow key={dept.name}>
-                      <TableCell className="font-medium">{dept.name}</TableCell>
-                      <TableCell className="text-right">₹{dept.budget}</TableCell>
-                      <TableCell className="text-right">₹{dept.spent}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end">
-                          <span className="mr-2 text-sm">{dept.progress}%</span>
-                          <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div 
-                              className="h-full bg-blue-500" 
-                              style={{ width: `${dept.progress}%` }}
-                            />
-                          </div>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ExportableTable>
-            
-            <ExportableChart title="Monthly Budget Performance">
-              <ChartContainer 
-                config={{
-                  budget: {
-                    label: "Budget",
-                    theme: {
-                      light: "#3b82f6",
-                      dark: "#60a5fa",
-                    },
-                  },
-                  actual: {
-                    label: "Actual",
-                    theme: {
-                      light: "#10b981",
-                      dark: "#34d399",
-                    },
-                  },
-                }}
-              >
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={monthlyData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip content={<ChartTooltipContent />} />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="budget"
-                      stroke="#3b82f6"
-                      activeDot={{ r: 8 }}
-                    />
-                    <Line type="monotone" dataKey="actual" stroke="#10b981" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </ChartContainer>
-            </ExportableChart>
-          </div>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Department</TableHead>
+                <TableHead>Budget (₹L)</TableHead>
+                <TableHead>Spent (₹L)</TableHead>
+                <TableHead>Progress</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {departmentPerformance.map((dept, index) => (
+                <TableRow key={index}>
+                  <TableCell>{dept.name}</TableCell>
+                  <TableCell>{dept.budget}</TableCell>
+                  <TableCell>{dept.spent}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Progress value={dept.progress} className="w-40" />
+                      <span className="text-sm">{dept.progress}%</span>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
-      </Card>
+      </ExportableCard>
     </div>
   );
 };
 
+/**
+ * Main District Dashboard Component
+ */
 const DistrictDashboard = () => {
-  const [activeView, setActiveView] = useState<'district' | 'niti'>('district');
-  const dashboardRef = useRef<HTMLDivElement>(null);
-  
-  const handlePrint = useReactToPrint({
-    documentTitle: `${activeView === 'district' ? districtOverview.name : asifabadOverview.name} Dashboard Report`,
-    onBeforeGetContent: () => {
-      console.log('Preparing to print dashboard');
-      return Promise.resolve();
-    },
-    onAfterPrint: () => console.log('Dashboard printed successfully'),
-    // Fix for the TS error by using a function that returns the element directly
-    documentToCanvas: async (element) => {
-      return await html2canvas(element);
-    }
-  });
+  const [activeView, setActiveView] = useState('overview');
   
   return (
-    <div className="space-y-6" ref={dashboardRef}>
-      {/* Header with view toggle and Print Button */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-4">
-          <h1 className="text-2xl font-bold text-gray-800">
-            {activeView === 'district' ? 'District Dashboard' : 'Aspirational District Dashboard'}
-          </h1>
-          <div className="inline-flex items-center rounded-md border border-gray-200 bg-white px-1">
-            <button
-              onClick={() => setActiveView('district')}
-              className={`rounded-sm px-3 py-1.5 text-sm font-medium transition-colors ${
-                activeView === 'district' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'text-muted-foreground hover:bg-muted/50'
-              }`}
-            >
-              District View
-            </button>
-            <button
-              onClick={() => setActiveView('niti')}
-              className={`rounded-sm px-3 py-1.5 text-sm font-medium transition-colors ${
-                activeView === 'niti' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'text-muted-foreground hover:bg-muted/50'
-              }`}
-            >
-              NITI Aayog View
-            </button>
-          </div>
-        </div>
+    <div className="container mx-auto p-4 space-y-6">
+      <div className="flex space-x-2 mb-6">
+        <Button 
+          variant={activeView === 'overview' ? 'default' : 'outline'} 
+          onClick={() => setActiveView('overview')}
+        >
+          District Overview
+        </Button>
+        <Button 
+          variant={activeView === 'niti-aayog' ? 'default' : 'outline'} 
+          onClick={() => setActiveView('niti-aayog')}
+        >
+          Aspirational District View
+        </Button>
+        <Button 
+          variant={activeView === 'infrastructure' ? 'default' : 'outline'} 
+          onClick={() => setActiveView('infrastructure')}
+        >
+          Infrastructure & Departments
+        </Button>
       </div>
       
-      {activeView === 'district' ? <DistrictView /> : <NITIAayogView />}
+      {activeView === 'overview' && <DistrictOverviewSection />}
+      {activeView === 'niti-aayog' && <NitiAayogSection />}
+      {activeView === 'infrastructure' && <InfrastructureSection />}
     </div>
   );
 };
