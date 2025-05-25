@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
@@ -6,7 +7,7 @@ import UsersSection from '../components/UsersSection';
 import TechnologySection from '../components/TechnologySection';
 import CallToAction from '../components/CallToAction';
 import Footer from '../components/Footer';
-import LoginPage from '../LoginPage';
+import LoginPage from './LoginPage'; // Corrected import path
 
 const Index = () => {
   useEffect(() => {
