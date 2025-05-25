@@ -6,7 +6,7 @@ import UsersSection from '../components/UsersSection';
 import TechnologySection from '../components/TechnologySection';
 import CallToAction from '../components/CallToAction';
 import Footer from '../components/Footer';
-import LoginPage from './auth/LoginPage';
+import LoginPage from '../LoginPage';
 
 const Index = () => {
   useEffect(() => {
@@ -27,7 +27,5 @@ const Index = () => {
     </div>
   );
 };
-
-
 
 export default Index;

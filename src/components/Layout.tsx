@@ -3,13 +3,13 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Home, Map, BarChart2, Landmark, Stethoscope } from 'lucide-react';
 
-
+// Corrected navItems to use PascalCase for icons
 const navItems = [
-  { path: '/', label: 'Dashboard', icon: home },
-  { path: '/road-network', label: 'Road Network', icon: map },
-  { path: '/district-stats', label: 'District Stats', icon: barChart2 },
-  { path: '/shg-financing', label: 'SHG Financing', icon: landmark },
-  { path: '/health-data', label: 'Health Data', icon: stethoscope },
+  { path: '/', label: 'Dashboard', icon: Home },
+  { path: '/road-network', label: 'Road Network', icon: Map },
+  { path: '/district-stats', label: 'District Stats', icon: BarChart2 },
+  { path: '/shg-financing', label: 'SHG Financing', icon: Landmark },
+  { path: '/health-data', label: 'Health Data', icon: Stethoscope },
 ];
 
 const Layout = () => {

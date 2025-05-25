@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -12,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useReactToPrint, IReactToPrintProps } from 'react-to-print';
+import { useReactToPrint } from 'react-to-print'; // Removed IReactToPrintProps
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
@@ -165,7 +166,7 @@ const exportUtils = {
 const ExportableCard = ({ children, title, className = "", exportOptions = true }: { children: React.ReactNode, title: string, className?: string, exportOptions?: boolean }) => {
   const cardRef = useRef(null);
   
-  const handleExport = (format) => {
+  const handleExport = (format: 'png' | 'jpg' | 'pdf') => {
     const sanitizedTitle = title.replace(/\s+/g, '-').toLowerCase();
     
     switch (format) {
@@ -216,13 +217,12 @@ const ExportableCard = ({ children, title, className = "", exportOptions = true 
 const ExportableTable = ({ data, title, children }: { data: any[], title: string, children: React.ReactNode }) => {
   const tableRef = useRef(null);
   
-  const handleExport = (format) => {
+  const handleExport = (format: 'png' | 'pdf' | 'xlsx' | 'csv') => {
     const sanitizedTitle = title.replace(/\s+/g, '-').toLowerCase();
     
     switch (format) {
       case 'png':
-      case 'jpg':
-        exportUtils.exportAsImage(tableRef, sanitizedTitle, format);
+        exportUtils.exportAsImage(tableRef, sanitizedTitle, 'png');
         break;
       case 'pdf':
         exportUtils.exportAsPDF(tableRef, sanitizedTitle);
@@ -272,7 +272,7 @@ const ExportableTable = ({ data, title, children }: { data: any[], title: string
 const ExportableChart = ({ title, children }: { title: string, children: React.ReactNode }) => {
   const chartRef = useRef(null);
   
-  const handleExport = (format) => {
+  const handleExport = (format: 'png' | 'jpg' | 'pdf') => {
     const sanitizedTitle = title.replace(/\s+/g, '-').toLowerCase();
     
     switch (format) {
@@ -315,13 +315,24 @@ const ExportableChart = ({ title, children }: { title: string, children: React.R
   );
 };
 
+// Define deltaRankingChartConfig
+const deltaRankingChartConfig: ChartConfig = {
+  rank: {
+    label: "Overall Rank",
+    theme: {
+      light: "#3b82f6", // Example blue color
+      dark: "#60a5fa",  // Example light blue color
+    },
+  },
+};
+
 /**
  * NITI Aayog View Component
  */
 export const NITIAayogView = () => {
   const dashboardRef = useRef<HTMLDivElement>(null);
   
-  const printOptions: IReactToPrintProps = {
+  const printOptions = { // Types will be inferred by useReactToPrint
     content: () => dashboardRef.current,
     documentTitle: `${asifabadOverview.name} Aspirational District Report`,
     onBeforeGetContent: () => {
@@ -477,7 +488,7 @@ export const NITIAayogView = () => {
         <CardContent>
           <ExportableChart title="Sectoral Progress">
             <ChartContainer 
-              config={{
+              config={{ // This config is for the LineChart
                 health: {
                   label: "Health & Nutrition",
                   theme: {
@@ -518,7 +529,7 @@ export const NITIAayogView = () => {
                   <Line
                     type="monotone"
                     dataKey="health"
-                    stroke="var(--color-health)" // Using themed color
+                    stroke="var(--color-health)"
                     activeDot={{ r: 8 }}
                   />
                   <Line type="monotone" dataKey="education" stroke="var(--color-education)" />
@@ -539,7 +550,7 @@ export const NITIAayogView = () => {
         </CardHeader>
         <CardContent>
           <ExportableChart title="Delta Ranking Chart">
-            <ChartContainer config={deltaRankingChartConfig}> {/* Added config prop */}
+            <ChartContainer config={deltaRankingChartConfig}> {/* Using the defined config */}
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart
                   data={[
@@ -572,7 +583,7 @@ export const NITIAayogView = () => {
 export const DistrictView = () => {
   const dashboardRef = useRef<HTMLDivElement>(null);
 
-  const printOptions: IReactToPrintProps = {
+  const printOptions = { // Types will be inferred
     content: () => dashboardRef.current,
     documentTitle: `${districtOverview.name} District Dashboard Report`,
     onBeforeGetContent: () => {
@@ -744,15 +755,15 @@ export const DistrictView = () => {
                   budget: {
                     label: "Budget",
                     theme: {
-                      light: "#3b82f6", // Updated to use direct hex
-                      dark: "#60a5fa",  // Updated to use direct hex
+                      light: "#3b82f6", 
+                      dark: "#60a5fa",  
                     },
                   },
                   actual: {
                     label: "Actual",
                     theme: {
-                      light: "#10b981", // Updated to use direct hex
-                      dark: "#34d399",  // Updated to use direct hex
+                      light: "#10b981", 
+                      dark: "#34d399",  
                     },
                   },
                 }}
@@ -767,7 +778,7 @@ export const DistrictView = () => {
                     <Line
                       type="monotone"
                       dataKey="budget"
-                      stroke="var(--color-budget)" // Using themed color
+                      stroke="var(--color-budget)" 
                       activeDot={{ r: 8 }}
                     />
                     <Line type="monotone" dataKey="actual" stroke="var(--color-actual)" /> 
@@ -786,7 +797,7 @@ const DistrictDashboard = () => {
   const [activeView, setActiveView] = useState('district');
   const dashboardRef = useRef<HTMLDivElement>(null); 
   
-  const printOptions: IReactToPrintProps = {
+  const printOptions = { // Types will be inferred
     content: () => dashboardRef.current, 
     documentTitle: `${activeView === 'district' ? districtOverview.name : asifabadOverview.name} Dashboard Report`,
     onBeforeGetContent: () => {
@@ -795,33 +806,33 @@ const DistrictDashboard = () => {
     },
     onAfterPrint: () => console.log('Dashboard printed successfully')
   };
-  // const handlePrint = useReactToPrint(printOptions); // This line was present but commented out or not used directly for a button in the main component in the provided code. If a main print button is added, it should use this.
+  // const handlePrint = useReactToPrint(printOptions); // Main print button can use this if added
 
   return (
-    <div className="space-y-6" ref={dashboardRef}>
+    <div className="space-y-6 p-6 bg-gray-50 min-h-screen" ref={dashboardRef}> {/* Added padding and background */}
       {/* Header with view toggle and Print Button */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-6"> {/* Added margin-bottom */}
         <div className="flex items-center space-x-4">
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 className="text-3xl font-bold text-gray-800"> {/* Increased heading size */}
             {activeView === 'district' ? 'District Dashboard' : 'Aspirational District Dashboard'}
           </h1>
-          <div className="inline-flex items-center rounded-md border border-gray-200 bg-white px-1">
+          <div className="inline-flex items-center rounded-md border border-gray-300 bg-white shadow-sm"> {/* Enhanced toggle style */}
             <button
               onClick={() => setActiveView('district')}
-              className={`rounded-sm px-3 py-1.5 text-sm font-medium transition-colors ${
+              className={`rounded-l-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${ // Enhanced button style
                 activeView === 'district' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'text-muted-foreground hover:bg-muted/50'
+                  ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+                  : 'text-muted-foreground hover:bg-gray-100'
               }`}
             >
               District View
             </button>
             <button
               onClick={() => setActiveView('niti')}
-              className={`rounded-sm px-3 py-1.5 text-sm font-medium transition-colors ${
+              className={`rounded-r-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${ // Enhanced button style
                 activeView === 'niti' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'text-muted-foreground hover:bg-muted/50'
+                  ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+                  : 'text-muted-foreground hover:bg-gray-100'
               }`}
             >
               NITI Aayog View
@@ -829,11 +840,10 @@ const DistrictDashboard = () => {
           </div>
         </div>
         {/* 
-          If a main print button for the entire dashboard is needed, it can be added here.
-          Example:
-          <Button onClick={useReactToPrint(printOptions)} variant="default" className="flex items-center gap-2">
-             <Printer className="h-4 w-4" />
-             Print Full Dashboard
+          Example for a main print button:
+          <Button onClick={useReactToPrint(printOptions)} variant="default" className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+             <Printer className="h-5 w-5" />
+             Print Dashboard
           </Button> 
         */}
       </div>
