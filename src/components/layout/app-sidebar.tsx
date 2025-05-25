@@ -74,6 +74,13 @@ const navItems: NavItem[] = [
     requiresDepartmentAccess: true
   },
   { 
+    title: 'Intelligence', 
+    path: '/insights', 
+    icon: CheckSquare, 
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'admin'],
+    requiresDepartmentAccess: true
+  },
+  { 
     title: 'Reports', 
     path: '/reports', 
     icon: FileText, 

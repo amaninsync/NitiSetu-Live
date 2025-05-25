@@ -1,6 +1,5 @@
-
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { User, UserRole } from "@/types";
+import { User } from "@/types";
 import { mockUsers } from "@/lib/mock-data";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -16,45 +15,48 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check for saved user in localStorage
     const savedUser = localStorage.getItem("nitisetu-user");
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
+    if (!savedUser) return;
+
+    try {
+      const parsedUser: User = JSON.parse(savedUser);
+
+      // Basic shape validation (adapt as needed)
+      if (parsedUser?.email && parsedUser?.role && Array.isArray(parsedUser?.permissions)) {
+        setUser(parsedUser);
         setIsAuthenticated(true);
-      } catch (error) {
-        console.error("Failed to parse saved user", error);
-        localStorage.removeItem("nitisetu-user");
+      } else {
+        throw new Error("Invalid user format");
       }
+    } catch (error) {
+      console.error("Failed to load saved user:", error);
+      localStorage.removeItem("nitisetu-user");
+      setUser(null);
+      setIsAuthenticated(false);
     }
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // In a real app, this would make an API request
-    // For now, we'll just mock it with our sample data
-    
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Find user by email (in a real app, this would be handled by the backend)
-    const foundUser = mockUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
+
+    const foundUser = mockUsers.find(
+      (u) => u.email.toLowerCase() === email.toLowerCase()
+    );
+
     if (foundUser) {
-      // In a real app, passwords would be hashed and properly compared
-      // For this mock, we'll accept any password
       setUser(foundUser);
       setIsAuthenticated(true);
       localStorage.setItem("nitisetu-user", JSON.stringify(foundUser));
-      
+
       toast({
         title: "Login successful",
         description: `Welcome back, ${foundUser.name}`,
       });
-      
+
       return true;
     } else {
       toast({
@@ -70,6 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem("nitisetu-user");
+
     toast({
       title: "Logged out",
       description: "You have been successfully logged out",
@@ -78,11 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const hasPermission = (permission: string): boolean => {
     if (!user) return false;
-    
-    // Admin and district collector have all permissions
     if (user.role === "admin" || user.role === "district_collector") return true;
-    
-    // Check if user has the specific permission
     return user.permissions.includes(permission);
   };
 
@@ -103,7 +102,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;

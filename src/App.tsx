@@ -22,7 +22,8 @@ import ProjectDashboardPage from "./pages/ProjectDashboardPage";
 import DepartmentView from "./pages/dashboard/DepartmentView";
 import DistrictStats from "./pages/dashboard/DistrictStats";
 import DistrictDashboard from "./pages/dashboard/DistrictDashboard";
-
+import InsightsView from "./pages/InsightsView";
+import Product from "./pages/Product"
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
 
@@ -36,11 +37,12 @@ function App() {
           <BrowserRouter>
             <Routes>
               {/* Public Routes */}
+              <Route path="/" element={<Index />} />
               <Route path="/login" element={<LoginPage />} />
               
               {/* Protected Routes */}
               <Route element={<AppShell />}>
-                <Route path="/" element={<Index />} />
+                <Route path="/product" element={<Product />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/upload" element={<UploadPage />} />
                 <Route path="/table-view" element={<TableViewPage />} />
@@ -50,6 +52,7 @@ function App() {
                 <Route path="/department-view" element={<DepartmentView />} />
                 <Route path="/district-stats" element={<DistrictStats />} />
                 <Route path="/district-dashboard" element={<DistrictDashboard />} />
+                <Route path="/insights" element={<InsightsView />} />
               </Route>
               
               {/* Catch-all route */}
