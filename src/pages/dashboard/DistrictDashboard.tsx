@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useReactToPrint } from 'react-to-print';
+import { useReactToPrint, IReactToPrintProps } from 'react-to-print';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
@@ -320,15 +320,17 @@ const ExportableChart = ({ title, children }: { title: string, children: React.R
  */
 export const NITIAayogView = () => {
   const dashboardRef = useRef<HTMLDivElement>(null);
-  const handlePrint = useReactToPrint({
-    content: () => dashboardRef.current, // Corrected content property
+  
+  const printOptions: IReactToPrintProps = {
+    content: () => dashboardRef.current,
     documentTitle: `${asifabadOverview.name} Aspirational District Report`,
     onBeforeGetContent: () => {
       console.log('Preparing to print NITI Aayog dashboard');
       return Promise.resolve();
     },
     onAfterPrint: () => console.log('NITI Aayog dashboard printed successfully')
-  });
+  };
+  const handlePrint = useReactToPrint(printOptions);
   
   return (
     <div className="space-y-6" ref={dashboardRef}>
@@ -569,15 +571,17 @@ export const NITIAayogView = () => {
  */
 export const DistrictView = () => {
   const dashboardRef = useRef<HTMLDivElement>(null);
-  const handlePrint = useReactToPrint({
-    content: () => dashboardRef.current, // Corrected content property
+
+  const printOptions: IReactToPrintProps = {
+    content: () => dashboardRef.current,
     documentTitle: `${districtOverview.name} District Dashboard Report`,
     onBeforeGetContent: () => {
       console.log('Preparing to print dashboard');
       return Promise.resolve();
     },
     onAfterPrint: () => console.log('Dashboard printed successfully')
-  });
+  };
+  const handlePrint = useReactToPrint(printOptions);
   
   return (
     <div className="space-y-6" ref={dashboardRef}>
@@ -782,17 +786,17 @@ const DistrictDashboard = () => {
   const [activeView, setActiveView] = useState('district');
   const dashboardRef = useRef<HTMLDivElement>(null); 
   
-  // Corrected useReactToPrint usage for the main dashboard print button
-  const handlePrint = useReactToPrint({
-    content: () => dashboardRef.current, // Corrected content property
+  const printOptions: IReactToPrintProps = {
+    content: () => dashboardRef.current, 
     documentTitle: `${activeView === 'district' ? districtOverview.name : asifabadOverview.name} Dashboard Report`,
     onBeforeGetContent: () => {
       console.log('Preparing to print dashboard');
       return Promise.resolve();
     },
     onAfterPrint: () => console.log('Dashboard printed successfully')
-  });
-  
+  };
+  // const handlePrint = useReactToPrint(printOptions); // This line was present but commented out or not used directly for a button in the main component in the provided code. If a main print button is added, it should use this.
+
   return (
     <div className="space-y-6" ref={dashboardRef}>
       {/* Header with view toggle and Print Button */}
@@ -824,13 +828,13 @@ const DistrictDashboard = () => {
             </button>
           </div>
         </div>
-        {/* The main print button for the entire dashboard was previously commented out. 
-            If it's needed, it should also use the corrected handlePrint.
-            Example:
-            <Button onClick={handlePrint} variant="default" className="flex items-center gap-2">
-              <Printer className="h-4 w-4" />
-              Print Full Dashboard
-            </Button> 
+        {/* 
+          If a main print button for the entire dashboard is needed, it can be added here.
+          Example:
+          <Button onClick={useReactToPrint(printOptions)} variant="default" className="flex items-center gap-2">
+             <Printer className="h-4 w-4" />
+             Print Full Dashboard
+          </Button> 
         */}
       </div>
       
