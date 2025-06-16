@@ -19,8 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Helvetica', 'Arial', 'sans-serif'],
-				helvetica: ['Helvetica', 'Arial', 'sans-serif'],
+				sans: ['Inter', 'Arial', 'sans-serif'],
+				inter: ['Inter', 'Arial', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

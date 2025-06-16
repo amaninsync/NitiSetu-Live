@@ -1,9 +1,98 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ChevronRight, Briefcase, BarChart3, FileText, CalendarIcon, TrendingUp, TrendingDown, MapPin, Package, Users, Baby, AlertTriangle, Activity, Scale, Ruler, HeartPulse, Home, CalendarCheck, DoorOpen, MapPinOff, DoorClosed, UserCheck, Coffee, Utensils, Camera, GraduationCap, Heart } from 'lucide-react';
-import { FCRReportTab, PHCMappingTab, THRReportTab, UtilizationReportTab } from '../components/ReportTabs';
-import { MCHKitDashboard } from '../components/MCHKitDashboard'; // Add this line
+import { ChevronRight, Briefcase, BarChart3, FileText, CalendarIcon, TrendingUp, TrendingDown, MapPin, Package, CheckSquare, Users, Baby, ShieldCheck, Activity, Target, PregnantWoman, Breastfeeding, ChildFriendly, ChildCare, Scale, Ruler, HeartPulse, HeartHalf, Home, CalendarCheck, DoorOpen, MapPinOff, DoorClosed, UserCheck, Coffee, Utensils, Camera, GraduationCap, Heart } from 'lucide-react';
+
+// --- NEW: Detailed Poshan Data structured by Mandal (extracted from PDFs) ---
+// This object centralizes the granular data available from your PDF sources.
+// 'all' key represents the overall district totals from the NITI Aayog report (April 2025)
+// and Screenshot (133) (May 2025 totals), unless specified otherwise.
+const detailedPoshanDataByMandal = {
+  // District Totals (primarily from NITI Aayog Report April 2025 and Screenshot 133 May 2025 totals)
+  'all': {
+    // From NITI Aayog Report April 2025
+    underweightChildrenPercentage: 9.37, //
+    stuntedChildrenPercentage: 12.13, //
+    samChildrenPercentage: 0.54, //
+    mamChildrenPercentage: 2.53, //
+    awcOwnBuildingPercentage: 36.38, //
+    awcConductedVHSNDPercentage: 100.00, //
+    // From Screenshot 133 May 2025 Totals
+    totalAWCOpen: 782, //
+    awcOpenedOutsideFencedArea: 596, //
+    awcDidntOpen: 191, //
+    totalChildren3YrTo6Yr: 21351, //
+    totalChildrenAttended: 8007, //
+    morningSnackGiven: 7856, //
+    totalHCMGiven: 7003, //
+    imageCaptured: 23, //
+    noOfAWcCompletedECCE: 791, //
+  },
+  // Mandal Specific Data from Screenshot 133 (May 2025 Daily Monitoring) and NITI Aayog (April 2025)
+  'asifabad-m': { // Using mandal id 'asifabad-m' from your `mandals` array
+    totalAWCOpen: 223, //
+    awcOpenedOutsideFencedArea: 170, //
+    awcDidntOpen: 37, //
+    totalChildren3YrTo6Yr: 4268, //
+    totalChildrenAttended: 1456, //
+    morningSnackGiven: 1424, //
+    totalHCMGiven: 1601, //
+    imageCaptured: 4, //
+    noOfAWcCompletedECCE: 225, //
+    underweightChildrenPercentage: 13, // (from NITI Aayog report, 'Asifsbad Total' column)
+  },
+  'jainoor-m': { // Using mandal id 'jainoor-m'
+    totalAWCOpen: 127, //
+    awcOpenedOutsideFencedArea: 98, //
+    awcDidntOpen: 48, //
+    totalChildren3YrTo6Yr: 3282, //
+    totalChildrenAttended: 1281, //
+    morningSnackGiven: 1278, //
+    totalHCMGiven: 964, //
+    imageCaptured: 0, //
+    noOfAWcCompletedECCE: 127, //
+    underweightChildrenPercentage: 3.78, // (from NITI Aayog report, 'Tirtal' column, assuming Tirtal relates to Jainoor block for this metric)
+  },
+  'kagaznagar-m': { // Using mandal id 'kagaznagar-m'
+    totalAWCOpen: 148, //
+    awcOpenedOutsideFencedArea: 115, //
+    awcDidntOpen: 25, //
+    totalChildren3YrTo6Yr: 4656, //
+    totalChildrenAttended: 1059, //
+    morningSnackGiven: 1059, //
+    totalHCMGiven: 874, //
+    imageCaptured: 3, //
+    noOfAWcCompletedECCE: 153, //
+    // No explicit underweight percentage found in NITI Aayog for Kagaznagar in the same table as others
+  },
+  'sirpur-t-m': { // Using mandal id 'sirpur-t-m' (Sirpur-T in NITI Ayog)
+    totalAWCOpen: 186, //
+    awcOpenedOutsideFencedArea: 138, //
+    awcDidntOpen: 16, //
+    totalChildren3YrTo6Yr: 5440, //
+    totalChildrenAttended: 2358, //
+    morningSnackGiven: 2326, //
+    totalHCMGiven: 2455, //
+    imageCaptured: 16, //
+    noOfAWcCompletedECCE: 188, //
+    underweightChildrenPercentage: 13.52, //
+  },
+  'wankidi-m': { // Using mandal id 'wankidi-m'
+    totalAWCOpen: 88, //
+    awcOpenedOutsideFencedArea: 75, //
+    awcDidntOpen: 85, //
+    totalChildren3YrTo6Yr: 3705, //
+    totalChildrenAttended: 1852, //
+    morningSnackGiven: 1769, //
+    totalHCMGiven: 1109, //
+    imageCaptured: 0, //
+    noOfAWcCompletedECCE: 98, //
+    underweightChildrenPercentage: 5.28, //
+  },
+  // Add other mandals here if you have specific data for them in future documents.
+  // If a mandal is selected for which no specific data is provided above,
+  // the component will fall back to 'all' (district totals).
+};
 
 // Simulated FCR data based on the Excel structure
 const fcrData = [
@@ -23,7 +112,8 @@ const districts = [
 
 // Data for Mandals (Blocks)
 const mandals = [
-  { id: 'asifabad-m', name: 'Asifabad', abbreviation: 'AIFD' },
+  { id: 'all', name: 'All Mandals', abbreviation: 'ALL' }, // Added 'all' option
+  { id: 'asifabad-m', name: 'Asifabad', abbreviation: 'ASF' },
   { id: 'bejjur-m', name: 'Bejjur', abbreviation: 'BJR' },
   { id: 'dahegaon-m', name: 'Dahegaon', abbreviation: 'DHG' },
   { id: 'jainoor-m', name: 'Jainoor', abbreviation: 'JNR' },
@@ -42,12 +132,14 @@ const mandals = [
 
 // Data for Municipalities (Divisions)
 const municipalities = [
+  { id: 'all', name: 'All Municipalities', abbreviation: 'ALL' }, // Added 'all' option
   { id: 'm-asifabad', name: 'Asifabad Municipality', abbreviation: 'ASIF' },
   { id: 'm-kagaznagar', name: 'Kagaznagar Municipality', abbreviation: 'KAGA' },
 ];
 
 // Data for Gram Panchayats (GP)
 const gramPanchayats = [
+  { id: 'all', name: 'All GPs', abbreviation: 'ALL' }, // Added 'all' option
   { id: 'gp-kosara', name: 'Kosara', abbreviation: 'KSR' },
   { id: 'gp-malangondi', name: 'Malangondi', abbreviation: 'MLG' },
   { id: 'gp-venkatapur', name: 'Venkatapur', abbreviation: 'VNK' },
@@ -71,7 +163,7 @@ const gramPanchayats = [
   { id: 'gp-ada', name: 'Ada', abbreviation: 'ADA' },
   { id: 'gp-chirrakunta', name: 'Chirrakunta', abbreviation: 'CRK' },
   { id: 'gp-asifabad-municipality', name: 'Asifabad (municipality)', abbreviation: 'ASIF' },
-  { id: 'gp-chorpalli', name: 'Chorpalli', abbreviation: 'CRP' },
+  { id: 'gp-chorpalli', name: 'Chorpalli', abbreviation: 'CRP' }, // Renamed to avoid id conflict
   { id: 'gp-edulawada', name: 'Edulawada', abbreviation: 'EDL' },
   { id: 'gp-rahapally', name: 'Rahapally', abbreviation: 'RHP' },
   { id: 'gp-saleguda', name: 'Saleguda', abbreviation: 'SLG' },
@@ -389,9 +481,9 @@ const topLevelDepartments = [
 // Enhanced departments with DWO
 const departments = [
   { id: 'dwo', name: 'District Welfare Officer', color: 'bg-purple-600', description: 'Dr. Bhasker' },
-  { id: 'health', name: 'District Medical & Health Officer', color: 'bg-green-500', description: 'Dr. Tukaram Bhatt' },
   { id: 'revenue', name: 'District Revenue Officer /RDO Asifabad', color: 'bg-purple-600', description: 'V. Lokeshwara Rao' },
   { id: 'planning', name: 'Chief Planning Officer', color: 'bg-teal-500', description: 'P. Chinakotya Naik' },
+  { id: 'health', name: 'District Medical & Health Officer', color: 'bg-green-500', description: 'Dr. Tukaram Bhatt' },
   { id: 'survey', name: 'District Survey Officer (FAC)', color: 'bg-blue-600', description: 'D Someshwar' },
   { id: 'civil-supply', name: 'District Civil Supply Officer (FAC)', color: 'bg-orange-500', description: 'Vinod' },
   { id: 'public-relations', name: 'District Public Relations Officer (FAC)', color: 'bg-emerald-500', description: 'Y. Sampath Kumar' },
@@ -430,13 +522,6 @@ const departments = [
   { id: 'marketing', name: 'Dist Marketing Officer', color: 'bg-blue-600', description: 'Not specified' },
   { id: 'degree-college', name: 'Principal Degree College Kagaznagar', color: 'bg-orange-500', description: 'Not specified' },
   { id: 'dchs', name: 'DCHS', color: 'bg-emerald-500', description: 'Not specified' }
-];
-
-const dmhoMetrics = [
-    { id: 'dmho-deliveries', title: 'Total Deliveries (Current Month)', value: '44', icon: Baby, description: 'Total deliveries in public and private institutions' },
-    { id: 'dmho-registrations', title: '1st Trimester Reg. (%)', value: '99%', icon: Users, description: 'Current month registration percentage' },
-    { id: 'dmho-c-section', title: 'Pvt. C-Section Rate', value: '69%', icon: HeartPulse, description: 'Current month C-Section rate in private institutions' },
-    { id: 'dmho-maternal-deaths', title: 'Maternal Deaths', value: '0', icon: AlertTriangle, status: 'positive', description: 'Current month reported maternal deaths' }
 ];
 
 // DWO specific metrics
@@ -482,7 +567,6 @@ const dwoMetrics = [
 // Generic department metrics function
 const departmentMetrics = (departmentId) => {
   if (departmentId === 'dwo') return dwoMetrics;
-  if (departmentId === 'health') return dmhoMetrics;
   
   return [
     {
@@ -569,7 +653,7 @@ const FCRTable = () => (
           <thead>
             <tr className="border-b bg-muted/50">
               <th className="text-left p-3 font-semibold">District</th>
-              <th className="text-left p-3 font-semibold">Mandal</th>
+              <th className="text-left p-3 font-semibold">Location</th>
               <th className="text-center p-3 font-semibold">Total AWCs</th>
               <th className="text-center p-3 font-semibold">Reported</th>
               <th className="text-right p-3 font-semibold">Rice Opening (Kg)</th>
@@ -712,8 +796,9 @@ const RecentActivitiesCard = ({ departmentId }) => {
 };
 
 // Poshan Tracker Tab Content Component
-const PoshanTrackerDashboard = () => {
-  // Data provided by the user
+// This component now receives filter selections as props
+const PoshanTrackerDashboard = ({ selectedMandal, selectedGramPanchayat, selectedMunicipality }) => {
+  // Simulated Poshan Tracker data (aggregated, not mandal-specific from PDFs)
   const poshanTrackerSummaryData = {
     totalRegistered: 75630,
     aadhaarVerified: 68950,
@@ -735,41 +820,53 @@ const PoshanTrackerDashboard = () => {
 
   const { totalRegistered, aadhaarVerified, growthMonitoringEligible, growthMonitoringMeasured, snpEligible, snpReceived, homeVisitsScheduled, homeVisitsCompleted } = poshanTrackerSummaryData;
 
-  // --- Calculations ---
+  // --- Calculations for Simulated Data ---
   const aadhaarVerificationRate = totalRegistered > 0 ? (aadhaarVerified / totalRegistered * 100).toFixed(1) : 0;
   const growthMonitoringRate = growthMonitoringEligible > 0 ? (growthMonitoringMeasured / growthMonitoringEligible * 100).toFixed(1) : 0;
   const snpCoverageRate = snpEligible > 0 ? (snpReceived / snpEligible * 100).toFixed(1) : 0;
   const homeVisitsRate = homeVisitsScheduled > 0 ? (homeVisitsCompleted / homeVisitsScheduled * 100).toFixed(1) : 0;
 
-  // Additional Metrics from NITI Aayog Report (April 2025) and Screenshots
-  // These values are taken from the previously analyzed documents and are specific to KB Asifabad district for April 2025,
-  // whereas the poshanTrackerSummaryData is simulated, likely representing aggregated or different data.
-  // For the purpose of this component, I am retaining the rich detail from the documents where appropriate for 'Additional Info Cards'.
-  const underweightChildrenPercentage = 9.37; // Percentage of underweight children under 6 years [cite: 5]
-  const stuntedChildrenPercentage = 12.13; // Percentage of stunted children under 6 years [cite: 5]
-  const samChildrenPercentage = 0.54; // Percentage of Severe Acute Malnourishment (SAM) in Children under 6 years [cite: 5]
-  const mamChildrenPercentage = 2.53; // Precentage of Moderate Acute Malnutrition (MAM) in Children under 6 years [cite: 5]
-  const awcOwnBuildingPercentage = 36.38; // Proportion of Anganwadis with own Buildings [cite: 5]
-  const awcConductedVHSNDPercentage = 100.00; // Percentage of Anganwadi Reported to have conducted at least one VHSND [cite: 5]
+  // --- Dynamic Data Selection based on selectedMandal ---
+  // If a specific mandal is selected and data exists for it, use that; otherwise, use 'all' (district totals).
+  // Note: GPs and Municipalities are not used for filtering here due to data granularity limitations.
+  const currentMandalData = detailedPoshanDataByMandal[selectedMandal] || detailedPoshanDataByMandal['all'];
 
-  // Counts from Screenshot (133) for May 2025 (District Level Totals)
-  // These are for a different month and likely a different scope (district totals from a daily monitoring report)
-  // compared to the simulated summary data. They are included here for richness of detail,
-  // but note they might not directly align with the simulated summary data.
-  const totalAWCOpen = 782; // [cite: 1]
-  const awcOpenedOutsideFencedArea = 596; // [cite: 1]
-  const awcDidntOpen = 191; // [cite: 1]
-  const totalChildren3YrTo6Yr = 21351; // [cite: 1]
-  const totalChildrenAttended = 8007; // [cite: 1]
-  const morningSnackGiven = 7856; // [cite: 1]
-  const totalHCMGiven = 7003; // [cite: 1]
-  const imageCaptured = 23; // [cite: 1]
-  const noOfAWcCompletedECCE = 791; // [cite: 1]
+  // Destructure mandal-specific data for easier use in rendering
+  const {
+    underweightChildrenPercentage, stuntedChildrenPercentage, samChildrenPercentage, mamChildrenPercentage,
+    awcOwnBuildingPercentage, awcConductedVHSNDPercentage,
+    totalAWCOpen, awcOpenedOutsideFencedArea, awcDidntOpen, totalChildren3YrTo6Yr,
+    totalChildrenAttended, morningSnackGiven, totalHCMGiven, imageCaptured, noOfAWcCompletedECCE
+  } = currentMandalData;
+
+  const dataAvailableForMandal = (selectedMandal !== 'all' && detailedPoshanDataByMandal[selectedMandal]);
+  
+  const renderValue = (value) => {
+    if (value === undefined || value === null) {
+      return 'N/A';
+    }
+    return typeof value === 'number' ? value.toLocaleString() : value;
+  };
+
+  const renderPercentageValue = (value) => {
+    if (value === undefined || value === null) {
+      return 'N/A';
+    }
+    return `${value}%`;
+  };
+
+  const renderDescription = (baseText, mandalSpecific) => {
+    if (mandalSpecific === undefined || mandalSpecific === null) {
+      return 'Data not available for this Mandal.';
+    }
+    return baseText;
+  };
+
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Progress Card */}
+        {/* Main Progress Card (using Simulated Data) */}
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -786,6 +883,9 @@ const PoshanTrackerDashboard = () => {
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div className="bg-blue-600 h-3 rounded-full" style={{width: `${aadhaarVerificationRate}%`}}></div>
               </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                *Data for Aadhaar verification is simulated.
+              </p>
             </div>
 
             <div>
@@ -796,6 +896,9 @@ const PoshanTrackerDashboard = () => {
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div className="bg-green-600 h-3 rounded-full" style={{width: `${growthMonitoringRate}%`}}></div>
               </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                *Data for growth monitoring is simulated.
+              </p>
             </div>
 
             <div>
@@ -806,6 +909,9 @@ const PoshanTrackerDashboard = () => {
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div className="bg-orange-500 h-3 rounded-full" style={{width: `${snpCoverageRate}%`}}></div>
               </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                *Data for SNP coverage is simulated.
+              </p>
             </div>
 
             <div>
@@ -816,11 +922,14 @@ const PoshanTrackerDashboard = () => {
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div className="bg-purple-500 h-3 rounded-full" style={{width: `${homeVisitsRate}%`}}></div>
               </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                *Data for home visits is simulated.
+              </p>
             </div>
           </CardContent>
         </Card>
 
-        {/* Side Cards */}
+        {/* Side Cards (using Simulated Data) */}
         <div className="space-y-6">
           <Card>
             <CardHeader>
@@ -850,178 +959,268 @@ const PoshanTrackerDashboard = () => {
         </div>
       </div>
 
-{/* Additional Info Cards - From NITI Aayog Report (April 2025) */}
+      {/* Additional Info Cards - Dynamically updated based on selectedMandal */}
+      <h2 className="text-xl font-semibold mt-8 mb-4">
+        {selectedMandal === 'all' ? 'District Level Nutrition & AWC Metrics' : `Nutrition & AWC Metrics for ${mandals.find(m => m.id === selectedMandal)?.name || 'Selected Mandal'}`}
+         (April 2025 / May 2025)
+      </h2>
+      <p className="text-sm text-muted-foreground mb-4">
+        *Data for these metrics is sourced from the NITI Aayog Report for April 2025 [cite: 5] and daily monitoring data from May 2025[cite: 1].
+        If specific data for the selected Mandal is not available, overall district totals are shown.
+        Filtering by GP or Municipality is not supported for these metrics due to current data granularity.
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                Underweight Children (0-6 yrs)
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-purple-700">{underweightChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                Stunted Children (0-6 yrs)
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-cyan-700">{stuntedChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                SAM Children (0-6 yrs)
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-red-700">{samChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                MAM Children (0-6 yrs)
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-orange-700">{mamChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                AWCs with Own Buildings
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-blue-700">{awcOwnBuildingPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                AWCs Conducted VHSND
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-green-700">{awcConductedVHSNDPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-</div>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <Scale className="h-5 w-5 text-purple-600" />
+                        Underweight Children (0-6 yrs)
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-purple-700">
+                        {renderPercentageValue(underweightChildrenPercentage)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`This percentage is from the NITI Aayog report for April 2025.`, underweightChildrenPercentage)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <Ruler className="h-5 w-5 text-cyan-600" />
+                        Stunted Children (0-6 yrs)
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-cyan-700">
+                        {renderPercentageValue(stuntedChildrenPercentage)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`This percentage is from the NITI Aayog report for April 2025.`, stuntedChildrenPercentage)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <HeartPulse className="h-5 w-5 text-red-600" />
+                        SAM Children (0-6 yrs)
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-red-700">
+                        {renderPercentageValue(samChildrenPercentage)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`This percentage is from the NITI Aayog report for April 2025.`, samChildrenPercentage)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <HeartHalf className="h-5 w-5 text-orange-600" />
+                        MAM Children (0-6 yrs)
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-orange-700">
+                        {renderPercentageValue(mamChildrenPercentage)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`This percentage is from the NITI Aayog report for April 2025.`, mamChildrenPercentage)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <Home className="h-5 w-5 text-blue-600" />
+                        AWCs with Own Buildings
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-blue-700">
+                        {renderPercentageValue(awcOwnBuildingPercentage)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`This percentage is from the NITI Aayog report for April 2025.`, awcOwnBuildingPercentage)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <CalendarCheck className="h-5 w-5 text-green-600" />
+                        AWCs Conducted VHSND
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-green-700">
+                        {renderPercentageValue(awcConductedVHSNDPercentage)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`This percentage is from the NITI Aayog report for April 2025.`, awcConductedVHSNDPercentage)}
+                    </p>
+                </CardContent>
+            </Card>
+        </div>
 
-        {/* Daily Monitoring (May 2025 Data from Screenshot 133) */}
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                Total AWC Open (May 2025)
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-amber-700">{totalAWCOpen.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
-            <p className="text-xs text-muted-foreground">Total Anganwadi Centers reported open from May 2025 data.</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                AWCs Opened Outside Fenced Area
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-red-700">{awcOpenedOutsideFencedArea.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
-            <p className="text-xs text-muted-foreground">AWCs reported open but located outside a fenced area from May 2025 data.</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                AWCs Didn't Open
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-gray-700">{awcDidntOpen.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
-            <p className="text-xs text-muted-foreground">Anganwadi Centers reported as not open from May 2025 data.</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                Total Children (3-6 Yrs)
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-purple-700">{totalChildren3YrTo6Yr.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
-            <p className="text-xs text-muted-foreground">Total children aged 3-6 years recorded from May 2025 data.</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                Total Children Attended
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-teal-700">{totalChildrenAttended.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
-            <p className="text-xs text-muted-foreground">Children who attended the Anganwadi Centers from May 2025 data.</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                Morning Snack Given
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-brown-700">{morningSnackGiven.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
-            <p className="text-xs text-muted-foreground">Children who received morning snack from May 2025 data.</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                Total HCM Given
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-lime-700">{totalHCMGiven.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
-            <p className="text-xs text-muted-foreground">Children who received Hot Cooked Meal from May 2025 data.</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                Image Captured
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-gray-700">{imageCaptured.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
-            <p className="text-xs text-muted-foreground">Images captured for reporting from May 2025 data.</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                No. of AWC Completed ECCE
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-indigo-700">{noOfAWcCompletedECCE.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
-            <p className="text-xs text-muted-foreground">Anganwadi Centers that completed Early Childhood Care and Education from May 2025 data.</p>
-        </CardContent>
-    </Card>
-</div>
+        {/* Daily Monitoring (May 2025 Data from Screenshot 133) - Dynamically updated based on selectedMandal */}
+        <h2 className="text-xl font-semibold mt-8 mb-4">Daily Monitoring Snapshots (May 2025)</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+            *Data for these metrics is sourced from the daily monitoring report for May 2025[cite: 1].
+            If specific data for the selected Mandal is not available, overall district totals are shown.
+            Filtering by GP or Municipality is not supported for these metrics due to current data granularity.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <DoorOpen className="h-5 w-5 text-amber-600" />
+                        Total AWC Open (May 2025)
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-amber-700">
+                        {renderValue(totalAWCOpen)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`Total Anganwadi Centers reported open from May 2025 data.`, totalAWCOpen)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <MapPinOff className="h-5 w-5 text-red-600" />
+                        AWCs Opened Outside Fenced Area
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-red-700">
+                        {renderValue(awcOpenedOutsideFencedArea)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`AWCs reported open but located outside a fenced area from May 2025 data.`, awcOpenedOutsideFencedArea)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <DoorClosed className="h-5 w-5 text-gray-600" />
+                        AWCs Didn't Open
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-gray-700">
+                        {renderValue(awcDidntOpen)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`Anganwadi Centers reported as not open from May 2025 data.`, awcDidntOpen)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <Users className="h-5 w-5 text-purple-600" />
+                        Total Children (3-6 Yrs)
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-purple-700">
+                        {renderValue(totalChildren3YrTo6Yr)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`Total children aged 3-6 years recorded from May 2025 data.`, totalChildren3YrTo6Yr)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <UserCheck className="h-5 w-5 text-teal-600" />
+                        Total Children Attended
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-teal-700">
+                        {renderValue(totalChildrenAttended)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`Children who attended the Anganwadi Centers from May 2025 data.`, totalChildrenAttended)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <Coffee className="h-5 w-5 text-brown-600" />
+                        Morning Snack Given
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-brown-700">
+                        {renderValue(morningSnackGiven)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`Children who received morning snack from May 2025 data.`, morningSnackGiven)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <Utensils className="h-5 w-5 text-lime-600" />
+                        Total HCM Given
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-lime-700">
+                        {renderValue(totalHCMGiven)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`Children who received Hot Cooked Meal from May 2025 data.`, totalHCMGiven)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <Camera className="h-5 w-5 text-gray-600" />
+                        Image Captured
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-gray-700">
+                        {renderValue(imageCaptured)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`Images captured for reporting from May 2025 data.`, imageCaptured)}
+                    </p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-md flex items-center gap-2">
+                        <GraduationCap className="h-5 w-5 text-indigo-600" />
+                        No. of AWC Completed ECCE
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-3xl font-bold text-indigo-700">
+                        {renderValue(noOfAWcCompletedECCE)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {renderDescription(`Anganwadi Centers that completed Early Childhood Care and Education from May 2025 data.`, noOfAWcCompletedECCE)}
+                    </p>
+                </CardContent>
+            </Card>
+        </div>
     </div>
   );
 };
@@ -1030,15 +1229,15 @@ const PoshanTrackerDashboard = () => {
 // Main Dashboard Component
 const DepartmentDashboardPage = () => {
   const [selectedDepartment, setSelectedDepartment] = useState('dwo');
-  // New state variables for the top dropdowns
+  // New state variables for the top dropdowns, initialized to 'all' for aggregation
   const [selectedTopDepartment, setSelectedTopDepartment] = useState('all');
-  const [selectedMandal, setSelectedMandal] = useState('asifabad-m');
-  const [selectedGramPanchayat, setSelectedGramPanchayat] = useState('gp-kandepally');
-  const [selectedMunicipality, setSelectedMunicipality] = useState('m-asifabad');
+  const [selectedMandal, setSelectedMandal] = useState('all'); // Default to 'all' to show district totals
+  const [selectedGramPanchayat, setSelectedGramPanchayat] = useState('all'); // Default to 'all'
+  const [selectedMunicipality, setSelectedMunicipality] = useState('all'); // Default to 'all'
 
   const currentDepartment = departments.find(d => d.id === selectedDepartment) || departments[0];
   
-   return (
+  return (
     <div className="space-y-8 max-w-[1600px] mx-auto p-6 animate-fade-in">
       {/* Top Header Section: Title/Breadcrumbs and Last Updated */}
       <div className="flex items-start justify-between mb-4">
@@ -1062,24 +1261,41 @@ const DepartmentDashboardPage = () => {
 
       {/* Filters Section: Below the main title block */}
       <div className="flex flex-wrap items-end gap-3 mb-4"> {/* flex-wrap for responsiveness, items-end to align at bottom */}
-        {/* Municipality Dropdown */}
+        {/* Department Dropdown */}
         <div className="flex flex-col">
-          <label htmlFor="municipality-select" className="text-xs font-medium text-muted-foreground mb-1">Municipality (Division)</label>
+          <label htmlFor="top-department-select" className="text-xs font-medium text-muted-foreground mb-1">Department</label>
           <select
-            id="municipality-select"
-            value={selectedMunicipality}
-            onChange={(e) => setSelectedMunicipality(e.target.value)}
+            id="top-department-select"
+            value={selectedTopDepartment}
+            onChange={(e) => setSelectedTopDepartment(e.target.value)}
             className="block w-full min-w-[120px] p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
           >
-            {municipalities.map(item => (
+            {topLevelDepartments.map(item => (
               <option key={item.id} value={item.id}>
                 {item.name} ({item.abbreviation})
               </option>
             ))}
           </select>
         </div>
-        
-                {/* Mandal Dropdown */}
+
+        {/** Dropdown for All Departments (10-20% width) **/}
+            <div className="flex-shrink-0 w-[180px]">
+              <label htmlFor="department-select" className="sr-only">Select Department</label>
+              <select
+                id="department-select"
+                value={selectedDepartment}
+                onChange={(e) => setSelectedDepartment(e.target.value)}
+                className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              >
+                {departments.map(dept => (
+                  <option key={dept.id} value={dept.id}>
+                    {dept.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+        {/* Mandal Dropdown */}
         <div className="flex flex-col">
           <label htmlFor="mandal-select" className="text-xs font-medium text-muted-foreground mb-1">Mandal (Block)</label>
           <select
@@ -1095,7 +1311,7 @@ const DepartmentDashboardPage = () => {
             ))}
           </select>
         </div>
-        
+
         {/* GP Dropdown */}
         <div className="flex flex-col">
           <label htmlFor="gp-select" className="text-xs font-medium text-muted-foreground mb-1">GP (Gram Panchayat)</label>
@@ -1113,34 +1329,33 @@ const DepartmentDashboardPage = () => {
           </select>
         </div>
 
-        {/* Department Dropdown */}
+        {/* Municipality Dropdown */}
         <div className="flex flex-col">
-          <label htmlFor="top-department-select" className="text-xs font-medium text-muted-foreground mb-1">Department</label>
+          <label htmlFor="municipality-select" className="text-xs font-medium text-muted-foreground mb-1">Municipality (Division)</label>
           <select
-            id="top-department-select"
-            value={selectedTopDepartment}
-            onChange={(e) => setSelectedTopDepartment(e.target.value)}
+            id="municipality-select"
+            value={selectedMunicipality}
+            onChange={(e) => setSelectedMunicipality(e.target.value)}
             className="block w-full min-w-[120px] p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
           >
-            {departments.map(dept => (
-              <option key={dept.id} value={dept.id}>
-                {dept.name} ({dept.abbreviation})
+            {municipalities.map(item => (
+              <option key={item.id} value={item.id}>
+                {item.name} ({item.abbreviation})
               </option>
             ))}
           </select>
         </div>
-        
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
-         <TabsList className="grid w-full grid-cols-6"> {/* Changed to grid-cols-6 */}
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="poshan"> <Baby className="h-4 w-4 mr-1 inline-block"/>Poshan Tracker</TabsTrigger> {/* Added Poshan Tracker Tab */}
-          <TabsTrigger value="nhts">NHTS Project</TabsTrigger>
-          <TabsTrigger value="reports">Data Reports</TabsTrigger>
-          <TabsTrigger value="projects">Projects</TabsTrigger>
-          <TabsTrigger value="staff">Staff</TabsTrigger>
-          </TabsList>
+          <TabsList className="grid w-full grid-cols-6"> {/* Changed to grid-cols-6 */}
+           <TabsTrigger value="overview">Overview</TabsTrigger>
+           <TabsTrigger value="poshan"> <Baby className="h-4 w-4 mr-1 inline-block"/>Poshan Tracker</TabsTrigger> {/* Added Poshan Tracker Tab */}
+           <TabsTrigger value="nhts">NHTS Project</TabsTrigger>
+           <TabsTrigger value="reports">Data Reports</TabsTrigger>
+           <TabsTrigger value="projects">Projects</TabsTrigger>
+           <TabsTrigger value="staff">Staff</TabsTrigger>
+           </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
         {/* Department selectors: Scrollable and Dropdown */}
@@ -1165,7 +1380,7 @@ const DepartmentDashboardPage = () => {
               </div>
             </div>
 
-            {/* Dropdown for All Departments (10-20% width)
+            {/** Dropdown for All Departments (10-20% width)
             <div className="flex-shrink-0 w-[180px]">
               <label htmlFor="department-select" className="sr-only">Select Department</label>
               <select
@@ -1180,8 +1395,7 @@ const DepartmentDashboardPage = () => {
                   </option>
                 ))}
               </select>
-            </div>
-            */}
+            </div> **/}
           </div>
           {/* Add this CSS somewhere in your global CSS file or a style tag if you want to hide the scrollbar */}
           <style jsx>{`
@@ -1202,37 +1416,36 @@ const DepartmentDashboardPage = () => {
           </div>
           
           {/* Charts and visualizations */}
-          {/* Charts and visualizations */}
-          {selectedDepartment === 'dwo' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <NHTSProjectStatus />
-                  <RecentActivitiesCard departmentId={selectedDepartment} />
-              </div>
-          )}
-
-          {selectedDepartment === 'health' && (
-              <MCHKitDashboard />
-          )}
-
-          {selectedDepartment !== 'dwo' && selectedDepartment !== 'health' && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <Card>
-                      <CardHeader><CardTitle>Budget Utilization</CardTitle></CardHeader>
-                      <CardContent>
-                          <div className="h-64 flex items-center justify-center text-muted-foreground">
-                              Budget charts will be implemented here
-                          </div>
-                      </CardContent>
-                  </Card>
-                  <RecentActivitiesCard departmentId={selectedDepartment} />
-              </div>
+          {selectedDepartment === 'dwo' ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <NHTSProjectStatus />
+              <RecentActivitiesCard departmentId={selectedDepartment} />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Budget Utilization</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-64 flex items-center justify-center text-muted-foreground">
+                    Budget charts will be implemented here
+                  </div>
+                </CardContent>
+              </Card>
+              <RecentActivitiesCard departmentId={selectedDepartment} />
+            </div>
           )}
         </TabsContent>
 
       {/* Poshan Tracker Tab Content */}
         <TabsContent value="poshan" className="space-y-6">
           {selectedDepartment === 'dwo' ? (
-            <PoshanTrackerDashboard />
+            <PoshanTrackerDashboard
+                selectedMandal={selectedMandal}
+                selectedGramPanchayat={selectedGramPanchayat}
+                selectedMunicipality={selectedMunicipality}
+            />
           ) : (
             <Card>
               <CardHeader>
@@ -1349,40 +1562,104 @@ const DepartmentDashboardPage = () => {
         </TabsContent>
         
         <TabsContent value="reports" className="space-y-6">
-    {/* This creates the new nested sub-tabs for reports */}
-    <Tabs defaultValue="fcr" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="fcr">
-                <Package className="h-4 w-4 mr-1 inline-block"/> FCR Report
-            </TabsTrigger>
-            <TabsTrigger value="phc">
-                <MapPin className="h-4 w-4 mr-1 inline-block"/> PHC Mapping
-            </TabsTrigger>
-            <TabsTrigger value="thr">
-                <Heart className="h-4 w-4 mr-1 inline-block"/> THR Report
-            </TabsTrigger>
-            <TabsTrigger value="utilization">
-                <BarChart3 className="h-4 w-4 mr-1 inline-block"/> Utilization Report
-            </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="fcr" className="mt-4">
-            <FCRReportTab mandals={mandals} gramPanchayats={gramPanchayats} municipalities={municipalities} />
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">FCR Reports</p>
+                    <p className="text-2xl font-bold">5</p>
+                  </div>
+                  <Package className="h-8 w-8 text-blue-500" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">PHC Mapping</p>
+                    <p className="text-2xl font-bold">Updated</p>
+                  </div>
+                  <MapPin className="h-8 w-8 text-green-500" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">THR Reports</p>
+                    <p className="text-2xl font-bold">Current</p>
+                  </div>
+                  <Heart className="h-8 w-8 text-red-500" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Utilization</p>
+                    <p className="text-2xl font-bold">89%</p>
+                  </div>
+                  <BarChart3 className="h-8 w-8 text-purple-500" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <FCRTable />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>PHC Mapping Status</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                    <span className="font-medium">Primary Health Centers</span>
+                    <span className="text-lg font-bold text-blue-600">24</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                    <span className="font-medium">Sub-Centers Mapped</span>
+                    <span className="text-lg font-bold text-green-600">156</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-orange-50 rounded-lg">
+                    <span className="font-medium">Coverage Area</span>
+                    <span className="text-lg font-bold text-orange-600">95%</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>THR Distribution Summary</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+                    <span className="font-medium">Beneficiaries Covered</span>
+                    <span className="text-lg font-bold text-purple-600">42,185</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-pink-50 rounded-lg">
+                    <span className="font-medium">Distribution Rate</span>
+                    <span className="text-lg font-bold text-pink-600">96.8%</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-indigo-50 rounded-lg">
+                    <span className="font-medium">Monthly Target</span>
+                    <span className="text-lg font-bold text-indigo-600">43,560</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
-
-        <TabsContent value="phc" className="mt-4">
-            <PHCMappingTab mandals={mandals} gramPanchayats={gramPanchayats} municipalities={municipalities} />
-        </TabsContent>
-
-        <TabsContent value="thr" className="mt-4">
-            <THRReportTab mandals={mandals} gramPanchayats={gramPanchayats} municipalities={municipalities} />
-        </TabsContent>
-
-        <TabsContent value="utilization" className="mt-4">
-            <UtilizationReportTab mandals={mandals} gramPanchayats={gramPanchayats} municipalities={municipalities} />
-        </TabsContent>
-    </Tabs>
-  </TabsContent>
         
         <TabsContent value="projects">
           <Card>

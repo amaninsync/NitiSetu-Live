@@ -39,10 +39,10 @@ function App() {
               {/* Public Routes */}
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/product" element={<Product />} />
               
               {/* Protected Routes */}
               <Route element={<AppShell />}>
-                <Route path="/product" element={<Product />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/upload" element={<UploadPage />} />
                 <Route path="/table-view" element={<TableViewPage />} />

@@ -33,13 +33,14 @@ const LoginForm: React.FC = () => {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl text-center">
+        {/* <CardTitle className="text-2xl text-center">
           <span className="text-nitisetu-500">Niti</span>
           <span className="text-nitisetu-700">Setu</span>
         </CardTitle>
         <CardDescription className="text-center">
           District Administration Dashboard
         </CardDescription>
+        */}
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
@@ -86,7 +87,7 @@ const LoginForm: React.FC = () => {
       </CardContent>
       <CardFooter className="flex flex-col">
         <div className="text-center text-sm text-muted-foreground mt-4">
-          <p>Demo Credentials:</p>
+          {/* <p>Demo Credentials:</p> */}
           <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
             <div>
               <div className="font-medium">District Collector:</div>
@@ -113,7 +114,7 @@ const LoginForm: React.FC = () => {
               <div>contractor@nitisetu.gov.in</div>
             </div>
           </div>
-          <p className="mt-2 text-xs">Password: any text will work</p>
+          {/* <p className="mt-2 text-xs">Password: any text will work</p> */}
         </div>
       </CardFooter>
     </Card>

@@ -11,7 +11,7 @@ import {
 export const mockUsers: User[] = [
   {
     id: "u1",
-    name: "Rajesh Kumar",
+    name: "Sri Venkatesh Dhotre",
     email: "dm@nitisetu.gov.in",
     role: "district_collector",
     avatar: "/avatars/district-collector.jpg",
@@ -21,7 +21,7 @@ export const mockUsers: User[] = [
   },
   {
     id: "u2",
-    name: "Priya Sharma",
+    name: "Sri Deepak Tewari",
     email: "ac@nitisetu.gov.in",
     role: "additional_collector",
     avatar: "/avatars/additional-collector.jpg",

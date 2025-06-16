@@ -50,7 +50,7 @@ const reportCardData = [
     id: '2',
     department: 'Rural Development',
     reportType: 'Monthly Progress',
-    submittedBy: 'Rajesh Kumar',
+    submittedBy: 'Sri Venkatesh Dhotre',
     submittedDate: '2025-05-05',
     status: 'pending',
     score: null,

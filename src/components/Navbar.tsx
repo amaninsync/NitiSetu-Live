@@ -49,7 +49,7 @@ const Navbar = () => {
           <a href="#technology" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
             Technology
           </a>
-          <Link to="/dashboard" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
+          <Link to="/product" className="text-gray-800 hover:text-gov-blue transition-colors font-medium">
             Dashboard
           </Link>
           <a href="#contact" className="button-secondary" >
