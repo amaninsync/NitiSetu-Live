@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/auth-context';
@@ -23,6 +22,7 @@ const Dashboard: React.FC = () => {
           <span>Last updated: {new Date().toLocaleDateString()}</span>
         </div>
       </div>
+
       {/* Dashboard navigation cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 mb-8">
         <Link to="/department">
@@ -122,6 +122,16 @@ const Dashboard: React.FC = () => {
         </Link>
       </div>
       
+      {/* New Buttons for Grievances and Feedback */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <Link to="/anonymous-grievance">
+          <Button className="w-full sm:w-auto">Submit Anonymous Grievance</Button>
+        </Link>
+        <Link to="/nitisetu-feedback">
+          <Button className="w-full sm:w-auto" variant="outline">Nitisetu Queries & Feedback</Button>
+        </Link>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
         {mockDistrictMetrics.map((metric) => (
           <MetricCard key={metric.id} metric={metric} className="shadow-sm" />

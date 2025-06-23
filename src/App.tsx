@@ -24,6 +24,9 @@ import DistrictStats from "./pages/dashboard/DistrictStats";
 import DistrictDashboard from "./pages/dashboard/DistrictDashboard";
 import InsightsView from "./pages/InsightsView";
 import Product from "./pages/Product"
+
+import AnonymousGrievanceForm from './components/forms/AnonymousGrievanceForm'; // Adjust this path
+import NitisetuFeedbackForm from './components/forms/NitisetuFeedbackForm';    // Adjust this path
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
 
@@ -40,6 +43,10 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/product" element={<Product />} />
+              <Route path="/anonymous-grievance" element={<AnonymousGrievanceForm />} />
+              <Route path="/nitisetu-feedback" element={<NitisetuFeedbackForm />} />
+
+
               
               {/* Protected Routes */}
               <Route element={<AppShell />}>

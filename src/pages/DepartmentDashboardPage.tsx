@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ChevronRight, Briefcase, BarChart3, FileText, CalendarIcon, TrendingUp, TrendingDown, MapPin, Package, Users, Baby, AlertTriangle, Activity, Scale, Ruler, HeartPulse, Home, CalendarCheck, DoorOpen, MapPinOff, DoorClosed, UserCheck, Coffee, Utensils, Camera, GraduationCap, Heart } from 'lucide-react';
+import { ChevronRight, Briefcase, BarChart3, FileText, CalendarIcon, TrendingUp, TrendingDown, MapPin, Package, Users, Baby, AlertTriangle, Activity, Scale, Ruler, HeartPulse, Home, CalendarCheck, DoorOpen, MapPinOff, DoorClosed, UserCheck, Coffee, Utensils, Camera, GraduationCap, Heart, ClipboardList, Handshake, Sun } from 'lucide-react'; // Added new icons
 import { FCRReportTab, PHCMappingTab, THRReportTab, UtilizationReportTab } from '../components/ReportTabs';
 import { MCHKitDashboard } from '../components/MCHKitDashboard'; // Add this line
 
@@ -745,26 +745,26 @@ const PoshanTrackerDashboard = () => {
   // These values are taken from the previously analyzed documents and are specific to KB Asifabad district for April 2025,
   // whereas the poshanTrackerSummaryData is simulated, likely representing aggregated or different data.
   // For the purpose of this component, I am retaining the rich detail from the documents where appropriate for 'Additional Info Cards'.
-  const underweightChildrenPercentage = 9.37; // Percentage of underweight children under 6 years [cite: 5]
-  const stuntedChildrenPercentage = 12.13; // Percentage of stunted children under 6 years [cite: 5]
-  const samChildrenPercentage = 0.54; // Percentage of Severe Acute Malnourishment (SAM) in Children under 6 years [cite: 5]
-  const mamChildrenPercentage = 2.53; // Precentage of Moderate Acute Malnutrition (MAM) in Children under 6 years [cite: 5]
-  const awcOwnBuildingPercentage = 36.38; // Proportion of Anganwadis with own Buildings [cite: 5]
-  const awcConductedVHSNDPercentage = 100.00; // Percentage of Anganwadi Reported to have conducted at least one VHSND [cite: 5]
+  const underweightChildrenPercentage = 9.37; // Percentage of underweight children under 6 years
+  const stuntedChildrenPercentage = 12.13; // Percentage of stunted children under 6 years
+  const samChildrenPercentage = 0.54; // Percentage of Severe Acute Malnourishment (SAM) in Children under 6 years
+  const mamChildrenPercentage = 2.53; // Precentage of Moderate Acute Malnutrition (MAM) in Children under 6 years
+  const awcOwnBuildingPercentage = 36.38; // Proportion of Anganwadis with own Buildings
+  const awcConductedVHSNDPercentage = 100.00; // Percentage of Anganwadi Reported to have conducted at least one VHSND
 
   // Counts from Screenshot (133) for May 2025 (District Level Totals)
   // These are for a different month and likely a different scope (district totals from a daily monitoring report)
   // compared to the simulated summary data. They are included here for richness of detail,
   // but note they might not directly align with the simulated summary data.
-  const totalAWCOpen = 782; // [cite: 1]
-  const awcOpenedOutsideFencedArea = 596; // [cite: 1]
-  const awcDidntOpen = 191; // [cite: 1]
-  const totalChildren3YrTo6Yr = 21351; // [cite: 1]
-  const totalChildrenAttended = 8007; // [cite: 1]
-  const morningSnackGiven = 7856; // [cite: 1]
-  const totalHCMGiven = 7003; // [cite: 1]
-  const imageCaptured = 23; // [cite: 1]
-  const noOfAWcCompletedECCE = 791; // [cite: 1]
+  const totalAWCOpen = 782; //
+  const awcOpenedOutsideFencedArea = 596; //
+  const awcDidntOpen = 191; //
+  const totalChildren3YrTo6Yr = 21351; //
+  const totalChildrenAttended = 8007; //
+  const morningSnackGiven = 7856; //
+  const totalHCMGiven = 7003; //
+  const imageCaptured = 23; //
+  const noOfAWcCompletedECCE = 791; //
 
   return (
     <div className="space-y-6">
@@ -852,72 +852,72 @@ const PoshanTrackerDashboard = () => {
 
 {/* Additional Info Cards - From NITI Aayog Report (April 2025) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                Underweight Children (0-6 yrs)
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-purple-700">{underweightChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                Stunted Children (0-6 yrs)
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-cyan-700">{stuntedChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                SAM Children (0-6 yrs)
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-red-700">{samChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                MAM Children (0-6 yrs)
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-orange-700">{mamChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                AWCs with Own Buildings
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-blue-700">{awcOwnBuildingPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
-    <Card>
-        <CardHeader className="pb-2">
-            <CardTitle className="text-md flex items-center gap-2">
-                AWCs Conducted VHSND
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <p className="text-3xl font-bold text-green-700">{awcConductedVHSNDPercentage}%<small className="text-sm text-muted-foreground ml-1">[cite: 5]</small></p>
-            <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025. [cite: 5]</p>
-        </CardContent>
-    </Card>
+        <Card>
+            <CardHeader className="pb-2">
+                <CardTitle className="text-md flex items-center gap-2">
+                    Underweight Children (0-6 yrs)
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-3xl font-bold text-purple-700">{underweightChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></p>
+                <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025.</p>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader className="pb-2">
+                <CardTitle className="text-md flex items-center gap-2">
+                    Stunted Children (0-6 yrs)
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-3xl font-bold text-cyan-700">{stuntedChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></p>
+                <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025.</p>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader className="pb-2">
+                <CardTitle className="text-md flex items-center gap-2">
+                    SAM Children (0-6 yrs)
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-3xl font-bold text-red-700">{samChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></p>
+                <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025.</p>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader className="pb-2">
+                <CardTitle className="text-md flex items-center gap-2">
+                    MAM Children (0-6 yrs)
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-3xl font-bold text-orange-700">{mamChildrenPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></p>
+                <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025.</p>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader className="pb-2">
+                <CardTitle className="text-md flex items-center gap-2">
+                    AWCs with Own Buildings
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-3xl font-bold text-blue-700">{awcOwnBuildingPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></p>
+                <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025.</p>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader className="pb-2">
+                <CardTitle className="text-md flex items-center gap-2">
+                    AWCs Conducted VHSND
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-3xl font-bold text-green-700">{awcConductedVHSNDPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></p>
+                <p className="text-xs text-muted-foreground">This percentage is from the NITI Aayog report for April 2025.</p>
+            </CardContent>
+        </Card>
 </div>
 
         {/* Daily Monitoring (May 2025 Data from Screenshot 133) */}
@@ -929,7 +929,7 @@ const PoshanTrackerDashboard = () => {
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-3xl font-bold text-amber-700">{totalAWCOpen.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
+            <p className="text-3xl font-bold text-amber-700">{totalAWCOpen.toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></p>
             <p className="text-xs text-muted-foreground">Total Anganwadi Centers reported open from May 2025 data.</p>
         </CardContent>
     </Card>
@@ -940,7 +940,7 @@ const PoshanTrackerDashboard = () => {
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-3xl font-bold text-red-700">{awcOpenedOutsideFencedArea.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
+            <p className="text-3xl font-bold text-red-700">{awcOpenedOutsideFencedArea.toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></p>
             <p className="text-xs text-muted-foreground">AWCs reported open but located outside a fenced area from May 2025 data.</p>
         </CardContent>
     </Card>
@@ -951,7 +951,7 @@ const PoshanTrackerDashboard = () => {
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-3xl font-bold text-gray-700">{awcDidntOpen.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
+            <p className="text-3xl font-bold text-gray-700">{awcDidntOpen.toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></p>
             <p className="text-xs text-muted-foreground">Anganwadi Centers reported as not open from May 2025 data.</p>
         </CardContent>
     </Card>
@@ -962,7 +962,7 @@ const PoshanTrackerDashboard = () => {
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-3xl font-bold text-purple-700">{totalChildren3YrTo6Yr.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
+            <p className="text-3xl font-bold text-purple-700">{totalChildren3YrTo6Yr.toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></p>
             <p className="text-xs text-muted-foreground">Total children aged 3-6 years recorded from May 2025 data.</p>
         </CardContent>
     </Card>
@@ -973,7 +973,7 @@ const PoshanTrackerDashboard = () => {
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-3xl font-bold text-teal-700">{totalChildrenAttended.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
+            <p className="text-3xl font-bold text-teal-700">{totalChildrenAttended.toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></p>
             <p className="text-xs text-muted-foreground">Children who attended the Anganwadi Centers from May 2025 data.</p>
         </CardContent>
     </Card>
@@ -984,7 +984,7 @@ const PoshanTrackerDashboard = () => {
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-3xl font-bold text-brown-700">{morningSnackGiven.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
+            <p className="text-3xl font-bold text-brown-700">{morningSnackGiven.toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></p>
             <p className="text-xs text-muted-foreground">Children who received morning snack from May 2025 data.</p>
         </CardContent>
     </Card>
@@ -995,7 +995,7 @@ const PoshanTrackerDashboard = () => {
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-3xl font-bold text-lime-700">{totalHCMGiven.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
+            <p className="text-3xl font-bold text-lime-700">{totalHCMGiven.toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></p>
             <p className="text-xs text-muted-foreground">Children who received Hot Cooked Meal from May 2025 data.</p>
         </CardContent>
     </Card>
@@ -1006,7 +1006,7 @@ const PoshanTrackerDashboard = () => {
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-3xl font-bold text-gray-700">{imageCaptured.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
+            <p className="text-3xl font-bold text-gray-700">{imageCaptured.toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></p>
             <p className="text-xs text-muted-foreground">Images captured for reporting from May 2025 data.</p>
         </CardContent>
     </Card>
@@ -1017,7 +1017,7 @@ const PoshanTrackerDashboard = () => {
             </CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-3xl font-bold text-indigo-700">{noOfAWcCompletedECCE.toLocaleString()}<small className="text-sm text-muted-foreground ml-1">[cite: 1]</small></p>
+            <p className="text-3xl font-bold text-indigo-700">{noOfAWcCompletedECCE.toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></p>
             <p className="text-xs text-muted-foreground">Anganwadi Centers that completed Early Childhood Care and Education from May 2025 data.</p>
         </CardContent>
     </Card>
@@ -1026,6 +1026,708 @@ const PoshanTrackerDashboard = () => {
   );
 };
 
+// Data for Integrated Child Protection Services (ICPS)
+const icpsData = [
+  {
+    caseNo: "ADB24-00333",
+    dateOfEntry: "28/10/2024 01:37 PM",
+    childName: "Nagargoj Dipali",
+    age: 17,
+    circumstances: "Missing",
+    policeStation: "Adilabad-II Town PS(Adilabad)",
+  },
+  {
+    caseNo: "KBD24-00086",
+    dateOfEntry: "23/04/2024 12:08 PM",
+    childName: "Elumule Homanthi",
+    age: 17,
+    circumstances: "Child Marriage Victim",
+    policeStation: "Sirpur-T PS(Kumrambheem Asifabad)",
+  },
+  {
+    caseNo: "KBD24-00088",
+    dateOfEntry: "24/04/2024 11:43 AM",
+    childName: "Nikade Ankitha",
+    age: 16,
+    circumstances: "Child Marriage Victim",
+    policeStation: "Rebbana PS(Kumrambheem Asifabad)",
+  },
+  {
+    caseNo: "KBD24-00095",
+    dateOfEntry: "03/06/2024 12:46 PM",
+    childName: "Bamne Mahesh",
+    age: 9,
+    circumstances: "Single Parent/Semi Orphan",
+    policeStation: "",
+  },
+  {
+    caseNo: "KBD24-00100",
+    dateOfEntry: "05/06/2024 12:16 PM",
+    childName: "Madavi Vijay Kumar",
+    age: 11,
+    circumstances: "Orphan",
+    policeStation: "",
+  },
+  {
+    caseNo: "KBD24-00117",
+    dateOfEntry: "08/07/2024 02:09 PM",
+    childName: "Rapaka Akash",
+    age: 17,
+    circumstances: "Child Labour",
+    policeStation: "Asifabad PS(Kumrambheem Asifabad)",
+  },
+  {
+    caseNo: "KBD24-00122",
+    dateOfEntry: "09/07/2024 11:57 AM",
+    childName: "Durgam Vinay Kumar",
+    age: 10,
+    circumstances: "Child Abuse/Exploitation",
+    policeStation: "Penchikalpet PS(Kumrambheem Asifabad)",
+  },
+];
+
+
+const ICPSReportTab = () => {
+  const childProtectionStats = {
+    orphans: 37,
+    semiOrphans: 17,
+    covidOrphans: 7,
+    covidSemiOrphans: 59,
+    hivAffected: 15,
+    others: 2,
+    totalSponsorship: 137,
+    pocsoVictimCompensationBudget: "2,275,000", // in Rs.
+    totalVictims2014_2024: 74,
+  }; //
+
+  const committees = {
+    villageChildProtectionCommittees: 334,
+    mandalLevelChildProtectionCommittee: 15,
+    district: 1,
+    ucpcWardLevel: 28,
+  }; //
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            Integrated Child Protection Services (ICPS) - Case Data
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left p-3 font-semibold">Case No</th>
+                  <th className="text-left p-3 font-semibold">Date of Entry</th>
+                  <th className="text-left p-3 font-semibold">Child Name</th>
+                  <th className="text-center p-3 font-semibold">Age</th>
+                  <th className="text-left p-3 font-semibold">Circumstances</th>
+                  <th className="text-left p-3 font-semibold">Police Station</th>
+                </tr>
+              </thead>
+              <tbody>
+                {icpsData.map((row, index) => (
+                  <tr key={index} className="border-b hover:bg-muted/30">
+                    <td className="p-3">{row.caseNo}</td>
+                    <td className="p-3">{row.dateOfEntry}</td>
+                    <td className="p-3 font-medium">{row.childName}</td>
+                    <td className="p-3 text-center">{row.age}</td>
+                    <td className="p-3">{row.circumstances}</td>
+                    <td className="p-3">{row.policeStation || 'N/A'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Users className="h-5 w-5 text-blue-600" />
+              Child Protection Statistics
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <p className="flex justify-between"><span>Orphans:</span> <span className="font-semibold">{childProtectionStats.orphans}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+            <p className="flex justify-between"><span>Semi-orphans:</span> <span className="font-semibold">{childProtectionStats.semiOrphans}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+            <p className="flex justify-between"><span>COVID-Orphans:</span> <span className="font-semibold">{childProtectionStats.covidOrphans}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+            <p className="flex justify-between"><span>COVID-Semi Orphans:</span> <span className="font-semibold">{childProtectionStats.covidSemiOrphans}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+            <p className="flex justify-between"><span>HIV Affected:</span> <span className="font-semibold">{childProtectionStats.hivAffected}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+            <p className="flex justify-between"><span>Others:</span> <span className="font-semibold">{childProtectionStats.others}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+            <p className="flex justify-between border-t mt-2 pt-2"><span>Total Sponsorships:</span> <span className="font-bold text-lg">{childProtectionStats.totalSponsorship}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Scale className="h-5 w-5 text-green-600" />
+              POCSO Victim Compensation
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <p className="flex justify-between"><span>Required Budget (Upto 2024):</span> <span className="font-bold text-lg">₹{parseInt(childProtectionStats.pocsoVictimCompensationBudget).toLocaleString()}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+            <p className="flex justify-between"><span>Total Victims (2014-2024):</span> <span className="font-semibold">{childProtectionStats.totalVictims2014_2024}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Home className="h-5 w-5 text-purple-600" />
+              Child Protection Committees
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <p className="flex justify-between"><span>Village Level:</span> <span className="font-semibold">{committees.villageChildProtectionCommittees}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+            <p className="flex justify-between"><span>Mandal Level:</span> <span className="font-semibold">{committees.mandalLevelChildProtectionCommittee}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+            <p className="flex justify-between"><span>District Level:</span> <span className="font-semibold">{committees.district}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+            <p className="flex justify-between"><span>UCPC (Ward Level):</span> <span className="font-semibold">{committees.ucpcWardLevel}</span><small className="text-sm text-muted-foreground ml-1"></small></p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+
+// Data for Operation Smile and Operation Muskan
+const operationSmileMuskanData = {
+  "2025-01-01": 56, //
+  "2024-07-01": 61, //
+};
+
+const OperationSmileMuskanTab = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle className="flex items-center gap-2">
+        <Sun className="h-5 w-5 text-yellow-600" />
+        Operation Smile & Muskan Data
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-4">
+        {Object.entries(operationSmileMuskanData).map(([date, count]) => (
+          <div key={date} className="flex justify-between items-center p-3 bg-yellow-50 rounded-lg">
+            <div>
+              <p className="font-semibold text-yellow-800">Operation {new Date(date).getMonth() === 0 ? 'Smile' : 'Muskan'} - {new Date(date).getFullYear()}</p>
+              <p className="text-sm text-yellow-600">Date: {new Date(date).toLocaleDateString()}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-2xl font-bold text-yellow-800">{count}</p>
+              <p className="text-sm text-yellow-600">Children Rescued/Identified</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p className="text-xs text-muted-foreground mt-4">Data reflects the number of individuals identified or rescued during these operations.</p>
+    </CardContent>
+  </Card>
+);
+
+// Data for AWC Opened and Attendance Submitted
+const awcAttendanceSummary = [
+  { name: "ASIFABAD", totalAWCs: 276, awcsOpened: 254, openedPercentage: 92.03, notOpened: 0, notOpenedPercentage: 0, awtSubmittedAttendance: 254, attendanceSubmittedPercentage: 92.03, awtNotSubmittedAttendance: 22, attendanceNotSubmittedPercentage: 7.97 },
+  { name: "JAINOOR", totalAWCs: 177, awcsOpened: 154, openedPercentage: 87.01, notOpened: 0, notOpenedPercentage: 0, awtSubmittedAttendance: 154, attendanceSubmittedPercentage: 87.01, awtNotSubmittedAttendance: 23, attendanceNotSubmittedPercentage: 12.99 },
+  { name: "KAGAZNAGAR (U)", totalAWCs: 173, awcsOpened: 164, openedPercentage: 94.8, notOpened: 0, notOpenedPercentage: 0, awtSubmittedAttendance: 164, attendanceSubmittedPercentage: 94.8, awtNotSubmittedAttendance: 9, attendanceNotSubmittedPercentage: 5.2 },
+  { name: "SIRPUR", totalAWCs: 202, awcsOpened: 199, openedPercentage: 98.51, notOpened: 0, notOpenedPercentage: 0, awtSubmittedAttendance: 199, attendanceSubmittedPercentage: 98.51, awtNotSubmittedAttendance: 3, attendanceNotSubmittedPercentage: 1.49 },
+  { name: "WANKDI", totalAWCs: 183, awcsOpened: 116, openedPercentage: 63.39, notOpened: 0, notOpenedPercentage: 0, awtSubmittedAttendance: 116, attendanceSubmittedPercentage: 63.39, awtNotSubmittedAttendance: 67, attendanceNotSubmittedPercentage: 36.61 },
+]; //
+
+const awtAwhAttendanceReport = [
+  { name: "ADA", totalAWTsSanctioned: 26, awtsInPosition: 23, awwSubmittedAttendance: 23, awtsAttendedPercentage: 100, awtsAttended: 23, awtsAttendedPercentage1: 100, awtsLeaveMeetingTraining: 0, awtsLeaveMeetingTrainingPercentage: 0, totalAWHsSanctioned: 26, awhsInPosition: 14, awhSubmittedAttendance: 14, awhsAttendedPercentage: 100, awhsAttended: 11, awhsAttendedPercentage1: 78.57, awhsLeaveMeetingTraining: 3, awhsLeaveMeetingTrainingPercentage: 21.43 },
+  { name: "ASIFABAD", totalAWTsSanctioned: 30, awtsInPosition: 29, awwSubmittedAttendance: 27, awtsAttendedPercentage: 93.1, awtsAttended: 25, awtsAttendedPercentage1: 92.59, awtsLeaveMeetingTraining: 2, awtsLeaveMeetingTrainingPercentage: 7.41, totalAWHsSanctioned: 30, awhsInPosition: 23, awhSubmittedAttendance: 22, awhsAttendedPercentage: 95.65, awhsAttended: 21, awhsAttendedPercentage1: 95.45, awhsLeaveMeetingTraining: 1, awhsLeaveMeetingTrainingPercentage: 4.55 },
+  { name: "BURUGUDA", totalAWTsSanctioned: 30, awtsInPosition: 29, awwSubmittedAttendance: 29, awtsAttendedPercentage: 100, awtsAttended: 29, awtsAttendedPercentage1: 100, awtsLeaveMeetingTraining: 0, awtsLeaveMeetingTrainingPercentage: 0, totalAWHsSanctioned: 30, awhsInPosition: 23, awhSubmittedAttendance: 23, awhsAttendedPercentage: 100, awhsAttended: 15, awhsAttendedPercentage1: 65.22, awhsLeaveMeetingTraining: 8, awhsLeaveMeetingTrainingPercentage: 34.78 },
+  { name: "CHIRRAKUNTA", totalAWTsSanctioned: 21, awtsInPosition: 14, awwSubmittedAttendance: 13, awtsAttendedPercentage: 92.86, awtsAttended: 13, awtsAttendedPercentage1: 100, awtsLeaveMeetingTraining: 0, awtsLeaveMeetingTrainingPercentage: 0, totalAWHsSanctioned: 21, awhsInPosition: 13, awhSubmittedAttendance: 12, awhsAttendedPercentage: 92.31, awhsAttended: 9, awhsAttendedPercentage1: 75, awhsLeaveMeetingTraining: 3, awhsLeaveMeetingTrainingPercentage: 25 },
+  { name: "GANGAPUR", totalAWTsSanctioned: 25, awtsInPosition: 23, awwSubmittedAttendance: 22, awtsAttendedPercentage: 95.65, awtsAttended: 22, awtsAttendedPercentage1: 100, awtsLeaveMeetingTraining: 0, awtsLeaveMeetingTrainingPercentage: 0, totalAWHsSanctioned: 25, awhsInPosition: 20, awhSubmittedAttendance: 18, awhsAttendedPercentage: 90, awhsAttended: 15, awhsAttendedPercentage1: 83.33, awhsLeaveMeetingTraining: 3, awhsLeaveMeetingTrainingPercentage: 16.67 },
+  { name: "GINNEDHARI", totalAWTsSanctioned: 22, awtsInPosition: 18, awwSubmittedAttendance: 15, awtsAttendedPercentage: 83.33, awtsAttended: 14, awtsAttendedPercentage1: 93.33, awtsLeaveMeetingTraining: 1, awtsLeaveMeetingTrainingPercentage: 6.67, totalAWHsSanctioned: 22, awhsInPosition: 12, awhSubmittedAttendance: 10, awhsAttendedPercentage: 83.33, awhsAttended: 8, awhsAttendedPercentage1: 80, awhsLeaveMeetingTraining: 2, awhsLeaveMeetingTrainingPercentage: 20 },
+  { name: "KHAIRGAON", totalAWTsSanctioned: 23, awtsInPosition: 21, awwSubmittedAttendance: 21, awtsAttendedPercentage: 100, awtsAttended: 20, awtsAttendedPercentage1: 95.24, awtsLeaveMeetingTraining: 1, awtsLeaveMeetingTrainingPercentage: 4.76, totalAWHsSanctioned: 23, awhsInPosition: 16, awhSubmittedAttendance: 16, awhsAttendedPercentage: 100, awhsAttended: 12, awhsAttendedPercentage1: 75, awhsLeaveMeetingTraining: 4, awhsLeaveMeetingTrainingPercentage: 25 },
+  { name: "MOVAD", totalAWTsSanctioned: 24, awtsInPosition: 20, awwSubmittedAttendance: 14, awtsAttendedPercentage: 70, awtsAttended: 14, awtsAttendedPercentage1: 100, awtsLeaveMeetingTraining: 0, awtsLeaveMeetingTrainingPercentage: 0, totalAWHsSanctioned: 24, awhsInPosition: 17, awhSubmittedAttendance: 12, awhsAttendedPercentage: 70.59, awhsAttended: 11, awhsAttendedPercentage1: 91.67, awhsLeaveMeetingTraining: 1, awhsLeaveMeetingTrainingPercentage: 8.33 },
+  { name: "REBBENA", totalAWTsSanctioned: 22, awtsInPosition: 21, awwSubmittedAttendance: 17, awtsAttendedPercentage: 80.95, awtsAttended: 17, awtsAttendedPercentage1: 100, awtsLeaveMeetingTraining: 0, awtsLeaveMeetingTrainingPercentage: 0, totalAWHsSanctioned: 22, awhsInPosition: 15, awhSubmittedAttendance: 11, awhsAttendedPercentage: 73.33, awhsAttended: 9, awhsAttendedPercentage1: 81.82, awhsLeaveMeetingTraining: 2, awhsLeaveMeetingTrainingPercentage: 18.18 },
+  { name: "SUNGAPUR", totalAWTsSanctioned: 26, awtsInPosition: 17, awwSubmittedAttendance: 14, awtsAttendedPercentage: 82.35, awtsAttended: 14, awtsAttendedPercentage1: 100, awtsLeaveMeetingTraining: 0, awtsLeaveMeetingTrainingPercentage: 0, totalAWHsSanctioned: 26, awhsInPosition: 14, awhSubmittedAttendance: 11, awhsAttendedPercentage: 78.57, awhsAttended: 10, awhsAttendedPercentage1: 90.91, awhsLeaveMeetingTraining: 1, awhsLeaveMeetingTrainingPercentage: 9.09 },
+  { name: "TIRYANI", totalAWTsSanctioned: 27, awtsInPosition: 22, awwSubmittedAttendance: 20, awtsAttendedPercentage: 90.91, awtsAttended: 20, awtsAttendedPercentage1: 100, awtsLeaveMeetingTraining: 0, awtsLeaveMeetingTrainingPercentage: 0, totalAWHsSanctioned: 27, awhsInPosition: 19, awhSubmittedAttendance: 16, awhsAttendedPercentage: 84.21, awhsAttended: 14, awhsAttendedPercentage1: 87.5, awhsLeaveMeetingTraining: 2, awhsLeaveMeetingTrainingPercentage: 12.5 },
+]; //
+
+const AWCAttendanceReportTab = () => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <CalendarCheck className="h-5 w-5 text-blue-600" />
+          AWC Opened & Attendance Submitted (16/06/2025)
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="text-left p-3 font-semibold">Name</th>
+                <th className="text-center p-3 font-semibold">Total AWCs</th>
+                <th className="text-center p-3 font-semibold">AWCs Opened (%)</th>
+                <th className="text-center p-3 font-semibold">AWTs Submitted Attendance (%)</th>
+                <th className="text-center p-3 font-semibold">AWTs Not Submitted Attendance (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {awcAttendanceSummary.map((row, index) => (
+                <tr key={index} className="border-b hover:bg-muted/30">
+                  <td className="p-3 font-medium">{row.name}</td>
+                  <td className="p-3 text-center">{row.totalAWCs}</td>
+                  <td className="p-3 text-center">{row.openedPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.awtSubmittedAttendance}%<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.attendanceNotSubmittedPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </CardContent>
+    </Card>
+
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <UserCheck className="h-5 w-5 text-green-600" />
+          AWTs and AWHs Attendance Report (16/06/2025)
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="text-left p-3 font-semibold">Name</th>
+                <th className="text-center p-3 font-semibold">AWTs In-Position</th>
+                <th className="text-center p-3 font-semibold">AWTs Attended (%)</th>
+                <th className="text-center p-3 font-semibold">AWHs In-Position</th>
+                <th className="text-center p-3 font-semibold">AWHs Attended (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {awtAwhAttendanceReport.map((row, index) => (
+                <tr key={index} className="border-b hover:bg-muted/30">
+                  <td className="p-3 font-medium">{row.name}</td>
+                  <td className="p-3 text-center">{row.awtsInPosition}</td>
+                  <td className="p-3 text-center">{row.awtsAttendedPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.awhsInPosition}</td>
+                  <td className="p-3 text-center">{row.awhsAttendedPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+// Data for Spot Feeding Daily and Monthly Attendance
+const spotFeedingDailyAttendance = [
+  { id: 20101, name: "ASIFABAD", totalPW: 192, totalPWAttended: 182, pwAttendedPercentage: 94.79, totalLW: 128, totalLWAttended: 118, lwAttendedPercentage: 92.19, totalChild: 715, totalChildAttended: 444, childAttendedPercentage: 62.1 },
+  { id: 20102, name: "ADA", totalPW: 116, totalPWAttended: 111, pwAttendedPercentage: 95.69, totalLW: 86, totalLWAttended: 86, lwAttendedPercentage: 100, totalChild: 602, totalChildAttended: 465, childAttendedPercentage: 77.24 },
+  { id: 20103, name: "BURUGUDA", totalPW: 120, totalPWAttended: 99, pwAttendedPercentage: 82.5, totalLW: 72, totalLWAttended: 68, lwAttendedPercentage: 94.44, totalChild: 604, totalChildAttended: 330, childAttendedPercentage: 54.64 },
+  { id: 20104, name: "CHIRRAKUNTA", totalPW: 54, totalPWAttended: 34, pwAttendedPercentage: 62.96, totalLW: 41, totalLWAttended: 27, lwAttendedPercentage: 65.85, totalChild: 282, totalChildAttended: 135, childAttendedPercentage: 47.87 },
+  { id: 20105, name: "MOVAD", totalPW: 57, totalPWAttended: 49, pwAttendedPercentage: 85.96, totalLW: 28, totalLWAttended: 20, lwAttendedPercentage: 71.43, totalChild: 225, totalChildAttended: 169, childAttendedPercentage: 75.11 },
+  { id: 20106, name: "KHAIRGAON", totalPW: 79, totalPWAttended: 71, pwAttendedPercentage: 89.87, totalLW: 63, totalLWAttended: 50, lwAttendedPercentage: 79.37, totalChild: 378, totalChildAttended: 213, childAttendedPercentage: 56.35 },
+  { id: 20107, name: "GANGAPUR", totalPW: 109, totalPWAttended: 93, pwAttendedPercentage: 85.32, totalLW: 67, totalLWAttended: 56, lwAttendedPercentage: 83.58, totalChild: 413, totalChildAttended: 236, childAttendedPercentage: 57.14 },
+  { id: 20108, name: "REBBENA", totalPW: 140, totalPWAttended: 118, pwAttendedPercentage: 84.29, totalLW: 84, totalLWAttended: 80, lwAttendedPercentage: 95.24, totalChild: 584, totalChildAttended: 188, childAttendedPercentage: 32.19 },
+  { id: 20109, name: "GINNEDHARI", totalPW: 55, totalPWAttended: 51, pwAttendedPercentage: 92.73, totalLW: 56, totalLWAttended: 54, lwAttendedPercentage: 96.43, totalChild: 298, totalChildAttended: 221, childAttendedPercentage: 74.16 },
+  { id: 20110, name: "TIRYANI", totalPW: 74, totalPWAttended: 72, pwAttendedPercentage: 97.3, totalLW: 64, totalLWAttended: 60, lwAttendedPercentage: 93.75, totalChild: 385, totalChildAttended: 204, childAttendedPercentage: 52.99 },
+  { id: 20111, name: "SUNGAPUR", totalPW: 63, totalPWAttended: 46, pwAttendedPercentage: 73.02, totalLW: 51, totalLWAttended: 47, lwAttendedPercentage: 92.16, totalChild: 277, totalChildAttended: 149, childAttendedPercentage: 53.79 },
+]; //
+
+const spotFeedingMonthlyAttendance = [
+  { month: "May", totalPWLW: 1799, totalPreSchoolChildren: 4763, totalBeneficiaries: 6562, attendedMoreThan21Days: 0, attendedMoreThan21DaysPercentage: 0, attendedLessThan21Days: 6562, attendedLessThan21DaysPercentage: 100 },
+  { month: "April", totalPWLW: 1799, totalPreSchoolChildren: 4763, totalBeneficiaries: 6562, attendedMoreThan21Days: 0, attendedMoreThan21DaysPercentage: 0, attendedLessThan21Days: 6562, attendedLessThan21DaysPercentage: 100 },
+  { month: "March", totalPWLW: 1799, totalPreSchoolChildren: 4763, totalBeneficiaries: 6562, attendedMoreThan21Days: 0, attendedMoreThan21DaysPercentage: 0, attendedLessThan21Days: 6562, attendedLessThan21DaysPercentage: 100 },
+  { month: "February", totalPWLW: 1799, totalPreSchoolChildren: 4763, totalBeneficiaries: 6562, attendedMoreThan21Days: 0, attendedMoreThan21DaysPercentage: 0, attendedLessThan21Days: 6562, attendedLessThan21DaysPercentage: 100 },
+  { month: "January", totalPWLW: 1799, totalPreSchoolChildren: 4763, totalBeneficiaries: 6562, attendedMoreThan21Days: 0, attendedMoreThan21DaysPercentage: 0, attendedLessThan21Days: 6562, attendedLessThan21DaysPercentage: 100 },
+]; //
+
+const SpotFeedingReportTab = () => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Utensils className="h-5 w-5 text-orange-600" />
+          Spot Feeding Daily Attendance (16/06/2025)
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="text-left p-3 font-semibold">Name</th>
+                <th className="text-center p-3 font-semibold">Total PW</th>
+                <th className="text-center p-3 font-semibold">PW Attended (%)</th>
+                <th className="text-center p-3 font-semibold">Total LW</th>
+                <th className="text-center p-3 font-semibold">LW Attended (%)</th>
+                <th className="text-center p-3 font-semibold">Total Child</th>
+                <th className="text-center p-3 font-semibold">Child Attended (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {spotFeedingDailyAttendance.map((row, index) => (
+                <tr key={index} className="border-b hover:bg-muted/30">
+                  <td className="p-3 font-medium">{row.name}</td>
+                  <td className="p-3 text-center">{row.totalPW}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.pwAttendedPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.totalLW}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.lwAttendedPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.totalChild}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.childAttendedPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </CardContent>
+    </Card>
+
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Coffee className="h-5 w-5 text-brown-600" />
+          Spot Feeding Monthly Attendance
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="text-left p-3 font-semibold">Month</th>
+                <th className="text-center p-3 font-semibold">Total PW and LW</th>
+                <th className="text-center p-3 font-semibold">Total Pre School Children</th>
+                <th className="text-center p-3 font-semibold">Total Beneficiaries</th>
+                <th className="text-center p-3 font-semibold">Attended less than 21 Days (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {spotFeedingMonthlyAttendance.map((row, index) => (
+                <tr key={index} className="border-b hover:bg-muted/30">
+                  <td className="p-3 font-medium">{row.month}</td>
+                  <td className="p-3 text-center">{row.totalPWLW}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.totalPreSchoolChildren}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.totalBeneficiaries}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.attendedLessThan21DaysPercentage}%<small className="text-sm text-muted-foreground ml-1"></small></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+// Data for Mission Shakti Activities
+const missionShaktiActivityWise = {
+  "2025 - 2026": [
+    { activityName: "Having sessions of women/girls only support groups in local community centre at a set date monthly", noOfActivitiesConducted: 1, numberOfParticipants: 14 },
+    { activityName: "Business women interaction with young girls from Minority communities", noOfActivitiesConducted: 1, numberOfParticipants: 17 },
+    { activityName: "Creating safe spaces for women in public areas for breastfeeding", noOfActivitiesConducted: 1, numberOfParticipants: 40 },
+    { activityName: "Focused Discussions", noOfActivitiesConducted: 3, numberOfParticipants: 77 },
+    { activityName: "Ending stigma around mental health issues", noOfActivitiesConducted: 2, numberOfParticipants: 100 },
+    { activityName: "Video series on trolling and digital bullying", noOfActivitiesConducted: 1, numberOfParticipants: 120 },
+    { activityName: "Training sessions in schools and Anganwadi Centres", noOfActivitiesConducted: 1, numberOfParticipants: 170 },
+    { activityName: "Declaring and incentivizing Child marriage Free Gram Panchayats/ Urban Local Bodies based on the Checklist", noOfActivitiesConducted: 4, numberOfParticipants: 308 },
+    { activityName: "Awareness Camps", noOfActivitiesConducted: 4, numberOfParticipants: 650 },
+    { activityName: "Other", noOfActivitiesConducted: 10, numberOfParticipants: 619 },
+  ], //
+  "2024 - 2025": [
+    { activityName: "Making short animated videos on mental health", noOfActivitiesConducted: 1, numberOfParticipants: 10 },
+    { activityName: "Counselling of Out-of-School Adolescent Girls and their families", noOfActivitiesConducted: 1, numberOfParticipants: 15 },
+    { activityName: "Recognizing Women pioneers in Science and Technology", noOfActivitiesConducted: 1, numberOfParticipants: 18 },
+    { activityName: "Training of girls on their rights in schools and Anganwadi centres", noOfActivitiesConducted: 1, numberOfParticipants: 48 },
+    { activityName: "Girl child focused plan", noOfActivitiesConducted: 1, numberOfParticipants: 60 },
+    { activityName: "Girls sports teams in all schools for all sports available", noOfActivitiesConducted: 1, numberOfParticipants: 66 },
+    { activityName: "Tracking child marriages", noOfActivitiesConducted: 2, numberOfParticipants: 90 },
+    { activityName: "Declaring and incentivizing Child marriage Free Gram Panchayats/ Urban Local Bodies based on the Checklist", noOfActivitiesConducted: 2, numberOfParticipants: 103 },
+    { activityName: "PC&PNDT Act Enforcement Drives", noOfActivitiesConducted: 2, numberOfParticipants: 111 },
+    { activityName: "Having sessions of women/girls only support groups in local community centre at a set date monthly", noOfActivitiesConducted: 3, numberOfParticipants: 117 },
+    { activityName: "Training sessions in schools and Anganwadi Centres", noOfActivitiesConducted: 4, numberOfParticipants: 152 },
+    { activityName: "Business women interaction with young girls from Minority communities", noOfActivitiesConducted: 2, numberOfParticipants: 157 },
+    { activityName: "Safety sessions with digital experts in schools", noOfActivitiesConducted: 1, numberOfParticipants: 162 },
+    { activityName: "Miking/ Awareness vans", noOfActivitiesConducted: 1, numberOfParticipants: 189 },
+    { activityName: "Establishing safe support groups with similar issues", noOfActivitiesConducted: 1, numberOfParticipants: 190 },
+    { activityName: "Movie screening at schools", noOfActivitiesConducted: 1, numberOfParticipants: 198 },
+    { activityName: "Audio-visual aids and movie screening", noOfActivitiesConducted: 1, numberOfParticipants: 200 },
+    { activityName: "Sensitivity drive", noOfActivitiesConducted: 1, numberOfParticipants: 238 },
+    { activityName: "Declaring and promoting district level sports champions", noOfActivitiesConducted: 2, numberOfParticipants: 267 },
+    { activityName: "Awareness Camps", noOfActivitiesConducted: 2, numberOfParticipants: 333 },
+    { activityName: "Ending stigma around mental health issues", noOfActivitiesConducted: 1, numberOfParticipants: 400 },
+    { activityName: "Career counselling activities", noOfActivitiesConducted: 2, numberOfParticipants: 449 },
+    { activityName: "Girl child focused plan", noOfActivitiesConducted: 3, numberOfParticipants: 911 },
+    { activityName: "Ending stigma around mental health issues", noOfActivitiesConducted: 14, numberOfParticipants: 1866 },
+    { activityName: "Focused Discussions", noOfActivitiesConducted: 27, numberOfParticipants: 3358 },
+    { activityName: "Life skill training at school level", noOfActivitiesConducted: 26, numberOfParticipants: 4339 },
+    { activityName: "Other", noOfActivitiesConducted: 42, numberOfParticipants: 3760 },
+  ], //
+  "2023 2024": [
+    { activityName: "Audio-visual aids and movie screening", noOfActivitiesConducted: 1, numberOfParticipants: 200 },
+    { activityName: "Other", noOfActivitiesConducted: 3, numberOfParticipants: 336 },
+  ], //
+};
+
+const missionShaktiBBBPData = {
+    "Sectoral activities of Department of Women and Child Development": [
+        { quarter: "Quarter-1", year: "2024-2025", month: "April", activity: 9 },
+        { quarter: "Quarter-1", year: "2024-2025", month: "May", activity: 9 },
+        { quarter: "Quarter-1", year: "2024-2025", month: "June", activity: 11 },
+        { quarter: "Quarter-3", year: "2024-2025", month: "October", activity: 8 },
+        { quarter: "Quarter-3", year: "2024-2025", month: "November", activity: 10 },
+        { quarter: "Quarter-3", year: "2023-2024", month: "December", activity: 3 },
+        { quarter: "Quarter-3", year: "2024-2025", month: "December", activity: 10 },
+        { quarter: "Quarter-4", year: "2024-2025", month: "January", activity: 10 },
+        { quarter: "Quarter-4", year: "2024-2025", month: "March", activity: 10 },
+        { quarter: "Quarter-4", year: "2024-2025", month: "February", activity: 10 },
+        { quarter: "Quarter-1", year: "2025-2026", month: "April", activity: 9 },
+        { quarter: "Quarter-1", year: "2025-2026", month: "May", activity: 9 },
+    ], //
+    "BBBP Data (second table)": [
+        { quarter: "Quarter-1", year: "2024-2025", month: "April", activity: 11 },
+        { quarter: "Quarter-1", year: "2024-2025", month: "May", activity: 10 },
+        { quarter: "Quarter-1", year: "2024-2025", month: "June", activity: 12 },
+        { quarter: "Quarter-3", year: "2024-2025", month: "October", activity: 13 },
+        { quarter: "Quarter-3", year: "2024-2025", month: "November", activity: 20 },
+        { quarter: "Quarter-3", year: "2023-2024", month: "December", activity: 4 },
+        { quarter: "Quarter-3", year: "2024-2025", month: "December", activity: 20 },
+        { quarter: "Quarter-4", year: "2024-2025", month: "January", activity: 20 },
+        { quarter: "Quarter-4", year: "2024-2025", month: "March", activity: 20 },
+        { quarter: "Quarter-4", year: "2024-2025", month: "February", activity: 20 },
+        { quarter: "Quarter-1", year: "2025-2026", month: "April", activity: 15 },
+        { quarter: "Quarter-1", year: "2025-2026", month: "May", activity: 13 },
+    ], //
+    "Sectoral activities in Convergence with partner and line Departments": [
+        { quarter: "Quarter-1", year: "2024-2025", month: "April", activity: 2 },
+        { quarter: "Quarter-1", year: "2024-2025", month: "May", activity: 1 },
+        { quarter: "Quarter-1", year: "2024-2025", month: "June", activity: 1 },
+        { quarter: "Quarter-3", year: "2024-2025", month: "October", activity: 5 },
+        { quarter: "Quarter-3", year: "2024-2025", month: "November", activity: 10 },
+        { quarter: "Quarter-3", year: "2023-2024", month: "December", activity: 1 },
+        { quarter: "Quarter-3", year: "2024-2025", month: "December", activity: 10 },
+        { quarter: "Quarter-4", year: "2024-2025", month: "January", activity: 10 },
+        { quarter: "Quarter-4", year: "2024-2025", month: "March", activity: 10 },
+        { quarter: "Quarter-4", year: "2024-2025", month: "February", activity: 10 },
+        { quarter: "Quarter-1", year: "2025-2026", month: "April", activity: 6 },
+        { quarter: "Quarter-1", year: "2025-2026", month: "May", activity: 4 },
+    ], //
+    "Plantation Drive": [
+        { financialYear: "2024-2025", quarter: "Quarter-1", month: "June", isConducted: "Yes" },
+        { financialYear: "2024-2025", quarter: "Quarter-4", month: "January", isConducted: "Yes" },
+    ], //
+};
+
+const weeklyActivityReportData = [
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Campaigns", noOfParticipants: 160, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 140, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Campaigns", noOfParticipants: 150, noOfRepresentativesPanchayatLocalBodies: 8, noOfPublicRepresentatives: 3, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Other (National GirlChild DayCelebration)", noOfParticipants: 200, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 120, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 107, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Other (BBBP yearscelebrationsPlantation)", activityType: "Plantation drives", noOfParticipants: 50, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 180, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 90, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 70, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 120, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 103, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 170, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 120, noOfRepresentativesPanchayatLocalBodies: 2, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Educational programmes,tour, publicity,awareness campaign(WHL-181, CHL-1098)", activityType: "Awareness sessions", noOfParticipants: 160, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 1, activity: "Other (BBBP yearscelebrationstwo km Rallywith slogans)", activityType: "Campaigns", noOfParticipants: 120, noOfRepresentativesPanchayatLocalBodies: 1, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 2, activity: "Other (Girl childempowermentclub)", activityType: "Awareness sessions", noOfParticipants: 120, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 3, activity: "Mental health awarenessweek", activityType: "Awareness Group", noOfParticipants: 16, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 3, activity: "Mental health awarenessweek", activityType: "Awareness Group", noOfParticipants: 18, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 2 },
+  { week: 3, activity: "Mental health awarenessweek", activityType: "Awareness sessions", noOfParticipants: 120, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 3, activity: "Enrolment drive forgirl children inschools", activityType: "Enrolment drives", noOfParticipants: 4, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 3 },
+  { week: 3, activity: "Mental health awarenessweek", activityType: "Awareness sessions", noOfParticipants: 170, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 3, activity: "Mental health awarenessweek", activityType: "Awareness sessions", noOfParticipants: 170, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 3, activity: "Mental health awarenessweek", activityType: "Awareness sessions", noOfParticipants: 59, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 1 },
+  { week: 4, activity: "Other (MenstrualHygiene Health)", activityType: "Awareness sessions", noOfParticipants: 37, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 4, activity: "Other (MenstrualHygiene Health)", activityType: "Awareness sessions", noOfParticipants: 40, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 4, activity: "Other (MenstrualHygiene Health)", activityType: "Awareness sessions", noOfParticipants: 49, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 4, activity: "Other (MenstrualHygiene Health)", activityType: "Awareness sessions", noOfParticipants: 50, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 380, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 370, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 290, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 250, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 190, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 1 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 378, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 128, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 160, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 200, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 111, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 170, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 56, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 62, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 190, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 70, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 253, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 142, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 125, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 340, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 80, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 150, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 34, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 321, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 79, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 56, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 114, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 282, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 273, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 160, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 52, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 320, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 87, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 123, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 147, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (INTERNATIONALWOMENS DAYCELEBRATION)", activityType: "Other (INTERNATIONALWOMENS DAYCELEBRATION)", noOfParticipants: 180, noOfRepresentativesPanchayatLocalBodies: 3, noOfPublicRepresentatives: 1, noOfBeneficiariesEnrolled: 2 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 263, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 190, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 329, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Awareness campaigns onwomen-centriclegislations andBharatiya Nyay Sanhita", activityType: "Awareness sessions", noOfParticipants: 170, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Awareness campaigns onwomen-centriclegislations andBharatiya Nyay Sanhita", activityType: "Awareness sessions", noOfParticipants: 157, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 120, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 165, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Other (StudentsMotivationalandinspirationalClasses)", activityType: "Awareness sessions", noOfParticipants: 150, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 34, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 6, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 321, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 79, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+  { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 56, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
+]; //
+
+const MissionShaktiDashboard = () => (
+  <div className="space-y-6">
+    {Object.entries(missionShaktiActivityWise).map(([year, activities]) => (
+      <Card key={year}>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Handshake className="h-5 w-5 text-purple-600" />
+            Mission Shakti Activities - {year}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left p-3 font-semibold">Activity Name</th>
+                  <th className="text-center p-3 font-semibold">No. of Activities Conducted</th>
+                  <th className="text-center p-3 font-semibold">Number of Participants</th>
+                </tr>
+              </thead>
+              <tbody>
+                {activities.map((row, index) => (
+                  <tr key={index} className="border-b hover:bg-muted/30">
+                    <td className="p-3">{row.activityName}</td>
+                    <td className="p-3 text-center">{row.noOfActivitiesConducted}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                    <td className="p-3 text-center">{row.numberOfParticipants.toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+    ))}
+
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <ClipboardList className="h-5 w-5 text-blue-600" />
+          BBBP Data - Sectoral Activities
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {Object.entries(missionShaktiBBBPData).map(([category, data], index) => (
+            <div key={index} className="mb-6 last:mb-0">
+                <h3 className="text-lg font-semibold mb-3">{category}</h3>
+                <div className="overflow-x-auto">
+                    <table className="w-full border-collapse text-sm">
+                        <thead>
+                            <tr className="border-b bg-muted/50">
+                                <th className="text-left p-2 font-semibold">Quarter</th>
+                                <th className="text-left p-2 font-semibold">Year</th>
+                                <th className="text-left p-2 font-semibold">Month</th>
+                                <th className="text-center p-2 font-semibold">Activity Count / Conducted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map((row, rowIndex) => (
+                                <tr key={rowIndex} className="border-b hover:bg-muted/30">
+                                    <td className="p-2">{row.quarter || row.financialYear}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                                    <td className="p-2">{row.year || row.financialYear}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                                    <td className="p-2">{row.month}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                                    <td className="p-2 text-center">{row.activity || row.isConducted}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        ))}
+      </CardContent>
+    </Card>
+
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Activity className="h-5 w-5" />
+          Weekly Activity Report - Asifabad
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b bg-muted/50">
+                <th className="text-left p-3 font-semibold">Week</th>
+                <th className="text-left p-3 font-semibold">Activity</th>
+                <th className="text-left p-3 font-semibold">Activity Type</th>
+                <th className="text-center p-3 font-semibold">Participants</th>
+                <th className="text-center p-3 font-semibold"> Panchayat Reps</th>
+                <th className="text-center p-3 font-semibold"> Public Reps</th>
+                <th className="text-center p-3 font-semibold"> Beneficiaries Enrolled</th>
+              </tr>
+            </thead>
+            <tbody>
+              {weeklyActivityReportData.map((row, index) => (
+                <tr key={index} className="border-b hover:bg-muted/30">
+                  <td className="p-3">{row.week}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3">{row.activity}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3">{row.activityType}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.noOfParticipants}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.noOfRepresentativesPanchayatLocalBodies}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.noOfPublicRepresentatives}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                  <td className="p-3 text-center">{row.noOfBeneficiariesEnrolled}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+                <tr className="border-t-2 bg-muted/50 font-semibold">
+                    <td className="p-3" colSpan="3">Total Participants</td>
+                    <td className="p-3 text-center">{weeklyActivityReportData.reduce((sum, row) => sum + row.noOfParticipants, 0).toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                    <td className="p-3 text-center">{weeklyActivityReportData.reduce((sum, row) => sum + row.noOfRepresentativesPanchayatLocalBodies, 0).toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                    <td className="p-3 text-center">{weeklyActivityReportData.reduce((sum, row) => sum + row.noOfPublicRepresentatives, 0).toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                    <td className="p-3 text-center">{weeklyActivityReportData.reduce((sum, row) => sum + row.noOfBeneficiariesEnrolled, 0).toLocaleString()}<small className="text-sm text-muted-foreground ml-1"></small></td>
+                </tr>
+            </tfoot>
+          </table>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+);
+
 
 // Main Dashboard Component
 const DepartmentDashboardPage = () => {
@@ -1033,12 +1735,12 @@ const DepartmentDashboardPage = () => {
   // New state variables for the top dropdowns
   const [selectedTopDepartment, setSelectedTopDepartment] = useState('all');
   const [selectedMandal, setSelectedMandal] = useState('asifabad-m');
-  const [selectedGramPanchayat, setSelectedGramPanchayat] = useState('gp-kandepally');
+  const [selectedGramPanchayat, setSelectedGramPanchayat] = useState('gp-kosara'); // Default to a valid GP
   const [selectedMunicipality, setSelectedMunicipality] = useState('m-asifabad');
 
   const currentDepartment = departments.find(d => d.id === selectedDepartment) || departments[0];
   
-   return (
+    return (
     <div className="space-y-8 max-w-[1600px] mx-auto p-6 animate-fade-in">
       {/* Top Header Section: Title/Breadcrumbs and Last Updated */}
       <div className="flex items-start justify-between mb-4">
@@ -1079,7 +1781,7 @@ const DepartmentDashboardPage = () => {
           </select>
         </div>
         
-                {/* Mandal Dropdown */}
+            {/* Mandal Dropdown */}
         <div className="flex flex-col">
           <label htmlFor="mandal-select" className="text-xs font-medium text-muted-foreground mb-1">Mandal (Block)</label>
           <select
@@ -1133,14 +1835,15 @@ const DepartmentDashboardPage = () => {
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
-         <TabsList className="grid w-full grid-cols-6"> {/* Changed to grid-cols-6 */}
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="poshan"> <Baby className="h-4 w-4 mr-1 inline-block"/>Poshan Tracker</TabsTrigger> {/* Added Poshan Tracker Tab */}
-          <TabsTrigger value="nhts">NHTS Project</TabsTrigger>
-          <TabsTrigger value="reports">Data Reports</TabsTrigger>
-          <TabsTrigger value="projects">Projects</TabsTrigger>
-          <TabsTrigger value="staff">Staff</TabsTrigger>
-          </TabsList>
+           <TabsList className="grid w-full grid-cols-7"> {/* Changed to grid-cols-7 to accommodate new tab */}
+           <TabsTrigger value="overview">Overview</TabsTrigger>
+           <TabsTrigger value="poshan"> <Baby className="h-4 w-4 mr-1 inline-block"/>Poshan Tracker</TabsTrigger>
+           <TabsTrigger value="mission-shakti"><Handshake className="h-4 w-4 mr-1 inline-block"/>Mission Shakti</TabsTrigger> {/* New Tab */}
+           <TabsTrigger value="nhts">NHTS Project</TabsTrigger>
+           <TabsTrigger value="reports">Data Reports</TabsTrigger>
+           <TabsTrigger value="projects">Projects</TabsTrigger>
+           <TabsTrigger value="staff">Staff</TabsTrigger>
+           </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
         {/* Department selectors: Scrollable and Dropdown */}
@@ -1243,6 +1946,22 @@ const DepartmentDashboardPage = () => {
               </CardContent>
             </Card>
           )}
+        </TabsContent>
+
+      {/* Mission Shakti Tab Content */}
+        <TabsContent value="mission-shakti" className="space-y-6">
+            {selectedDepartment === 'dwo' ? (
+                <MissionShaktiDashboard />
+            ) : (
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Mission Shakti Data</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground">Mission Shakti data is specifically handled by the District Welfare Officer (DWO). Please select DWO to view this data.</p>
+                    </CardContent>
+                </Card>
+            )}
         </TabsContent>
 
         <TabsContent value="nhts" className="space-y-6">
@@ -1351,7 +2070,7 @@ const DepartmentDashboardPage = () => {
         <TabsContent value="reports" className="space-y-6">
     {/* This creates the new nested sub-tabs for reports */}
     <Tabs defaultValue="fcr" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-6"> {/* Adjusted grid-cols to fit new tabs */}
             <TabsTrigger value="fcr">
                 <Package className="h-4 w-4 mr-1 inline-block"/> FCR Report
             </TabsTrigger>
@@ -1363,6 +2082,20 @@ const DepartmentDashboardPage = () => {
             </TabsTrigger>
             <TabsTrigger value="utilization">
                 <BarChart3 className="h-4 w-4 mr-1 inline-block"/> Utilization Report
+            </TabsTrigger>
+            <TabsTrigger value="icps">
+                <Baby className="h-4 w-4 mr-1 inline-block"/> ICPS Report
+            </TabsTrigger>
+            <TabsTrigger value="ops-smile-muskan">
+                <Sun className="h-4 w-4 mr-1 inline-block"/> Ops Smile/Muskan
+            </TabsTrigger>
+        </TabsList>
+        <TabsList className="grid w-full grid-cols-6">
+                      <TabsTrigger value="awc-attendance">
+                <Home className="h-4 w-4 mr-1 inline-block"/> AWC Attendance
+            </TabsTrigger>
+            <TabsTrigger value="spot-feeding">
+                <Utensils className="h-4 w-4 mr-1 inline-block"/> Spot Feeding
             </TabsTrigger>
         </TabsList>
 
@@ -1380,6 +2113,20 @@ const DepartmentDashboardPage = () => {
 
         <TabsContent value="utilization" className="mt-4">
             <UtilizationReportTab mandals={mandals} gramPanchayats={gramPanchayats} municipalities={municipalities} />
+        </TabsContent>
+
+        {/* New Report Tabs */}
+        <TabsContent value="icps" className="mt-4">
+            <ICPSReportTab />
+        </TabsContent>
+        <TabsContent value="ops-smile-muskan" className="mt-4">
+            <OperationSmileMuskanTab />
+        </TabsContent>
+        <TabsContent value="awc-attendance" className="mt-4">
+            <AWCAttendanceReportTab />
+        </TabsContent>
+        <TabsContent value="spot-feeding" className="mt-4">
+            <SpotFeedingReportTab />
         </TabsContent>
     </Tabs>
   </TabsContent>

@@ -57,17 +57,24 @@ interface NavSection {
 const dashboardItems: NavItem[] = [
   { 
     title: 'District Dashboard', 
-    path: '/', 
+    path: '/district-dashboard', 
     icon: LayoutDashboard, 
     roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'external_worker', 'admin', 'contract'] 
   },
   { 
     title: 'Department Dashboard', 
-    path: '/departments', 
+    path: '/department', 
     icon: Building, 
     roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin', 'contract'],
     requiresDepartmentAccess: true
   },
+  { 
+    title: 'Department Overview', 
+    path: '/department-view', 
+    icon: Building, 
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin', 'contract'],
+    requiresDepartmentAccess: true
+  }
 ];
 
 const projectItems: NavItem[] = [
