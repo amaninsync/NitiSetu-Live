@@ -90,7 +90,7 @@ const TechnologySection = () => {
           ))}
         </div>
         
-        <div className="tech-animate fade-in">
+        {/*<div className="tech-animate fade-in">
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="p-8">
               <h3 className="text-2xl font-semibold mb-8 text-center">Technical Architecture</h3>
@@ -136,6 +136,7 @@ const TechnologySection = () => {
             </div>
           </div>
         </div>
+        */}
       </div>
     </section>
   );

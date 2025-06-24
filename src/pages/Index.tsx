@@ -22,7 +22,6 @@ const Index = () => {
         <Features />
         <UsersSection />
         <TechnologySection />
-        <CallToAction />
       </main>
       <Footer />
     </div>

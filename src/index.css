@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -18,11 +19,11 @@
     --popover-foreground: 0 0% 10%;
 
     /* Primary accent - using the teal color from brand guide */
-    --primary: 187 96% 20%; /* #025864 */
+    --primary: 187 96% 20%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary accent */
-    --secondary: 160 100% 42%; /* #00D47E */
+    --secondary: 160 100% 42%;
     --secondary-foreground: 0 0% 10%;
 
     /* Subtle elements */
@@ -100,6 +101,12 @@
     --danger-700: 0 74% 40%;
     --danger-800: 0 76% 30%;
     --danger-900: 0 78% 20%;
+
+    /* NitiSetu specific colors from reference file */
+    --gov-blue: 196 64% 30%; /* #1A5F7A */
+    --gov-lightblue: 196 64% 90%; /* A lighter shade of gov-blue */
+    --gov-darkblue: 196 64% 25%; /* A darker shade for hover effects */
+    --gov-green: 142 52% 36%; /* #4CAF50 - from reference, though not explicitly used as variable */
   }
 
   .dark {
@@ -139,6 +146,12 @@
     --sidebar-accent-foreground: 0 0% 95%;
     --sidebar-border: 187 30% 20%;
     --sidebar-ring: 187 40% 80%;
+
+    /* NitiSetu specific colors for dark mode from reference file */
+    --gov-blue: 196 64% 30%;
+    --gov-lightblue: 196 64% 90%;
+    --gov-darkblue: 196 64% 25%;
+    --gov-green: 142 52% 36%;
   }
 }
 
@@ -148,9 +161,34 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased; /* Added font-sans antialiased from reference */
     font-feature-settings: "rlig" 1, "calt" 1;
     font-family: "Inter", Arial, sans-serif;
+  }
+
+  /* Typography styles from reference */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl sm:text-5xl md:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl sm:text-4xl md:text-5xl;
+  }
+
+  h3 {
+    @apply text-2xl sm:text-3xl;
+  }
+
+  h4 {
+    @apply text-xl sm:text-2xl;
+  }
+
+  p {
+    @apply leading-relaxed;
   }
 }
 
@@ -203,23 +241,6 @@
     @apply bg-danger-500 text-white;
   }
   
-  /* Typography styles */
-  .h1 {
-    @apply text-2xl font-semibold tracking-tight;
-  }
-  
-  .h2 {
-    @apply text-xl font-semibold tracking-tight;
-  }
-  
-  .h3 {
-    @apply text-lg font-medium;
-  }
-  
-  .h4 {
-    @apply text-base font-medium;
-  }
-  
   /* Metric styling */
   .metric-value {
     @apply text-2xl font-bold;
@@ -269,4 +290,72 @@
   .sequence-button-secondary {
     @apply bg-sequence-teal-500 hover:bg-sequence-teal-600 text-white rounded-md px-4 py-2 font-medium;
   }
+
+  /* Component styles from reference */
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-md;
+  }
+  
+  .glass-card-dark {
+    @apply bg-black/20 backdrop-blur-md border border-white/10 shadow-md;
+  }
+  
+  .section-padding {
+    @apply py-20 px-6 md:px-12;
+  }
+  
+  .button-primary {
+    @apply px-6 py-3 bg-gov-blue text-white font-medium rounded-md 
+           hover:bg-gov-darkblue transition-all duration-300 
+           shadow-md hover:shadow-lg transform hover:-translate-y-1;
+  }
+  
+  .button-secondary {
+    @apply px-6 py-3 bg-white text-gov-blue font-medium rounded-md 
+           border border-gov-blue hover:bg-gov-lightblue transition-all 
+           duration-300 shadow-sm;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+  
+  .icon-container {
+    @apply flex items-center justify-center w-12 h-12 rounded-full bg-gov-lightblue text-gov-blue;
+  }
+}
+
+/* Initial opacity for animations */
+.fade-in {
+  opacity: 0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Pattern background */
+.pattern-bg {
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a5f7a' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }

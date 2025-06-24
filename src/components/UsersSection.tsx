@@ -96,7 +96,7 @@ const UsersSection = () => {
           ))}
         </div>
         
-        <div className="mt-20 users-animate fade-in">
+        {/*<div className="mt-20 users-animate fade-in">
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="grid md:grid-cols-2">
               <div className="p-8">
@@ -132,6 +132,7 @@ const UsersSection = () => {
             </div>
           </div>
         </div>
+        */}
       </div>
     </section>
   );
