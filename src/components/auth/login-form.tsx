@@ -6,12 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, authMethod } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,16 +34,22 @@ const LoginForm: React.FC = () => {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        {/* <CardTitle className="text-2xl text-center">
+        <CardTitle className="text-2xl text-center">
           <span className="text-nitisetu-500">Niti</span>
           <span className="text-nitisetu-700">Setu</span>
         </CardTitle>
         <CardDescription className="text-center">
           District Administration Dashboard
         </CardDescription>
-        */}
       </CardHeader>
       <CardContent>
+        <Alert className="mb-4">
+          <AlertDescription>
+            <strong>Firebase Setup Required:</strong> Update the Firebase configuration in <code>src/lib/firebase-config.ts</code> with your project credentials. 
+            The system will fall back to mock authentication if Firebase is not configured.
+          </AlertDescription>
+        </Alert>
+        
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4">
             <div className="grid gap-2">
@@ -61,19 +68,11 @@ const LoginForm: React.FC = () => {
             <div className="grid gap-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                {/*
-                <a 
-                  href="/forgot-password" 
-                  className="text-sm text-nitisetu-500 hover:text-nitisetu-600"
-                >
-                  Forgot password?
-                </a>
-                */}
               </div>
               <Input 
                 id="password" 
                 type="password" 
-                placeholder="Enter your password"
+                placeholder="Enter your password (Firebase: nitisetu123, Mock: any text)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -89,7 +88,10 @@ const LoginForm: React.FC = () => {
       </CardContent>
       <CardFooter className="flex flex-col">
         <div className="text-center text-sm text-muted-foreground mt-4">
-          {/* <p>Demo Credentials:</p> */}
+          <p className="mb-2"><strong>Authentication Methods:</strong></p>
+          <p className="mb-2 text-xs">• Firebase: Use password "nitisetu123" for all users</p>
+          <p className="mb-4 text-xs">• Mock Fallback: Any password will work</p>
+          
           <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
             <div>
               <div className="font-medium">District Collector:</div>
@@ -116,7 +118,6 @@ const LoginForm: React.FC = () => {
               <div>contractor@nitisetu.asifabad.com</div>
             </div>
           </div>
-          {/* <p className="mt-2 text-xs">Password: any text will work</p> */}
         </div>
       </CardFooter>
     </Card>
