@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -43,13 +42,6 @@ const LoginForm: React.FC = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Alert className="mb-4">
-          <AlertDescription>
-            <strong>Firebase Setup Required:</strong> Update the Firebase configuration in <code>src/lib/firebase-config.ts</code> with your project credentials. 
-            The system will fall back to mock authentication if Firebase is not configured.
-          </AlertDescription>
-        </Alert>
-        
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4">
             <div className="grid gap-2">
@@ -88,9 +80,9 @@ const LoginForm: React.FC = () => {
       </CardContent>
       <CardFooter className="flex flex-col">
         <div className="text-center text-sm text-muted-foreground mt-4">
-          <p className="mb-2"><strong>Authentication Methods:</strong></p>
+          <p className="mb-2"><strong>Authentication:</strong></p>
           <p className="mb-2 text-xs">• Firebase: Use password "nitisetu123" for all users</p>
-          <p className="mb-4 text-xs">• Mock Fallback: Any password will work</p>
+          <p className="mb-4 text-xs">• Mock Fallback: Any password will work if Firebase fails</p>
           
           <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
             <div>
