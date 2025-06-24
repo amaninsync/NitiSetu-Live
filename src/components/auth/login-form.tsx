@@ -61,12 +61,14 @@ const LoginForm: React.FC = () => {
             <div className="grid gap-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
+                {/*
                 <a 
                   href="/forgot-password" 
                   className="text-sm text-nitisetu-500 hover:text-nitisetu-600"
                 >
                   Forgot password?
                 </a>
+                */}
               </div>
               <Input 
                 id="password" 
@@ -91,27 +93,27 @@ const LoginForm: React.FC = () => {
           <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
             <div>
               <div className="font-medium">District Collector:</div>
-              <div>dm@nitisetu.gov.in</div>
-            </div>
-            <div>
-              <div className="font-medium">Department Lead:</div>
-              <div>health@nitisetu.gov.in</div>
+              <div>dm@nitisetu.asifabad.com</div>
             </div>
             <div>
               <div className="font-medium">Additional Collector:</div>
-              <div>ac@nitisetu.gov.in</div>
+              <div>ac@nitisetu.asifabad.com</div>
+            </div>
+            <div>
+              <div className="font-medium">Department Lead:</div>
+              <div>dwo@nitisetu.asifabad.com</div>
             </div>
             <div>
               <div className="font-medium">Admin:</div>
-              <div>admin@nitisetu.gov.in</div>
+              <div>admin@nitisetu.asifabad.com</div>
             </div>
             <div>
               <div className="font-medium">Government Official:</div>
-              <div>employee@nitisetu.gov.in</div>
+              <div>employee@nitisetu.asifabad.com</div>
             </div>
             <div>
               <div className="font-medium">Contract Worker:</div>
-              <div>contractor@nitisetu.gov.in</div>
+              <div>contractor@nitisetu.asifabad.com</div>
             </div>
           </div>
           {/* <p className="mt-2 text-xs">Password: any text will work</p> */}
