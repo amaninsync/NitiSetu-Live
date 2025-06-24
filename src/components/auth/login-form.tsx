@@ -11,7 +11,7 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login, authMethod } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,13 +33,14 @@ const LoginForm: React.FC = () => {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl text-center">
+        {/* <CardTitle className="text-2xl text-center">
           <span className="text-nitisetu-500">Niti</span>
           <span className="text-nitisetu-700">Setu</span>
         </CardTitle>
         <CardDescription className="text-center">
           District Administration Dashboard
         </CardDescription>
+        */}
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
@@ -60,11 +61,19 @@ const LoginForm: React.FC = () => {
             <div className="grid gap-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
+                {/*
+                <a 
+                  href="/forgot-password" 
+                  className="text-sm text-nitisetu-500 hover:text-nitisetu-600"
+                >
+                  Forgot password?
+                </a>
+                */}
               </div>
               <Input 
                 id="password" 
                 type="password" 
-                placeholder="Enter your password (Firebase: nitisetu123, Mock: any text)"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -80,10 +89,7 @@ const LoginForm: React.FC = () => {
       </CardContent>
       <CardFooter className="flex flex-col">
         <div className="text-center text-sm text-muted-foreground mt-4">
-          <p className="mb-2"><strong>Authentication:</strong></p>
-          <p className="mb-2 text-xs">• Firebase: Use password "nitisetu123" for all users</p>
-          <p className="mb-4 text-xs">• Mock Fallback: Any password will work if Firebase fails</p>
-          
+          {/* <p>Demo Credentials:</p> */}
           <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
             <div>
               <div className="font-medium">District Collector:</div>
@@ -110,6 +116,7 @@ const LoginForm: React.FC = () => {
               <div>contractor@nitisetu.asifabad.com</div>
             </div>
           </div>
+          {/* <p className="mt-2 text-xs">Password: any text will work</p> */}
         </div>
       </CardFooter>
     </Card>
