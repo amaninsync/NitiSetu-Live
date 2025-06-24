@@ -47,17 +47,19 @@ const Hero = () => {
           </p>
           <div className="flex flex-wrap gap-4">
             <button 
-              onClick={() => navigate('/explore')}
+              onClick={() => navigate('/product')}
               className="button-primary"
             >
               Explore Platform
             </button>
+            {/*
             <button 
               onClick={() => navigate('/auth/LoginPage')}
               className="button-secondary"
             >
               Log In
             </button>
+            */}
           </div>
         </div>
   
