@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 
 // Lucide Icons
-import { ChevronRight, Briefcase, BarChart3, FileText, CalendarIcon, TrendingUp, TrendingDown, MapPin, Package, Users, Baby, AlertTriangle, Activity, Scale, Ruler, HeartPulse, Home, CalendarCheck, DoorOpen, MapPinOff, DoorClosed, UserCheck, Coffee, Utensils, Camera, GraduationCap, Heart, ClipboardList, Handshake, Sun, Truck, CheckCircle, XCircle } from 'lucide-react';
+import { ChevronRight, Briefcase, BarChart3, FileText, CalendarIcon, TrendingUp, TrendingDown, MapPin, Package, Users, Baby, AlertTriangle, Activity, Scale, Ruler, HeartPulse, Home, CalendarCheck, DoorOpen, MapPinOff, DoorClosed, UserCheck, Coffee, Utensils, Camera, GraduationCap, Heart, ClipboardList, Handshake, Sun, Truck, CheckCircle, XCircle, Info, Medal } from 'lucide-react';
 
 // --- Data Definitions (All Inlined and Global for clarity within this file) ---
 
@@ -830,6 +830,103 @@ const weeklyActivityReportData = [
     { week: 5, activity: "Motivational/inspirationalweek, girl meetingswith officials, visitsto Mahila Thana", activityType: "Awareness sessions", noOfParticipants: 56, noOfRepresentativesPanchayatLocalBodies: 0, noOfPublicRepresentatives: 0, noOfBeneficiariesEnrolled: 0 },
 ];
 
+const allSchemesData = [
+    {
+        id: 'poshan-abhiyaan',
+        name: 'Poshan Abhiyaan (National Nutrition Mission)',
+        description: 'A flagship program to improve nutritional outcomes for children, pregnant women, and lactating mothers.',
+        overall: { saturation: 85, lagDays: 15, target: 90, progressDetail: 'Good progress in beneficiary enrollment, slight delays in infrastructure upgrades.' },
+        districts: {
+            'kb-asifabad': { saturation: 88, lagDays: 10, target: 92, progressDetail: 'Exceeded target for growth monitoring, minor lag in Aadhaar seeding for new beneficiaries.' },
+            'mancherial': { saturation: 82, lagDays: 20, target: 88, progressDetail: 'Steady progress, focus on increasing home visits.' },
+            'nirmal': { saturation: 79, lagDays: 25, target: 85, progressDetail: 'Needs improvement in last-mile delivery and reporting compliance.' },
+        },
+        mandals: { // Sample data for Asifabad district
+            'asifabad-m': { saturation: 90, lagDays: 8, target: 95 },
+            'jainoor-m': { saturation: 85, lagDays: 15, target: 90 },
+            'kagaznagar-m': { saturation: 78, lagDays: 22, target: 85 },
+            'wankidi-m': { saturation: 65, lagDays: 35, target: 75 }, // Example of high lag
+        },
+        gps: { // Sample data for Asifabad mandal
+            'gp-kosara': { saturation: 92, lagDays: 5, target: 95 },
+            'gp-malangondi': { saturation: 88, lagDays: 10, target: 90 },
+            'gp-tumpalli': { saturation: 70, lagDays: 28, target: 80 },
+        }
+    },
+    {
+        id: 'pradhan-mantri-matru-vandana-yojana',
+        name: 'Pradhan Mantri Matru Vandana Yojana (PMMVY)',
+        description: 'A maternity benefit program providing cash incentives for pregnant and lactating women.',
+        overall: { saturation: 75, lagDays: 30, target: 80, progressDetail: 'Payment disbursement delays due to documentation issues.' },
+        districts: {
+            'kb-asifabad': { saturation: 78, lagDays: 25, target: 82 },
+            'mancherial': { saturation: 72, lagDays: 35, target: 78 },
+        },
+        mandals: {
+            'asifabad-m': { saturation: 80, lagDays: 20, target: 85 },
+            'bejjur-m': { saturation: 68, lagDays: 40, target: 75 }, // Example of high lag
+        },
+        gps: {
+            'gp-kosara': { saturation: 82, lagDays: 18, target: 85 },
+            'gp-motuguda': { saturation: 65, lagDays: 45, target: 70 },
+        }
+    },
+    {
+        id: 'anganwadi-services-scheme',
+        name: 'Anganwadi Services Scheme',
+        description: 'Provides supplementary nutrition, preschool education, and primary healthcare to children and mothers.',
+        overall: { saturation: 92, lagDays: 8, target: 95, progressDetail: 'Excellent outreach, minor challenges in new AWC construction completion.' },
+        districts: {
+            'kb-asifabad': { saturation: 95, lagDays: 5, target: 97 },
+            'nirmal': { saturation: 89, lagDays: 12, target: 92 },
+        },
+        mandals: {
+            'sirpur-t-m': { saturation: 96, lagDays: 4, target: 98 },
+            'tiryani-m': { saturation: 90, lagDays: 9, target: 93 },
+        },
+        gps: {
+            'gp-sirpur-t': { saturation: 98, lagDays: 2, target: 99 },
+            'gp-tumpalli': { saturation: 87, lagDays: 15, target: 90 },
+        }
+    },
+    {
+        id: 'mission-shakti-sumbal',
+        name: 'Mission Shakti (Sambal)', // From Mission Shakti data
+        description: 'A sub-scheme of Mission Shakti, focusing on women empowerment and protection.',
+        overall: { saturation: 80, lagDays: 25, target: 85, progressDetail: 'Awareness campaigns are picking up, but participant conversion needs boost.' },
+        districts: {
+            'kb-asifabad': { saturation: 82, lagDays: 20, target: 87 },
+        },
+        mandals: {
+            'asifabad-m': { saturation: 85, lagDays: 18, target: 90 },
+        },
+        gps: {
+            'gp-kosara': { saturation: 88, lagDays: 15, target: 90 },
+        }
+    },
+     {
+        id: 'mission-shakti-samarthya',
+        name: 'Mission Shakti (Samarthya)', // From Mission Shakti data
+        description: 'Another sub-scheme of Mission Shakti, focusing on empowerment through skill development.',
+        overall: { saturation: 60, lagDays: 40, target: 70, progressDetail: 'Newer scheme, facing challenges in beneficiary identification and training infrastructure.' },
+        districts: {
+            'kb-asifabad': { saturation: 58, lagDays: 45, target: 68 },
+        },
+        mandals: {
+            'jainoor-m': { saturation: 55, lagDays: 50, target: 65 },
+        },
+        gps: {
+            'gp-marlawai': { saturation: 50, lagDays: 60, target: 60 },
+        }
+    },
+];
+
+const getSchemeStatusColor = (saturation, lagDays) => {
+    if (lagDays > 30) return 'text-red-600 bg-red-100';
+    if (saturation < 70) return 'text-orange-600 bg-orange-100';
+    if (saturation >= 90) return 'text-green-600 bg-green-100';
+    return 'text-blue-600 bg-blue-100';
+};
 
 // --- Helper Components (All Inlined and Defined Before Main Component) ---
 
@@ -2358,6 +2455,201 @@ const MissionShaktiDashboard = () => (
     </div>
 );
 
+// SchemeOverviewTab Component
+const SchemeOverviewTab = ({ selectedMandal, selectedGramPanchayat, selectedMunicipality, mandals, gramPanchayats, municipalities }) => {
+    const [selectedScheme, setSelectedScheme] = useState(allSchemesData[0]?.id || '');
+    const [displayLevel, setDisplayLevel] = useState('overall'); // 'overall', 'district', 'mandal', 'gp'
+
+    const currentScheme = allSchemesData.find(s => s.id === selectedScheme);
+
+    // Filtered data based on selected level
+    const getFilteredSchemeData = () => {
+        if (!currentScheme) return [];
+
+        let data = [];
+        if (displayLevel === 'overall') {
+            return [{
+                id: 'overall',
+                name: 'Overall',
+                saturation: currentScheme.overall.saturation,
+                lagDays: currentScheme.overall.lagDays,
+                target: currentScheme.overall.target,
+                progressDetail: currentScheme.overall.progressDetail
+            }];
+        } else if (displayLevel === 'district') {
+            data = Object.entries(currentScheme.districts || {}).map(([key, value]) => ({
+                id: key,
+                name: districts.find(d => d.id === key)?.name || key,
+                ...value
+            }));
+        } else if (displayLevel === 'mandal') {
+            // Filter mandals if a specific district is selected (not implemented in top filter yet, but structure for it)
+            data = Object.entries(currentScheme.mandals || {}).map(([key, value]) => ({
+                id: key,
+                name: mandals.find(m => m.id === key)?.name || key,
+                ...value
+            }));
+            // Further filter by selectedMandal if needed here
+            if (selectedMandal) {
+                 data = data.filter(item => item.id === selectedMandal);
+            }
+        } else if (displayLevel === 'gp') {
+            // Filter GPs based on selected mandal
+            data = Object.entries(currentScheme.gps || {}).map(([key, value]) => ({
+                id: key,
+                name: gramPanchayats.find(gp => gp.id === key)?.name || key,
+                ...value
+            }));
+            // Further filter by selectedGramPanchayat if needed here
+            if (selectedGramPanchayat) {
+                data = data.filter(item => item.id === selectedGramPanchayat);
+            }
+        }
+
+        // Sort by saturation for ranking
+        return data.sort((a, b) => b.saturation - a.saturation);
+    };
+
+    const displayData = getFilteredSchemeData();
+    const currentLevelName = displayLevel === 'district' ? 'District' :
+                             displayLevel === 'mandal' ? 'Mandal' :
+                             displayLevel === 'gp' ? 'Gram Panchayat' : 'Overall';
+
+    return (
+        <div className="space-y-6">
+            {/* Scheme Selector */}
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Package className="h-5 w-5 text-gray-600" />
+                        Select Scheme
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <select
+                        value={selectedScheme}
+                        onChange={(e) => setSelectedScheme(e.target.value)}
+                        className="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                    >
+                        {allSchemesData.map(scheme => (
+                            <option key={scheme.id} value={scheme.id}>
+                                {scheme.name}
+                            </option>
+                        ))}
+                    </select>
+                </CardContent>
+            </Card>
+
+            {currentScheme && (
+                <>
+                    {/* Cumulative Indicators & Insights for Selected Scheme */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Info className="h-5 w-5 text-indigo-600" />
+                                {currentScheme.name} - Key Performance Indicators (Overall)
+                            </CardTitle>
+                            <p className="text-sm text-muted-foreground">{currentScheme.description}</p>
+                        </CardHeader>
+                        <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="text-center p-4 bg-blue-50 rounded-lg">
+                                <p className="text-sm text-blue-700">Overall Saturation</p>
+                                <p className="text-3xl font-bold text-blue-800">{currentScheme.overall.saturation}%</p>
+                                <p className="text-xs text-muted-foreground">Target: {currentScheme.overall.target}%</p>
+                            </div>
+                            <div className="text-center p-4 bg-orange-50 rounded-lg">
+                                <p className="text-sm text-orange-700">Overall Lag Days</p>
+                                <p className="text-3xl font-bold text-orange-800">{currentScheme.overall.lagDays} days</p>
+                                <p className="text-xs text-muted-foreground">Ideal: &lt;10 days</p>
+                            </div>
+                            <div className="text-center p-4 bg-green-50 rounded-lg">
+                                <p className="text-sm text-green-700">Progress Detail</p>
+                                <p className="text-md font-semibold text-green-800 mt-2">{currentScheme.overall.progressDetail}</p>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Interactive Table for Split Data */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <BarChart3 className="h-5 w-5" />
+                                {currentScheme.name} - Performance by {currentLevelName}
+                            </CardTitle>
+                            <div className="flex space-x-2 mt-2">
+                                <button
+                                    onClick={() => setDisplayLevel('overall')}
+                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${displayLevel === 'overall' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                                >
+                                    Overall
+                                </button>
+                                <button
+                                    onClick={() => setDisplayLevel('district')}
+                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${displayLevel === 'district' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                                >
+                                    District Wise
+                                </button>
+                                <button
+                                    onClick={() => setDisplayLevel('mandal')}
+                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${displayLevel === 'mandal' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                                >
+                                    Mandal Wise
+                                </button>
+                                <button
+                                    onClick={() => setDisplayLevel('gp')}
+                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${displayLevel === 'gp' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                                >
+                                    GP Wise
+                                </button>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            {displayData.length > 0 ? (
+                                <div className="overflow-x-auto">
+                                    <table className="w-full border-collapse">
+                                        <thead>
+                                            <tr className="border-b bg-muted/50">
+                                                <th className="text-left p-3 font-semibold">Rank</th>
+                                                <th className="text-left p-3 font-semibold">{currentLevelName} Name</th>
+                                                <th className="text-center p-3 font-semibold">Saturation (%)</th>
+                                                <th className="text-center p-3 font-semibold">Lag (Days)</th>
+                                                <th className="text-center p-3 font-semibold">Target (%)</th>
+                                                <th className="text-left p-3 font-semibold">Status</th>
+                                                {displayLevel === 'overall' && <th className="text-left p-3 font-semibold">Progress Detail</th>}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {displayData.map((item, index) => (
+                                                <tr key={item.id} className="border-b hover:bg-muted/30">
+                                                    <td className="p-3 text-center font-bold">
+                                                        {displayLevel !== 'overall' && <Medal className="inline-block h-4 w-4 mr-1 text-yellow-500" /> }
+                                                        {displayLevel !== 'overall' ? (index + 1) : '-'}
+                                                    </td>
+                                                    <td className="p-3 font-medium">{item.name}</td>
+                                                    <td className="p-3 text-center">{item.saturation}%</td>
+                                                    <td className="p-3 text-center">{item.lagDays}</td>
+                                                    <td className="p-3 text-center">{item.target}%</td>
+                                                    <td className="p-3">
+                                                        <span className={`px-2 py-1 rounded-full text-xs ${getSchemeStatusColor(item.saturation, item.lagDays)}`}>
+                                                            {item.lagDays > 30 ? 'High Lag' : item.saturation < item.target ? 'Below Target' : 'On Track'}
+                                                        </span>
+                                                    </td>
+                                                    {displayLevel === 'overall' && <td className="p-3 text-sm">{item.progressDetail}</td>}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ) : (
+                                <p className="text-muted-foreground text-center p-4">No data available for the selected scheme and geographical level.</p>
+                            )}
+                        </CardContent>
+                    </Card>
+                </>
+            )}
+        </div>
+    );
+};
 
 // Main Dashboard Component
 const DepartmentDashboardPage = () => {
@@ -2451,20 +2743,6 @@ const DepartmentDashboardPage = () => {
         setIsPoshanDetailDialogOpen(true);
     };
 
-    // Simulated Scheme Saturation Data
-    const schemeSaturationData = [
-        { id: 'scheme-pension', name: 'Elderly Pension Scheme', saturation: 95, lagDays: 5, target: 98 },
-        { id: 'scheme-education', name: 'Girl Child Education Grant', saturation: 70, lagDays: 20, target: 85 },
-        { id: 'scheme-health', name: 'Maternal Health Support', saturation: 88, lagDays: 10, target: 90 },
-        { id: 'scheme-housing', name: 'Rural Housing Scheme', saturation: 55, lagDays: 45, target: 70 },
-    ];
-
-    const getSchemeStatusColor = (saturation, lagDays) => {
-        if (lagDays > 30) return 'text-red-600 bg-red-100';
-        if (saturation < 70) return 'text-orange-600 bg-orange-100';
-        if (saturation >= 90) return 'text-green-600 bg-green-100';
-        return 'text-blue-600 bg-blue-100';
-    };
 
 
     return (
@@ -2560,15 +2838,15 @@ const DepartmentDashboardPage = () => {
                 </div>
             </div>
 
-            <style jsx>{`
-                .hide-scrollbar::-webkit-scrollbar {
-                    display: none;
-                }
-                .hide-scrollbar {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-            `}</style>
+            <style>{`
+            .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .hide-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        `}</style>
 
             <Tabs defaultValue="overview" className="w-full">
                 <TabsList className="grid w-full grid-cols-7">
@@ -2618,49 +2896,15 @@ const DepartmentDashboardPage = () => {
                         </div>
                     )}
 
-                    {/* Scheme Saturation and Lag Visibility Section */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Ruler className="h-5 w-5" />
-                                Scheme Saturation & Lag Visibility - {selectedMandal ? mandals.find(m => m.id === selectedMandal)?.name : 'District'}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="overflow-x-auto">
-                                <table className="w-full border-collapse">
-                                    <thead>
-                                        <tr className="border-b bg-muted/50">
-                                            <th className="text-left p-3 font-semibold">Scheme Name</th>
-                                            <th className="text-center p-3 font-semibold">Saturation (%)</th>
-                                            <th className="text-center p-3 font-semibold">Lag (Days)</th>
-                                            <th className="text-center p-3 font-semibold">Target (%)</th>
-                                            <th className="text-left p-3 font-semibold">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {schemeSaturationData.map((scheme) => (
-                                            <tr key={scheme.id} className="border-b hover:bg-muted/30">
-                                                <td className="p-3 font-medium">{scheme.name}</td>
-                                                <td className="p-3 text-center">{scheme.saturation}%</td>
-                                                <td className="p-3 text-center">{scheme.lagDays}</td>
-                                                <td className="p-3 text-center">{scheme.target}%</td>
-                                                <td className="p-3">
-                                                    <span className={`px-2 py-1 rounded-full text-xs ${getSchemeStatusColor(scheme.saturation, scheme.lagDays)}`}>
-                                                        {scheme.lagDays > 30 ? 'High Lag' : scheme.saturation < scheme.target ? 'Below Target' : 'On Track'}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <p className="text-xs text-muted-foreground mt-4">
-                                Data is simulated and aggregated for the currently selected geographical area.
-                                Actual scheme progress and lag visibility would depend on granular data input.
-                            </p>
-                        </CardContent>
-                    </Card>
+                    <SchemeOverviewTab
+                    selectedMandal={selectedMandal}
+                    selectedGramPanchayat={selectedGramPanchayat}
+                    selectedMunicipality={selectedMunicipality}
+                    mandals={mandals}
+                    gramPanchayats={gramPanchayats}
+                    municipalities={municipalities}
+                    />
+
 
                 </TabsContent>
 
