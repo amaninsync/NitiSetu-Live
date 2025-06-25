@@ -78,6 +78,7 @@ const Dashboard: React.FC = () => {
           </Card>
         </Link>
         
+        {/*
         <Link to="/table-view">
           <Card className="hover:bg-muted/50 transition-colors cursor-pointer p-4">
             <CardHeader className="pb-2">
@@ -125,6 +126,7 @@ const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
         </Link>
+        */}
         
         <Link to="/district-dashboard">
           <Card className="hover:bg-muted/50 transition-colors cursor-pointer p-4">
@@ -136,7 +138,7 @@ const Dashboard: React.FC = () => {
             </CardHeader>
             <CardContent className="pt-2">
               <p className="text-sm text-muted-foreground">
-                Comprehensive district data with export options
+                Comprehensive district data with visual specific export options 
               </p>
             </CardContent>
           </Card>
