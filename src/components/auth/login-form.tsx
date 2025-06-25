@@ -93,27 +93,27 @@ const LoginForm: React.FC = () => {
           <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
             <div>
               <div className="font-medium">District Collector:</div>
-              <div>dm@nitisetu.asifabad.com</div>
+              <div>dm@asifabad.nitisetu.com</div>
             </div>
             <div>
               <div className="font-medium">Additional Collector:</div>
-              <div>ac@nitisetu.asifabad.com</div>
+              <div>ac@asifabad.nitisetu.com</div>
             </div>
             <div>
               <div className="font-medium">Department Lead:</div>
-              <div>dwo@nitisetu.asifabad.com</div>
+              <div>dwo@asifabad.nitisetu.com</div>
             </div>
             <div>
               <div className="font-medium">Admin:</div>
-              <div>admin@nitisetu.asifabad.com</div>
+              <div>admin@asifabad.nitisetu.com</div>
             </div>
             <div>
               <div className="font-medium">Government Official:</div>
-              <div>employee@nitisetu.asifabad.com</div>
+              <div>employee@asifabad.nitisetu.com</div>
             </div>
             <div>
               <div className="font-medium">Contract Worker:</div>
-              <div>contractor@nitisetu.asifabad.com</div>
+              <div>contractor@asifabad.nitisetu.com</div>
             </div>
           </div>
           {/* <p className="mt-2 text-xs">Password: any text will work</p> */}

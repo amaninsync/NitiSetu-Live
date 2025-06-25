@@ -12,7 +12,7 @@ export const mockUsers: User[] = [
   {
     id: "u1",
     name: "Sri Venkatesh Dhotre",
-    email: "dm@nitisetu.asifabad.com",
+    email: "dm@asifabad.nitisetu.com",
     role: "district_collector",
     avatar: "/avatars/district-collector.jpg",
     active: true,
@@ -22,7 +22,7 @@ export const mockUsers: User[] = [
   {
     id: "u2",
     name: "Sri Deepak Tewari",
-    email: "ac@nitisetu.asifabad.com",
+    email: "ac@asifabad.nitisetu.com",
     role: "additional_collector",
     avatar: "/avatars/additional-collector.jpg",
     active: true,
@@ -32,7 +32,7 @@ export const mockUsers: User[] = [
   {
     id: "u3",
     name: "Dr Adepu Bhasker",
-    email: "dwo@nitisetu.asifabad.com",
+    email: "dwo@asifabad.nitisetu.com",
     role: "department_lead",
     departmentId: "d1",
     avatar: "/avatars/health-lead.jpg",
@@ -43,7 +43,7 @@ export const mockUsers: User[] = [
   {
     id: "u4",
     name: "Meena Gupta",
-    email: "education@nitisetu.asifabad.com",
+    email: "education@asifabad.nitisetu.com",
     role: "department_lead",
     departmentId: "d2",
     avatar: "/avatars/education-lead.jpg",
@@ -54,7 +54,7 @@ export const mockUsers: User[] = [
   {
     id: "u5",
     name: "Suresh Reddy",
-    email: "agriculture@nitisetu.asifabad.com",
+    email: "agriculture@asifabad.nitisetu.com",
     role: "department_lead",
     departmentId: "d3",
     avatar: "/avatars/agriculture-lead.jpg",
@@ -65,7 +65,7 @@ export const mockUsers: User[] = [
   {
     id: "u6",
     name: "Admin User",
-    email: "admin@nitisetu.asifabad.com",
+    email: "admin@asifabad.nitisetu.com",
     role: "admin",
     avatar: "/avatars/admin.jpg",
     active: true,
@@ -75,7 +75,7 @@ export const mockUsers: User[] = [
   {
     id: "u7",
     name: "Sanjay Verma",
-    email: "employee@nitisetu.asifabad.com",
+    email: "employee@asifabad.nitisetu.com",
     role: "government_official",
     departmentId: "d1",
     avatar: "/avatars/employee.jpg",
@@ -86,7 +86,7 @@ export const mockUsers: User[] = [
   {
     id: "u8",
     name: "Rahul Mishra",
-    email: "contractor@nitisetu.asifabad.com",
+    email: "contractor@asifabad.nitisetu.com",
     role: "external_worker",
     departmentId: "d2",
     avatar: "/avatars/contractor.jpg",

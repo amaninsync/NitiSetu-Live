@@ -40,12 +40,12 @@ export interface AuthResult {
 // Predefined roles and permissions mapping by email
 // This mapping will be used when creating/updating user profiles in Firestore
 const PREDEFINED_USER_ROLES: { [email: string]: { role: string; permissions: string[] } } = {
-  "dm@nitisetu.asifabad.com": { role: "district_collector", permissions: ["view_all", "edit_all", "approve_all", "create_all", "delete_all"] },
-  "ac@nitisetu.asifabad.com": { role: "additional_collector", permissions: ["view_all", "edit_most", "approve_most", "create_most"] },
-  "dwo@nitisetu.asifabad.com": { role: "department_lead", permissions: ["view_department", "edit_department", "create_reports"] },
-  "admin@nitisetu.asifabad.com": { role: "admin", permissions: ["view_all", "edit_all", "approve_all", "create_all", "delete_all", "manage_users", "manage_roles"] },
-  "employee@nitisetu.asifabad.com": { role: "government_official", permissions: ["view_assigned", "edit_assigned", "upload_reports"] },
-  "contractor@nitisetu.asifabad.com": { role: "external_worker", permissions: ["view_limited", "upload_reports"] },
+  "dm@asifabad.nitisetu.com": { role: "district_collector", permissions: ["view_all", "edit_all", "approve_all", "create_all", "delete_all"] },
+  "ac@asifabad.nitisetu.com": { role: "additional_collector", permissions: ["view_all", "edit_most", "approve_most", "create_most"] },
+  "dwo@asifabad.nitisetu.com": { role: "department_lead", permissions: ["view_department", "edit_department", "create_reports"] },
+  "admin@asifabad.nitisetu.com": { role: "admin", permissions: ["view_all", "edit_all", "approve_all", "create_all", "delete_all", "manage_users", "manage_roles"] },
+  "employee@asifabad.nitisetu.com": { role: "government_official", permissions: ["view_assigned", "edit_assigned", "upload_reports"] },
+  "contractor@asifabad.nitisetu.com": { role: "external_worker", permissions: ["view_limited", "upload_reports"] },
 };
 
 // Helper function to get/create user profile in Firestore

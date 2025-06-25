@@ -15,43 +15,43 @@ const db = admin.firestore();
 // Ensure these emails match the ones in your PREDEFINED_USER_ROLES map in auth-context.tsx
 const usersToPopulate = [
   {
-    email: "dm@nitisetu.asifabad.com",
-    password: "password123", // IMPORTANT: Use a strong, temporary password here.
+    email: "dm@asifabad.nitisetu.com",
+    password: "nsasifabad@2025", // IMPORTANT: Use a strong, temporary password here.
     displayName: "Sri Venkatesh Dhotre",
     role: "district_collector",
     permissions: ["view_all", "edit_all", "approve_all", "create_all", "delete_all"]
   },
   {
-    email: "ac@nitisetu.asifabad.com",
-    password: "password123",
+    email: "ac@asifabad.nitisetu.com",
+    password: "nsasifabad@2025",
     displayName: "Sri Deepak Tewari",
     role: "additional_collector",
     permissions: ["view_all", "edit_most", "approve_most", "create_most"]
   },
   {
-    email: "dwo@nitisetu.asifabad.com",
-    password: "password123",
+    email: "dwo@asifabad.nitisetu.com",
+    password: "nsasifabad@2025",
     displayName: "Dr Adepu Bhasker",
     role: "department_lead",
     permissions: ["view_department", "edit_department", "create_reports"]
   },
   {
-    email: "admin@nitisetu.asifabad.com",
-    password: "password123",
+    email: "admin@asifabad.nitisetu.com",
+    password: "nsasifabad@2025",
     displayName: "Admin User",
     role: "admin",
     permissions: ["view_all", "edit_all", "approve_all", "create_all", "delete_all", "manage_users", "manage_roles"]
   },
   {
-    email: "employee@nitisetu.asifabad.com",
-    password: "password123",
+    email: "employee@asifabad.nitisetu.com",
+    password: "nsasifabad@2025",
     displayName: "Sanjay Verma",
     role: "government_official",
     permissions: ["view_assigned", "edit_assigned", "upload_reports"]
   },
   {
-    email: "contractor@nitisetu.asifabad.com",
-    password: "password123",
+    email: "contractor@asifabad.nitisetu.com",
+    password: "nsasifabad@2025",
     displayName: "Rahul Mishra",
     role: "external_worker",
     permissions: ["view_limited", "upload_reports"]
