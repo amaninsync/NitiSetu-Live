@@ -1189,7 +1189,7 @@ const MCHKitDashboard = () => {
         districtBreakdown: [
             { district: "KB Asifabad", kitsReceived: 4500, kitsDistributed: 4200, kitsInHand: 300, institutions: 250, distributedInstitutions: 230, availability: 92 },
             { district: "Mancherial", kitsReceived: 5000, kitsDistributed: 4800, kitsInHand: 200, institutions: 300, distributedInstitutions: 290, availability: 96.6 },
-            { district: "Nirmal", kitsReceived: 3000, kitsDistributed: 2800, kitsInHand: 200, institutions: 180, distributedInstituted: 170, availability: 94.4 },
+            { district: "Nirmal", kitsReceived: 3000, kitsDistributed: 2800, kitsInHand: 200, institutions: 180, distributedInstitutions: 170, availability: 94.4 },
         ],
         mandalBreakdown: [
             { mandal: "Asifabad", kitsReceived: 1500, kitsDistributed: 1450, kitsInHand: 50, institutions: 80, distributedInstitutions: 78, availability: 97.5 },
