@@ -834,91 +834,780 @@ const allSchemesData = [
     {
         id: 'poshan-abhiyaan',
         name: 'Poshan Abhiyaan (National Nutrition Mission)',
-        description: 'A flagship program to improve nutritional outcomes for children, pregnant women, and lactating mothers.',
-        overall: { saturation: 85, lagDays: 15, target: 90, progressDetail: 'Good progress in beneficiary enrollment, slight delays in infrastructure upgrades.' },
-        districts: {
-            'kb-asifabad': { saturation: 88, lagDays: 10, target: 92, progressDetail: 'Exceeded target for growth monitoring, minor lag in Aadhaar seeding for new beneficiaries.' },
-            'mancherial': { saturation: 82, lagDays: 20, target: 88, progressDetail: 'Steady progress, focus on increasing home visits.' },
-            'nirmal': { saturation: 79, lagDays: 25, target: 85, progressDetail: 'Needs improvement in last-mile delivery and reporting compliance.' },
-        },
-        mandals: { // Sample data for Asifabad district
-            'asifabad-m': { saturation: 90, lagDays: 8, target: 95 },
-            'jainoor-m': { saturation: 85, lagDays: 15, target: 90 },
-            'kagaznagar-m': { saturation: 78, lagDays: 22, target: 85 },
-            'wankidi-m': { saturation: 65, lagDays: 35, target: 75 }, // Example of high lag
-        },
-        gps: { // Sample data for Asifabad mandal
-            'gp-kosara': { saturation: 92, lagDays: 5, target: 95 },
-            'gp-malangondi': { saturation: 88, lagDays: 10, target: 90 },
-            'gp-tumpalli': { saturation: 70, lagDays: 28, target: 80 },
+        description: 'A flagship program to improve nutritional outcomes for children, pregnant women, and lactating mothers. Focuses on growth monitoring, supplementary nutrition, and home visits. Data influenced by Poshan Tracker reports.',
+        overall: { saturation: 86.57, lagDays: 15.0, target: 90.0, progressDetail: 'Strong community engagement and consistent reporting. Some delays in infrastructure updates for new centers.' },
+        geographicalData: {
+            districts: {
+                'kb-asifabad': { saturation: 87.23, lagDays: 11.0, target: 91.0, progressDetail: 'Exceeded target for growth monitoring, minor lag in Aadhaar seeding for new beneficiaries.' },
+                'mancherial': { saturation: 81.51, lagDays: 16.0, target: 86.0, progressDetail: 'Steady progress, focus on increasing home visits and reporting compliance.' },
+                'nirmal': { saturation: 77.15, lagDays: 31.0, target: 84.0, progressDetail: 'Needs improvement in last-mile delivery and data validation.' }
+            },
+            mandals: {
+                'asifabad-m': { saturation: 90.17, lagDays: 21.0, target: 95.0, progressDetail: 'Strong community engagement. Minor delays in monthly data consolidation.' },
+                'bejjur-m': { saturation: 63.84, lagDays: 32.0, target: 74.0, progressDetail: 'Requires improved reporting and AWC worker training.' },
+                'dahegaon-m': { saturation: 85.29, lagDays: 0, target: 90.0, progressDetail: 'Exceptional real-time data entry and minimal delays.' },
+                'jainoor-m': { saturation: 64.05, lagDays: 14.0, target: 71.0, progressDetail: 'Requires improved beneficiary identification and follow-ups.' },
+                'kagaznagar-m': { saturation: 76.33, lagDays: 37.0, target: 74.0, progressDetail: 'Strong community engagement but some administrative bottlenecks.' },
+                'kerameri-m': { saturation: 83.77, lagDays: 6.0, target: 82.0, progressDetail: 'Minor operational delays, but overall good progress in service delivery.' },
+                'kouthala-m': { saturation: 91.94, lagDays: 5.0, target: 95.0, progressDetail: 'Beneficiary identification ongoing, with high conversion rates.' },
+                'rebbena-m': { saturation: 76.94, lagDays: 20.0, target: 77.0, progressDetail: 'Strong community engagement. Needs focus on vulnerable groups.' },
+                'sirpur-t-m': { saturation: 95.15, lagDays: 31.0, target: 95.0, progressDetail: 'Strong community engagement but reporting accuracy could improve.' },
+                'sirpur-u-m': { saturation: 68.74, lagDays: 24.0, target: 73.0, progressDetail: 'Strong community engagement. Data reflects effective local coordination.' },
+                'tiryani-m': { saturation: 91.19, lagDays: 16.0, target: 91.0, progressDetail: 'Minor operational delays. Focus on ensuring continuous service delivery.' },
+                'wankidi-m': { saturation: 81.98, lagDays: 30.0, target: 87.0, progressDetail: 'Minor operational delays, particularly in remote areas.' },
+                'lingapur-m': { saturation: 74.88, lagDays: 33.0, target: 86.0, progressDetail: 'Minor operational delays. Requires increased community awareness.' },
+                'penchicalpet-m': { saturation: 93.47, lagDays: 44.0, target: 98.0, progressDetail: 'Minor operational delays due to funding cycles. High potential for improvement.' },
+                'chintalamanepally-m': { saturation: 92.0, lagDays: 5.0, target: 94.0, progressDetail: 'Beneficiary identification ongoing, with consistent follow-ups.' }
+            },
+            gps: {
+                'kosara-gp': { saturation: 93.01, lagDays: 36.0, target: 94.0, progressDetail: 'Requires improved reporting quality. Manual data reconciliation needed.' },
+                'malangondi-gp': { saturation: 83.89, lagDays: 48.0, target: 83.0, progressDetail: 'Requires improved reporting frequency. System lags in updating status.' },
+                'venkatapur-gp': { saturation: 62.92, lagDays: 54.0, target: 64.0, progressDetail: 'Consistent progress but manual verification causes significant delays.' },
+                'tumpalli-gp': { saturation: 67.98, lagDays: 14.0, target: 68.0, progressDetail: 'Minor operational delays, but basic services are consistently delivered.' },
+                'appapally-gp': { saturation: 79.45, lagDays: 42.0, target: 88.0, progressDetail: 'Minor operational delays in new beneficiary registration process.' },
+                'koutaguda-gp': { saturation: 91.53, lagDays: 26.0, target: 92.0, progressDetail: 'Focus on last-mile connectivity. Some challenges in biometric attendance.' },
+                'chilatiguda-gp': { saturation: 87.17, lagDays: 34.0, target: 90.0, progressDetail: 'Minor operational delays due to connectivity issues in remote areas.' },
+                'motuguda-gp': { saturation: 85.2, lagDays: 23.0, target: 91.0, progressDetail: 'Focus on last-mile connectivity for service delivery and data collection.' },
+                'govindapur-gp': { saturation: 81.68, lagDays: 26.0, target: 79.0, progressDetail: 'Requires improved reporting timeliness. Data often submitted late.' },
+                'padibanda-gp': { saturation: 80.19, lagDays: 43.0, target: 82.0, progressDetail: 'Strong community engagement. Challenges in fund disbursement tracking.' },
+                'manikguda-gp': { saturation: 91.7, lagDays: 32.0, target: 93.0, progressDetail: 'Strong community engagement, but manual report consolidation delays insights.' },
+                'babapur-gp': { saturation: 89.04, lagDays: 23.0, target: 96.0, progressDetail: 'Requires improved reporting quality. Some gaps in field supervision.' },
+                'wavudam-gp': { saturation: 58.21, lagDays: 26.0, target: 63.0, progressDetail: 'Beneficiary identification ongoing. Need to verify actual service receipt.' },
+                'ankusapur-gp': { saturation: 75.14, lagDays: 36.0, target: 80.0, progressDetail: 'Beneficiary identification ongoing. Lag in updating Aadhaar details.' },
+                'ada-dasnapur-gp': { saturation: 75.27, lagDays: 12.0, target: 79.0, progressDetail: 'Consistent progress. Need to improve digital literacy among field staff.' },
+                'gundi-gp': { saturation: 87.02, lagDays: 38.0, target: 95.0, progressDetail: 'Requires improved reporting frequency. Data validation is a bottleneck.' },
+                'yellaram-gp': { saturation: 86.68, lagDays: 37.0, target: 85.0, progressDetail: 'Focus on last-mile connectivity. Supplies sometimes arrive late.' },
+                'routsankepalle-gp': { saturation: 85.77, lagDays: 53.0, target: 85.0, progressDetail: 'Beneficiary identification ongoing, but home visits are irregular.' },
+                'buruguda-gp': { saturation: 69.22, lagDays: 36.0, target: 78.0, progressDetail: 'Requires improved reporting quality from ground level workers.' },
+                'mowad-gp': { saturation: 55.19, lagDays: 15.0, target: 65.0, progressDetail: 'Consistent progress but low overall penetration in deep rural pockets.' },
+                'ada-gp': { saturation: 91.5, lagDays: 29.0, target: 99, progressDetail: 'Requires improved reporting. Data entry is sometimes delayed from field.' },
+                'chirrakunta-gp': { saturation: 83.91, lagDays: 4.0, target: 86.0, progressDetail: 'Focus on last-mile connectivity. Efficient service delivery noted.' },
+                'asifabad-gp': { saturation: 89.02, lagDays: 46.0, target: 89.0, progressDetail: 'Consistent progress, but city-level reporting can be complex.' },
+                'chorpalli-gp': { saturation: 60.52, lagDays: 60.0, target: 64.0, progressDetail: 'Strong community engagement, but significant lag in administrative approvals.' },
+                'edulawada-gp': { saturation: 84.69, lagDays: 0, target: 83.0, progressDetail: 'Minor operational delays; very effective and timely service.' },
+                'rahapally-gp': { saturation: 59.3, lagDays: 49.0, target: 65.0, progressDetail: 'Minor operational delays due to supply chain inconsistencies.' },
+                'saleguda-gp': { saturation: 100, lagDays: 47.0, target: 99, progressDetail: 'Consistent progress; excellent in achieving saturation, but data validation is slow.' },
+                'andhugulaguda-gp': { saturation: 74.37, lagDays: 43.0, target: 71.0, progressDetail: 'Strong community engagement, but program material distribution has delays.' },
+                'outsarangipalle-gp': { saturation: 56.47, lagDays: 0, target: 65.0, progressDetail: 'Consistent progress but overall coverage is limited by reach.' },
+                'kukuda-gp': { saturation: 71.53, lagDays: 26.0, target: 74.0, progressDetail: 'Requires improved reporting. Digital reporting is nascent.' },
+                'pothepally-gp': { saturation: 75.65, lagDays: 10.0, target: 80.0, progressDetail: 'Beneficiary identification ongoing. Good on-site service delivery.' },
+                'kushnepalle-gp': { saturation: 89.84, lagDays: 0.0, target: 86.0, progressDetail: 'Strong community engagement; highly efficient and effective program.' },
+                'kuntalamanepalli-gp': { saturation: 100, lagDays: 2.0, target: 99, progressDetail: 'Consistent progress; nearly perfect service delivery and reporting.' },
+                'mogavelly-gp': { saturation: 83.85, lagDays: 17.0, target: 90.0, progressDetail: 'Strong community engagement. Data is mostly up-to-date.' },
+                'rebbena-gp': { saturation: 74.42, lagDays: 34.0, target: 86.0, progressDetail: 'Strong community engagement, but some reporting discrepancies.' },
+                'sushmir-gp': { saturation: 82.99, lagDays: 12.0, target: 84.0, progressDetail: 'Consistent progress with timely updates.' },
+                'somini-gp': { saturation: 100, lagDays: 23.0, target: 99, progressDetail: 'Focus on last-mile connectivity. Achieved full saturation, but data reporting has delays.' },
+                'ambhaghat-gp': { saturation: 57.21, lagDays: 20.0, target: 64.0, progressDetail: 'Focus on last-mile connectivity. Awareness campaigns are starting.' },
+                'thummalaguda-gp': { saturation: 92.84, lagDays: 42.0, target: 98.0, progressDetail: 'Consistent progress, but slow validation of new beneficiaries.' },
+                'talai-gp': { saturation: 74.86, lagDays: 46.0, target: 73.0, progressDetail: 'Requires improved reporting accuracy and timeliness from field.' },
+                'bareguda-gp': { saturation: 94.19, lagDays: 6.0, target: 97.0, progressDetail: 'Requires improved reporting processes. Good overall performance.' },
+                'katepalli-gp': { saturation: 100, lagDays: 11.0, target: 99, progressDetail: 'Requires improved reporting infrastructure. High saturation achieved.' },
+                'marthadi-gp': { saturation: 91.68, lagDays: 50.0, target: 98.0, progressDetail: 'Strong community engagement, but data transmission is slow.' },
+                'bejjur-gp': { saturation: 62.08, lagDays: 34.0, target: 62.0, progressDetail: 'Focus on last-mile connectivity, particularly remote AWC visits.' },
+                'munjampalle-gp': { saturation: 85.24, lagDays: 9.0, target: 96.0, progressDetail: 'Requires improved reporting consistency. Good service delivery.' },
+                'papanpet-gp': { saturation: 89.12, lagDays: 45.0, target: 86.0, progressDetail: 'Focus on last-mile connectivity, but data collection has significant lag.' },
+                'sulugupalli-gp': { saturation: 65.6, lagDays: 20.0, target: 74.0, progressDetail: 'Focus on last-mile connectivity. Need to verify service receipt.' },
+                'pedda-siddapur-gp': { saturation: 85.69, lagDays: 28.0, target: 89.0, progressDetail: 'Consistent progress, but some challenges with new registrations.' },
+                'lambadiguda-gp': { saturation: 96.77, lagDays: 21.0, target: 99, progressDetail: 'Consistent progress. Data updates can be delayed.' },
+                'chinnaraspalle-gp': { saturation: 94.72, lagDays: 3.0, target: 99, progressDetail: 'Beneficiary identification ongoing, very efficient operation.' },
+                'borlakunta-gp': { saturation: 79.9, lagDays: 20.0, target: 83.0, progressDetail: 'Beneficiary identification ongoing. Data verification is robust.' },
+                'kothmir-gp': { saturation: 64.61, lagDays: 37.0, target: 73.0, progressDetail: 'Focus on last-mile connectivity. Awareness needs to improve.' },
+                'pesarikunta-gp': { saturation: 80.07, lagDays: 14.0, target: 91.0, progressDetail: 'Minor operational delays. Overall good adoption.' },
+                'digida-gp': { saturation: 74.6, lagDays: 38.0, target: 82.0, progressDetail: 'Strong community engagement, but reporting data flow is slow.' },
+                'dahegaon-gp': { saturation: 82.77, lagDays: 22.0, target: 84.0, progressDetail: 'Strong community engagement and good service uptake.' },
+                'chandrapalle-gp': { saturation: 76.41, lagDays: 41.0, target: 79.0, progressDetail: 'Minor operational delays in material distribution.' },
+                'rampur-gp': { saturation: 66.26, lagDays: 28.0, target: 72.0, progressDetail: 'Strong community engagement. Need to streamline approvals.' },
+                'motleguda-gp': { saturation: 70.53, lagDays: 52.0, target: 77.0, progressDetail: 'Consistent progress, but critical lag in data consolidation.' },
+                'kamarpally-gp': { saturation: 92.02, lagDays: 23.0, target: 91.0, progressDetail: 'Minor operational delays. High overall service delivery.' },
+                'gerre-gp': { saturation: 59.84, lagDays: 44.0, target: 63.0, progressDetail: 'Requires improved reporting from remote AWCs.' },
+                'kalwada-gp': { saturation: 73.43, lagDays: 2.0, target: 74.0, progressDetail: 'Consistent progress with high efficiency in reporting.' },
+                'laggaon-gp': { saturation: 69.23, lagDays: 0, target: 75.0, progressDetail: 'Consistent progress; excellent and real-time reporting.' },
+                'ainam-gp': { saturation: 86.56, lagDays: 14.0, target: 92.0, progressDetail: 'Consistent progress. Needs better data on health outcomes.' },
+                'vodduguda-gp': { saturation: 85.29, lagDays: 43.0, target: 93.0, progressDetail: 'Consistent progress, but delayed reporting of last-mile verification.' },
+                'hathni-gp': { saturation: 91.06, lagDays: 22.0, target: 90.0, progressDetail: 'Requires improved reporting timeliness. Good service delivery.' },
+                'kunchavelli-gp': { saturation: 86.18, lagDays: 28.0, target: 93.0, progressDetail: 'Beneficiary identification ongoing. Data quality is good.' },
+                'chowka-gp': { saturation: 93.45, lagDays: 22.0, target: 99, progressDetail: 'Minor operational delays, but excellent overall program execution.' },
+                'beebra-gp': { saturation: 78.78, lagDays: 6.0, target: 82.0, progressDetail: 'Beneficiary identification ongoing. Timely service provision.' },
+                'pp-rao-colony-gp': { saturation: 82.51, lagDays: 13.0, target: 84.0, progressDetail: 'Beneficiary identification ongoing. Strong urban outreach.' },
+                'ityal-gp': { saturation: 70.87, lagDays: 18.0, target: 74.0, progressDetail: 'Requires improved reporting consistency and feedback loop.' },
+                'kharji-gp': { saturation: 86.48, lagDays: 12.0, target: 98.0, progressDetail: 'Strong community engagement. Data accuracy is high.' },
+                'girvelli-gp': { saturation: 85.28, lagDays: 2.0, target: 91.0, progressDetail: 'Requires improved reporting to capture nuanced details. Highly efficient.' },
+                'bhamanagar-gp': { saturation: 92.45, lagDays: 37.0, target: 91.0, progressDetail: 'Consistent progress, but delayed submission of community meeting reports.' },
+                'pocham-loddi-gp': { saturation: 91.88, lagDays: 9.0, target: 99, progressDetail: 'Strong community engagement. Effective in reaching beneficiaries.' },
+                'raoji-guda-gp': { saturation: 83.34, lagDays: 0, target: 94.0, progressDetail: 'Requires improved reporting speed. Excellent service delivery.' },
+                'dubbaguda-gp': { saturation: 94.67, lagDays: 32.0, target: 98.0, progressDetail: 'Minor operational delays due to resource allocation.' },
+                'ushegaon-gp': { saturation: 99.26, lagDays: 14.0, target: 99, progressDetail: 'Beneficiary identification ongoing. Near perfect saturation.' },
+                'power-guda-gp': { saturation: 67.13, lagDays: 54.0, target: 72.0, progressDetail: 'Focus on last-mile connectivity. Significant challenges in remote area access.' },
+                'andh-guda-gp': { saturation: 76.6, lagDays: 21.0, target: 86.0, progressDetail: 'Requires improved reporting accuracy for program activities.' },
+                'maniguda-gp': { saturation: 64.47, lagDays: 2.0, target: 67.0, progressDetail: 'Consistent progress, but limited overall program reach.' },
+                'panapatar-gp': { saturation: 73.09, lagDays: 0.0, target: 74.0, progressDetail: 'Minor operational delays. Effective in localizing services.' },
+                'jamni-gp': { saturation: 65.79, lagDays: 13.0, target: 72.0, progressDetail: 'Strong community engagement. Data reporting requires reinforcement.' },
+                'para-gp': { saturation: 72.26, lagDays: 12.0, target: 71.0, progressDetail: 'Requires improved reporting format for consistency.' },
+                'chinthakara-gp': { saturation: 90.72, lagDays: 18.0, target: 89.0, progressDetail: 'Focus on last-mile connectivity. Good progress on outreach.' },
+                'rasimatta-gp': { saturation: 69.02, lagDays: 19.0, target: 70.0, progressDetail: 'Strong community engagement. Needs faster issue resolution.' },
+                'gudamamda-gp': { saturation: 86.99, lagDays: 7.0, target: 91.0, progressDetail: 'Minor operational delays. Good overall transparency in data.' },
+                'bhusimetta-gp': { saturation: 73.8, lagDays: 27.0, target: 72.0, progressDetail: 'Beneficiary identification ongoing. Needs better follow-up process.' },
+                'gowri-kolamguda-gp': { saturation: 73.21, lagDays: 32.0, target: 78.0, progressDetail: 'Focus on last-mile connectivity. Data consolidation is slow.' },
+                'shivnoor-gp': { saturation: 83.1, lagDays: 34.0, target: 93.0, progressDetail: 'Strong community engagement, but reporting is inconsistent.' },
+                'addesara-gp': { saturation: 64.9, lagDays: 10.0, target: 73.0, progressDetail: 'Requires improved reporting. Data capturing needs standardization.' },
+                'daboli-gp': { saturation: 77.29, lagDays: 12.0, target: 84.0, progressDetail: 'Beneficiary identification ongoing. Good service distribution.' },
+                'ashapalle-gp': { saturation: 81.63, lagDays: 45.0, target: 86.0, progressDetail: 'Requires improved reporting frequency. Significant data lag.' },
+                'jamgaon-gp': { saturation: 75.36, lagDays: 16.0, target: 84.0, progressDetail: 'Strong community engagement. Needs better data validation tools.' },
+                'patnapur-gp': { saturation: 60.14, lagDays: 32.0, target: 63.0, progressDetail: 'Requires improved reporting infrastructure. Manual processing slows data.' },
+                'mankuguda-gp': { saturation: 65.8, lagDays: 48.0, target: 75.0, progressDetail: 'Beneficiary identification ongoing, but home visits are often delayed.' },
+                'jainoor-gp': { saturation: 90.0, lagDays: 12.0, target: 94.0, progressDetail: 'Strong community engagement and high program acceptance.' },
+                'ramnayak-thanda-gp': { saturation: 85.0, lagDays: 18.0, target: 90.0, progressDetail: 'Consistent progress, but some tribal area beneficiaries are hard to track.' },
+                'marlawai-gp': { saturation: 78.0, lagDays: 25.0, target: 83.0, progressDetail: 'Minor operational delays in supply delivery and reporting.' },
+                'jandaguda-gp': { saturation: 60.0, lagDays: 35.0, target: 68.0, progressDetail: 'Requires improved reporting quality. Digital literacy is a barrier.' },
+                'nazurulnagar-gp': { saturation: 92.0, lagDays: 8.0, target: 95.0, progressDetail: 'Focus on last-mile connectivity. Excellent and timely reporting.' },
+                'kadamba-gp': { saturation: 88.0, lagDays: 10.0, target: 92.0, progressDetail: 'Consistent progress, but data entry errors observed.' },
+                'mosam-gp': { saturation: 70.0, lagDays: 30.0, target: 75.0, progressDetail: 'Beneficiary identification ongoing. Training for new workers needed.' },
+                'ramnagar-n-gp': { saturation: 80.0, lagDays: 20.0, target: 85.0, progressDetail: 'Strong community engagement. Data consolidation is moderate.' },
+                'jaganathpur-gp': { saturation: 65.0, lagDays: 40.0, target: 70.0, progressDetail: 'Minor operational delays in program material distribution.' },
+                'lineguda-gp': { saturation: 95.0, lagDays: 5.0, target: 98.0, progressDetail: 'Excellent outreach. Reports are highly accurate and timely.' },
+                'basantinagar-gp': { saturation: 89.0, lagDays: 10.0, target: 93.0, progressDetail: 'Consistent progress, but verification of some beneficiaries is pending.' },
+                'ankoda-gp': { saturation: 75.0, lagDays: 28.0, target: 80.0, progressDetail: 'Requires improved reporting. Data from field is often delayed.' },
+                'vallakonda-gp': { saturation: 82.0, lagDays: 15.0, target: 87.0, progressDetail: 'Focus on last-mile connectivity. Good follow-up on cases.' },
+                'burdagudem-gp': { saturation: 68.0, lagDays: 32.0, target: 73.0, progressDetail: 'Beneficiary identification ongoing. Need to improve data transmission.' },
+                'regulaguda-gp': { saturation: 90.0, lagDays: 9.0, target: 94.0, progressDetail: 'Strong community engagement. Data accuracy is high.' },
+                'ngos-colony-gp': { saturation: 87.0, lagDays: 12.0, target: 90.0, progressDetail: 'Consistent progress, but cross-verification takes time.' },
+                'easgaon-gp': { saturation: 72.0, lagDays: 35.0, target: 78.0, progressDetail: 'Minor operational delays due to staffing shortages.' },
+                'andevelly-gp': { saturation: 78.0, lagDays: 22.0, target: 83.0, progressDetail: 'Requires improved reporting. Some resistance to new digital tools.' },
+                'chinthaguda-koyawagu-gp': { saturation: 63.0, lagDays: 45.0, target: 70.0, progressDetail: 'Focus on last-mile connectivity. Significant challenges in reaching remote households.' },
+                'kotha-sarsala-gp': { saturation: 93.0, lagDays: 7.0, target: 96.0, progressDetail: 'Excellent outreach. Program data is very reliable.' },
+                'gannaram-gp': { saturation: 88.0, lagDays: 11.0, target: 92.0, progressDetail: 'Consistent progress, but requires more training for new field staff.' },
+                'raspally-gp': { saturation: 77.0, lagDays: 29.0, target: 82.0, progressDetail: 'Minor operational delays. Data collection is slow.' },
+                'nagampet-gp': { saturation: 84.0, lagDays: 16.0, target: 89.0, progressDetail: 'Strong community engagement. Data reporting is on track.' },
+                'bodepalle-gp': { saturation: 69.0, lagDays: 38.0, target: 74.0, progressDetail: 'Beneficiary identification ongoing. Delays in data consolidation.' },
+                'bhat-palle-gp': { saturation: 91.0, lagDays: 8.0, target: 95.0, progressDetail: 'Focus on last-mile connectivity. Very timely data updates.' },
+                'chinthaguda-gp': { saturation: 86.0, lagDays: 13.0, target: 90.0, progressDetail: 'Consistent progress, but some discrepancies in beneficiary data.' },
+                'vanjari-gp': { saturation: 70.0, lagDays: 30.0, target: 75.0, progressDetail: 'Requires improved reporting quality. Needs more direct supervision.' },
+                'durga-nagar-gp': { saturation: 79.0, lagDays: 20.0, target: 84.0, progressDetail: 'Strong community engagement. Program materials sometimes delayed.' },
+                'kosini-gp': { saturation: 64.0, lagDays: 40.0, target: 70.0, progressDetail: 'Minor operational delays in program delivery and reporting.' },
+                'malni-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'Excellent outreach. Reports are submitted very quickly.' },
+                'metapipri-gp': { saturation: 89.0, lagDays: 9.0, target: 93.0, progressDetail: 'Consistent progress, but new staff need training on reporting.' },
+                'ananthapur-gp': { saturation: 74.0, lagDays: 32.0, target: 79.0, progressDetail: 'Requires improved reporting consistency and data validation.' },
+                'bolapatar-gp': { saturation: 81.0, lagDays: 17.0, target: 86.0, progressDetail: 'Focus on last-mile connectivity. Data accuracy is good.' },
+                'jhari-gp': { saturation: 67.0, lagDays: 35.0, target: 72.0, progressDetail: 'Beneficiary identification ongoing. Challenges in reaching all households.' },
+                'keslaguda-gp': { saturation: 90.0, lagDays: 10.0, target: 94.0, progressDetail: 'Strong community engagement. Data reflects high program adoption.' },
+                'keli-b-gp': { saturation: 85.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent progress. Some delays in procuring program materials.' },
+                'modi-gp': { saturation: 69.0, lagDays: 28.0, target: 74.0, progressDetail: 'Minor operational delays in daily reporting and reconciliation.' },
+                'indapur-gp': { saturation: 78.0, lagDays: 22.0, target: 83.0, progressDetail: 'Requires improved reporting frequency. Data validation is a manual process.' },
+                'kothari-gp': { saturation: 63.0, lagDays: 45.0, target: 70.0, progressDetail: 'Focus on last-mile connectivity. Progress is slow in remote areas.' },
+                'gondguda-gp': { saturation: 92.0, lagDays: 7.0, target: 95.0, progressDetail: 'Excellent outreach. Reports are generated promptly.' },
+                'agarwada-gp': { saturation: 87.0, lagDays: 12.0, target: 91.0, progressDetail: 'Consistent progress. Some issues with beneficiary Aadhaar linking.' },
+                'ringhanghat-gp': { saturation: 76.0, lagDays: 29.0, target: 81.0, progressDetail: 'Minor operational delays. Data collection tools need upgrade.' },
+                'babejhari-gp': { saturation: 83.0, lagDays: 18.0, target: 88.0, progressDetail: 'Strong community engagement. Data accuracy is generally high.' },
+                'devapur-gp': { saturation: 68.0, lagDays: 37.0, target: 73.0, progressDetail: 'Beneficiary identification ongoing. Challenges in accessing all households.' },
+                'karanjiwada-gp': { saturation: 91.0, lagDays: 9.0, target: 95.0, progressDetail: 'Focus on last-mile connectivity. Efficient service delivery.' },
+                'dhanora-gp': { saturation: 86.0, lagDays: 14.0, target: 90.0, progressDetail: 'Consistent progress. Data verification procedures are robust.' },
+                'parda-gp': { saturation: 71.0, lagDays: 31.0, target: 76.0, progressDetail: 'Requires improved reporting timeliness. Training for field staff needed.' },
+                'mukadhamguda-gp': { saturation: 79.0, lagDays: 21.0, target: 84.0, progressDetail: 'Strong community engagement. Program materials reach on time.' },
+                'saverkeda-gp': { saturation: 65.0, lagDays: 42.0, target: 70.0, progressDetail: 'Minor operational delays. Data entry has some backlog.' },
+                'sakada-gp': { saturation: 93.0, lagDays: 6.0, target: 96.0, progressDetail: 'Excellent outreach. Data reports are highly reliable.' },
+                'jhodeghat-gp': { saturation: 88.0, lagDays: 10.0, target: 92.0, progressDetail: 'Consistent progress. Some challenges in capturing real-time data.' },
+                'goyagaon-gp': { saturation: 77.0, lagDays: 28.0, target: 82.0, progressDetail: 'Minor operational delays. Need to improve data submission frequency.' },
+                'kerameri-gp': { saturation: 84.0, lagDays: 16.0, target: 89.0, progressDetail: 'Strong community engagement. Data accuracy is a priority.' },
+                'sangvi-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Beneficiary identification ongoing. Data collection forms need simplification.' },
+                'nishani-gp': { saturation: 90.0, lagDays: 8.0, target: 94.0, progressDetail: 'Focus on last-mile connectivity. Digital reporting is efficient.' },
+                'parandholi-gp': { saturation: 85.0, lagDays: 13.0, target: 90.0, progressDetail: 'Consistent progress. Manual verification adds to data lag.' },
+                'borilalguda-gp': { saturation: 70.0, lagDays: 30.0, target: 75.0, progressDetail: 'Requires improved reporting speed. Some issues with device availability.' },
+                'anarpalli-gp': { saturation: 79.0, lagDays: 20.0, target: 84.0, progressDetail: 'Strong community engagement. Program awareness is good.' },
+                'thummaguda-gp': { saturation: 64.0, lagDays: 40.0, target: 70.0, progressDetail: 'Minor operational delays due to network issues in field.' },
+                'khairi-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'Excellent outreach. Reports are generated with minimal errors.' },
+                'surdapur-gp': { saturation: 89.0, lagDays: 9.0, target: 93.0, progressDetail: 'Consistent progress, but some data needs manual cross-checking.' },
+                'kannepalle-gp': { saturation: 74.0, lagDays: 32.0, target: 79.0, progressDetail: 'Requires improved reporting. Data entry personnel need more training.' },
+                'thatipally-gp': { saturation: 81.0, lagDays: 17.0, target: 86.0, progressDetail: 'Focus on last-mile connectivity. Progress is solid.' },
+                'thatinagar-gp': { saturation: 67.0, lagDays: 35.0, target: 72.0, progressDetail: 'Beneficiary identification ongoing. Field visits are sometimes delayed.' },
+                'veerdandi-gp': { saturation: 90.0, lagDays: 10.0, target: 94.0, progressDetail: 'Strong community engagement. Timely and accurate data.' },
+                'sandgoan-gp': { saturation: 85.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent progress. Reports reflect ground reality well.' },
+                'mogadhagad-gp': { saturation: 69.0, lagDays: 28.0, target: 74.0, progressDetail: 'Minor operational delays. Manual data upload is slow.' },
+                'bodhampalli-gp': { saturation: 78.0, lagDays: 22.0, target: 83.0, progressDetail: 'Requires improved reporting frequency. System is not real-time.' },
+                'kanki-gp': { saturation: 63.0, lagDays: 45.0, target: 70.0, progressDetail: 'Focus on last-mile connectivity. Awareness levels are low.' },
+                'tumdihetty-gp': { saturation: 92.0, lagDays: 7.0, target: 95.0, progressDetail: 'Excellent outreach. Digital data capture is very effective.' },
+                'veeravelly-gp': { saturation: 87.0, lagDays: 12.0, target: 91.0, progressDetail: 'Consistent progress. Data validation checks are rigorous.' },
+                'nagepalli-gp': { saturation: 76.0, lagDays: 29.0, target: 81.0, progressDetail: 'Minor operational delays. Need to expedite report approvals.' },
+                'kouthala-gp': { saturation: 83.0, lagDays: 18.0, target: 88.0, progressDetail: 'Strong community engagement. Data insights are actionable.' },
+                'muthampet-gp': { saturation: 68.0, lagDays: 37.0, target: 73.0, progressDetail: 'Beneficiary identification ongoing. Coverage needs to expand.' },
+                'gundaipeta-gp': { saturation: 91.0, lagDays: 9.0, target: 95.0, progressDetail: 'Focus on last-mile connectivity. Data reflects high program adoption.' },
+                'gurudpeta-gp': { saturation: 86.0, lagDays: 14.0, target: 90.0, progressDetail: 'Consistent progress. Data submitted in batches, causing minor lags.' },
+                'gudlabori-gp': { saturation: 71.0, lagDays: 31.0, target: 76.0, progressDetail: 'Requires improved reporting. Data quality issues are being addressed.' },
+                'talodi-gp': { saturation: 79.0, lagDays: 21.0, target: 84.0, progressDetail: 'Strong community engagement. Service delivery is consistent.' },
+                'bhalepalli-gp': { saturation: 65.0, lagDays: 42.0, target: 70.0, progressDetail: 'Minor operational delays. Remote access for data entry is challenging.' },
+                'pardi-gp': { saturation: 93.0, lagDays: 6.0, target: 96.0, progressDetail: 'Excellent outreach. Reports are highly reliable and timely.' },
+                'shirsha-gp': { saturation: 88.0, lagDays: 10.0, target: 92.0, progressDetail: 'Consistent progress. Some manual intervention in data processing.' },
+                'navegaon-gp': { saturation: 77.0, lagDays: 28.0, target: 82.0, progressDetail: 'Minor operational delays. Need to accelerate data submission.' },
+                'rollapahad-gp': { saturation: 84.0, lagDays: 16.0, target: 89.0, progressDetail: 'Strong community engagement. Data accuracy is a focus area.' },
+                'rajaram-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Beneficiary identification ongoing. Field visit data processing is slow.' },
+                'khairgaon-gp': { saturation: 90.0, lagDays: 8.0, target: 94.0, progressDetail: 'Focus on last-mile connectivity. Timely and comprehensive reports.' },
+                'indranagar-gp': { saturation: 85.0, lagDays: 13.0, target: 90.0, progressDetail: 'Consistent progress. Data flow from urban centers is efficient.' },
+                'golleti-gp': { saturation: 70.0, lagDays: 30.0, target: 75.0, progressDetail: 'Requires improved reporting. Need to train more data entry operators.' },
+                'jakkulapally-gp': { saturation: 79.0, lagDays: 20.0, target: 84.0, progressDetail: 'Strong community engagement. Data reflects high program awareness.' },
+                'pasigaon-gp': { saturation: 64.0, lagDays: 40.0, target: 70.0, progressDetail: 'Minor operational delays. Challenges in data synchronization.' },
+                'kondapalle-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'Excellent outreach. Data reflects high program impact.' },
+                'pulikunta-gp': { saturation: 89.0, lagDays: 9.0, target: 93.0, progressDetail: 'Consistent progress. Data is robust and reliable.' },
+                'laxmipur-gp': { saturation: 74.0, lagDays: 32.0, target: 79.0, progressDetail: 'Requires improved reporting. Field data collection is time-consuming.' },
+                'dharmaram-gp': { saturation: 81.0, lagDays: 17.0, target: 86.0, progressDetail: 'Focus on last-mile connectivity. Program data is actionable.' },
+                'madavaiguda-gp': { saturation: 67.0, lagDays: 35.0, target: 72.0, progressDetail: 'Beneficiary identification ongoing. Some issues with data accuracy.' },
+                'takkallapalle-gp': { saturation: 90.0, lagDays: 10.0, target: 94.0, progressDetail: 'Strong community engagement. Reports are comprehensive.' },
+                'komuravelly-gp': { saturation: 85.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent progress. Data reflects good program implementation.' },
+                'tungeda-gp': { saturation: 69.0, lagDays: 28.0, target: 74.0, progressDetail: 'Minor operational delays. Need to automate more data processes.' },
+                'venkulam-gp': { saturation: 78.0, lagDays: 22.0, target: 83.0, progressDetail: 'Requires improved reporting frequency. System is prone to manual errors.' },
+                'nambal-gp': { saturation: 63.0, lagDays: 45.0, target: 70.0, progressDetail: 'Focus on last-mile connectivity. Data validation is a bottleneck.' },
+                'rebbana-gp': { saturation: 92.0, lagDays: 7.0, target: 95.0, progressDetail: 'Excellent outreach. Data capture is almost real-time.' },
+                'gangapur-gp': { saturation: 87.0, lagDays: 12.0, target: 91.0, progressDetail: 'Consistent progress. Regular data audits are in place.' },
+                'narayanpur-gp': { saturation: 76.0, lagDays: 29.0, target: 81.0, progressDetail: 'Minor operational delays. Need to improve data entry speed.' },
+                'kistapur-gp': { saturation: 83.0, lagDays: 18.0, target: 88.0, progressDetail: 'Strong community engagement. Data utilization for planning is effective.' },
+                'khairguda-gp': { saturation: 68.0, lagDays: 37.0, target: 73.0, progressDetail: 'Beneficiary identification ongoing. Challenges in reporting remote visits.' },
+                'itikyalapahad-gp': { saturation: 91.0, lagDays: 9.0, target: 95.0, progressDetail: 'Focus on last-mile connectivity. Data accuracy is a hallmark.' },
+                'karjepally-gp': { saturation: 86.0, lagDays: 14.0, target: 90.0, progressDetail: 'Consistent progress. Data submission is timely.' },
+                'vempalle-gp': { saturation: 71.0, lagDays: 31.0, target: 76.0, progressDetail: 'Requires improved reporting tools. Manual data processing is slow.' },
+                'parigaon-gp': { saturation: 79.0, lagDays: 21.0, target: 84.0, progressDetail: 'Strong community engagement. Program data reflects good adoption.' },
+                'achelly-gp': { saturation: 65.0, lagDays: 42.0, target: 70.0, progressDetail: 'Minor operational delays. Data consolidation is a complex task.' },
+                'chintakunta-gp': { saturation: 93.0, lagDays: 6.0, target: 96.0, progressDetail: 'Excellent outreach. Reports are highly reliable.' },
+                'loanvelli-gp': { saturation: 88.0, lagDays: 10.0, target: 92.0, progressDetail: 'Consistent progress. Data verification requires field visits.' },
+                'medipally-gp': { saturation: 77.0, lagDays: 28.0, target: 82.0, progressDetail: 'Minor operational delays. Need to improve data feedback loops.' },
+                'dhorpalle-gp': { saturation: 84.0, lagDays: 16.0, target: 89.0, progressDetail: 'Strong community engagement. Data insights are immediate.' },
+                'venkatraopet-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Beneficiary identification ongoing. Data collection is slow.' },
+                'sirpur-t-gp': { saturation: 90.0, lagDays: 8.0, target: 94.0, progressDetail: 'Focus on last-mile connectivity. Reports are comprehensive.' },
+                'navegoan-gp': { saturation: 85.0, lagDays: 13.0, target: 90.0, progressDetail: 'Consistent progress. Data reflects strong local ownership.' },
+                'hudkili-gp': { saturation: 70.0, lagDays: 30.0, target: 75.0, progressDetail: 'Requires improved reporting infrastructure. Manual processing is a barrier.' },
+                'cheelapalle-gp': { saturation: 79.0, lagDays: 20.0, target: 84.0, progressDetail: 'Strong community engagement. Program data is accurate.' },
+                'bhupalapatnam-gp': { saturation: 64.0, lagDays: 40.0, target: 70.0, progressDetail: 'Minor operational delays. Challenges in data synchronization.' },
+                'bandair-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'Excellent outreach. Reports provide actionable intelligence.' },
+                'shettihadapnur-gp': { saturation: 89.0, lagDays: 9.0, target: 93.0, progressDetail: 'Consistent progress. Data validation is a continuous process.' },
+                'pamulawada-gp': { saturation: 74.0, lagDays: 32.0, target: 79.0, progressDetail: 'Requires improved reporting. Need to train more field supervisors.' },
+                'burnoor-b-gp': { saturation: 81.0, lagDays: 17.0, target: 86.0, progressDetail: 'Focus on last-mile connectivity. Program data is generally reliable.' },
+                'raghapur-gp': { saturation: 67.0, lagDays: 35.0, target: 72.0, progressDetail: 'Beneficiary identification ongoing. Some data collection challenges.' },
+                'dhanora-p-gp': { saturation: 90.0, lagDays: 10.0, target: 94.0, progressDetail: 'Strong community engagement. Data reporting is very efficient.' },
+                'powarguda-gp': { saturation: 85.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent progress. Data reflects local program success.' },
+                'pangidi-gp': { saturation: 69.0, lagDays: 28.0, target: 74.0, progressDetail: 'Minor operational delays. Data submission needs monitoring.' },
+                'phullara-gp': { saturation: 78.0, lagDays: 22.0, target: 83.0, progressDetail: 'Requires improved reporting frequency. Data audits are essential.' },
+                'kohinoor-b-gp': { saturation: 63.0, lagDays: 45.0, target: 70.0, progressDetail: 'Focus on last-mile connectivity. Data capturing is difficult.' },
+                'seethagondi-gp': { saturation: 92.0, lagDays: 7.0, target: 95.0, progressDetail: 'Excellent outreach. Real-time data updates are possible.' },
+                'babjipet-gp': { saturation: 87.0, lagDays: 12.0, target: 91.0, progressDetail: 'Consistent progress. Data quality is good.' },
+                'netnoor-gp': { saturation: 76.0, lagDays: 29.0, target: 81.0, progressDetail: 'Minor operational delays. Need to accelerate data processing.' },
+                'mahagaon-gp': { saturation: 83.0, lagDays: 18.0, target: 88.0, progressDetail: 'Strong community engagement. Program data is well-maintained.' },
+                'sirpur-u-gp': { saturation: 68.0, lagDays: 37.0, target: 73.0, progressDetail: 'Beneficiary identification ongoing. Reporting infrastructure is weak.' },
+                'mandaguda-gp': { saturation: 91.0, lagDays: 9.0, target: 95.0, progressDetail: 'Focus on last-mile connectivity. Data reflects high program adoption.' },
+                'chintapally-gp': { saturation: 86.0, lagDays: 14.0, target: 90.0, progressDetail: 'Consistent progress. Data validation is a continuous process.' },
+                'goperanaguguda-gp': { saturation: 71.0, lagDays: 31.0, target: 76.0, progressDetail: 'Requires improved reporting tools. Manual data reconciliation needed.' },
+                'thalandi-gp': { saturation: 79.0, lagDays: 21.0, target: 84.0, progressDetail: 'Strong community engagement. Program materials are distributed on time.' },
+                'govena-gp': { saturation: 65.0, lagDays: 42.0, target: 70.0, progressDetail: 'Minor operational delays. Data entry has some backlog.' },
+                'tiryani-gp': { saturation: 93.0, lagDays: 6.0, target: 96.0, progressDetail: 'Excellent outreach. Digital data capture is very effective.' },
+                'mesramguda-gp': { saturation: 88.0, lagDays: 10.0, target: 92.0, progressDetail: 'Consistent progress. Data insights are actionable.' },
+                'koutagam-gp': { saturation: 77.0, lagDays: 28.0, target: 82.0, progressDetail: 'Minor operational delays. Need to improve data submission frequency.' },
+                'ullipitadorli-gp': { saturation: 84.0, lagDays: 16.0, target: 89.0, progressDetail: 'Strong community engagement. Data accuracy is a focus area.' },
+                'pangidi-madra-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Beneficiary identification ongoing. Data collection forms need simplification.' },
+                'morriguda-gp': { saturation: 90.0, lagDays: 8.0, target: 94.0, progressDetail: 'Focus on last-mile connectivity. Digital reporting is efficient.' },
+                'gudipet-gp': { saturation: 85.0, lagDays: 13.0, target: 90.0, progressDetail: 'Consistent progress. Manual data validation is slow.' },
+                'goyagoan-gp': { saturation: 70.0, lagDays: 30.0, target: 75.0, progressDetail: 'Requires improved reporting speed. Some issues with device availability.' },
+                'markaguda-gp': { saturation: 79.0, lagDays: 20.0, target: 84.0, progressDetail: 'Strong community engagement. Program awareness is good.' },
+                'nayakapuguda-gp': { saturation: 64.0, lagDays: 40.0, target: 70.0, progressDetail: 'Minor operational delays due to network issues in field.' },
+                'rajaguda-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'Excellent outreach. Reports are generated with minimal errors.' },
+                'bheemjiguda-gp': { saturation: 89.0, lagDays: 9.0, target: 93.0, progressDetail: 'Consistent progress, but some data needs manual cross-checking.' },
+                'rompalle-gp': { saturation: 74.0, lagDays: 32.0, target: 79.0, progressDetail: 'Requires improved reporting. Data entry personnel need more training.' },
+                'mulkalamanda-gp': { saturation: 81.0, lagDays: 17.0, target: 86.0, progressDetail: 'Focus on last-mile connectivity. Progress is solid.' },
+                'khariguda-gp': { saturation: 67.0, lagDays: 35.0, target: 72.0, progressDetail: 'Beneficiary identification ongoing. Field visits are sometimes delayed.' },
+                'godelpalle-gp': { saturation: 90.0, lagDays: 10.0, target: 94.0, progressDetail: 'Strong community engagement. Timely and accurate data.' },
+                'gambiraopet-gp': { saturation: 85.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent progress. Reports reflect ground reality well.' },
+                'devaiguda-gp': { saturation: 69.0, lagDays: 28.0, target: 74.0, progressDetail: 'Minor operational delays. Manual data upload is slow.' },
+                'edulapahad-gp': { saturation: 78.0, lagDays: 22.0, target: 83.0, progressDetail: 'Requires improved reporting frequency. System is not real-time.' },
+                'manikyapur-gp': { saturation: 63.0, lagDays: 45.0, target: 70.0, progressDetail: 'Focus on last-mile connectivity. Awareness levels are low.' },
+                'sungapur-gp': { saturation: 92.0, lagDays: 7.0, target: 95.0, progressDetail: 'Excellent outreach. Digital data capture is very effective.' },
+                'ginnedari-gp': { saturation: 87.0, lagDays: 12.0, target: 91.0, progressDetail: 'Consistent progress. Data validation checks are rigorous.' },
+                'mangi-gp': { saturation: 76.0, lagDays: 29.0, target: 81.0, progressDetail: 'Minor operational delays. Need to expedite report approvals.' },
+                'samela-gp': { saturation: 83.0, lagDays: 18.0, target: 88.0, progressDetail: 'Strong community engagement. Data insights are actionable.' },
+                'bambara-gp': { saturation: 68.0, lagDays: 37.0, target: 73.0, progressDetail: 'Beneficiary identification ongoing. Coverage needs to expand.' },
+                'komatiguda-gp': { saturation: 91.0, lagDays: 9.0, target: 95.0, progressDetail: 'Focus on last-mile connectivity. Data reflects high program adoption.' },
+                'pataguda-gp': { saturation: 86.0, lagDays: 14.0, target: 90.0, progressDetail: 'Consistent progress. Data submitted in batches, causing minor lags.' },
+                'sonapur-gp': { saturation: 71.0, lagDays: 31.0, target: 76.0, progressDetail: 'Requires improved reporting. Data quality issues are being addressed.' },
+                'bendera-gp': { saturation: 79.0, lagDays: 21.0, target: 84.0, progressDetail: 'Strong community engagement. Service delivery is consistent.' },
+                'tejapur-gp': { saturation: 65.0, lagDays: 42.0, target: 70.0, progressDetail: 'Minor operational delays. Remote access for data entry is challenging.' },
+                'chichupally-gp': { saturation: 93.0, lagDays: 6.0, target: 96.0, progressDetail: 'Excellent outreach. Reports are highly reliable and timely.' },
+                'jambuldhari-gp': { saturation: 88.0, lagDays: 10.0, target: 92.0, progressDetail: 'Consistent progress. Some manual intervention in data processing.' },
+                'pippergonadi-gp': { saturation: 77.0, lagDays: 28.0, target: 82.0, progressDetail: 'Minor operational delays. Need to accelerate data submission.' },
+                'dabha-gp': { saturation: 84.0, lagDays: 16.0, target: 89.0, progressDetail: 'Strong community engagement. Data accuracy is a focus area.' },
+                'navedhari-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Beneficiary identification ongoing. Field visit data processing is slow.' },
+                'velgi-gp': { saturation: 90.0, lagDays: 8.0, target: 94.0, progressDetail: 'Focus on last-mile connectivity. Timely and comprehensive reports.' },
+                'wankidi-kalan-gp': { saturation: 85.0, lagDays: 13.0, target: 90.0, progressDetail: 'Consistent progress. Data flow from urban centers is efficient.' },
+                'indhani-gp': { saturation: 70.0, lagDays: 30.0, target: 75.0, progressDetail: 'Requires improved reporting. Need to train more data entry operators.' },
+                'doddiguda-gp': { saturation: 79.0, lagDays: 20.0, target: 84.0, progressDetail: 'Strong community engagement. Program data reflects high awareness.' },
+                'jaithpur-gp': { saturation: 64.0, lagDays: 40.0, target: 70.0, progressDetail: 'Minor operational delays. Challenges in data synchronization.' },
+                'khirdi-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'Excellent outreach. Reports provide actionable intelligence.' },
+                'sawathi-gp': { saturation: 89.0, lagDays: 9.0, target: 93.0, progressDetail: 'Consistent progress. Data validation is a continuous process.' },
+                'khamana-gp': { saturation: 74.0, lagDays: 32.0, target: 79.0, progressDetail: 'Requires improved reporting. Need to train more field supervisors.' },
+                'chowpanguda-gp': { saturation: 81.0, lagDays: 17.0, target: 86.0, progressDetail: 'Focus on last-mile connectivity. Program data is generally reliable.' }
+            }
         }
     },
     {
         id: 'pradhan-mantri-matru-vandana-yojana',
         name: 'Pradhan Mantri Matru Vandana Yojana (PMMVY)',
-        description: 'A maternity benefit program providing cash incentives for pregnant and lactating women.',
-        overall: { saturation: 75, lagDays: 30, target: 80, progressDetail: 'Payment disbursement delays due to documentation issues.' },
-        districts: {
-            'kb-asifabad': { saturation: 78, lagDays: 25, target: 82 },
-            'mancherial': { saturation: 72, lagDays: 35, target: 78 },
-        },
-        mandals: {
-            'asifabad-m': { saturation: 80, lagDays: 20, target: 85 },
-            'bejjur-m': { saturation: 68, lagDays: 40, target: 75 }, // Example of high lag
-        },
-        gps: {
-            'gp-kosara': { saturation: 82, lagDays: 18, target: 85 },
-            'gp-motuguda': { saturation: 65, lagDays: 45, target: 70 },
+        description: 'A maternity benefit program providing cash incentives for pregnant and lactating women. Aims to compensate for wage loss and promote health-seeking behaviors. Data influenced by MCH Kit distribution and beneficiary registrations from DMHO reports.',
+        overall: { saturation: 75.04, lagDays: 29.0, target: 79.0, progressDetail: 'Payment disbursement delays due to documentation and verification issues at district level. Field registration is consistent.' },
+        geographicalData: {
+            districts: {
+                'kb-asifabad': { saturation: 76.11, lagDays: 25.0, target: 80.0, progressDetail: 'Good progress in beneficiary enrollment. Verification pipeline is slower.' },
+                'mancherial': { saturation: 72.82, lagDays: 37.0, target: 77.0, progressDetail: 'Needs focus on accelerating payment processing and reducing documentation errors.' },
+                'nirmal': { saturation: 74.22, lagDays: 39.0, target: 81.0, progressDetail: 'Beneficiary identification ongoing, but challenges in linking bank accounts.' }
+            },
+            mandals: {
+                'asifabad-m': { saturation: 77.38, lagDays: 27.0, target: 81.0, progressDetail: 'Requires improved reporting on payment statuses. Enrollment is good.' },
+                'bejjur-m': { saturation: 66.86, lagDays: 52.0, target: 74.0, progressDetail: 'Consistent progress in registrations, but significant lag in payment initiation.' },
+                'dahegaon-m': { saturation: 56.44, lagDays: 24.0, target: 63.0, progressDetail: 'Beneficiary identification ongoing, low saturation due to awareness gaps.' },
+                'jainoor-m': { saturation: 63.45, lagDays: 34.0, target: 71.0, progressDetail: 'Focus on last-mile connectivity. Payment delays impact satisfaction.' },
+                'kagaznagar-m': { saturation: 73.19, lagDays: 44.0, target: 80.0, progressDetail: 'Strong community engagement, but documentation processing is slow.' },
+                'kerameri-m': { saturation: 67.57, lagDays: 37.0, target: 72.0, progressDetail: 'Requires improved reporting on payment disbursement. Verification is a bottleneck.' },
+                'kouthala-m': { saturation: 58.29, lagDays: 57.0, target: 63.0, progressDetail: 'Minor operational delays. Very high lag in payments.' },
+                'rebbena-m': { saturation: 57.65, lagDays: 24.0, target: 66.0, progressDetail: 'Consistent progress in registrations. Need to expedite bank account linking.' },
+                'sirpur-t-m': { saturation: 78.47, lagDays: 21.0, target: 83.0, progressDetail: 'Minor operational delays. Payment processing is relatively efficient.' },
+                'sirpur-u-m': { saturation: 74.56, lagDays: 28.0, target: 81.0, progressDetail: 'Beneficiary identification ongoing. Some delays in final approval.' },
+                'tiryani-m': { saturation: 84.14, lagDays: 37.0, target: 86.0, progressDetail: 'Focus on last-mile connectivity. Payment delays are a concern.' },
+                'wankidi-m': { saturation: 75.39, lagDays: 56.0, target: 77.0, progressDetail: 'Strong community engagement, but significant lag in payment disbursement.' },
+                'lingapur-m': { saturation: 80.23, lagDays: 36.0, target: 87.0, progressDetail: 'Requires improved reporting on payment completion. Verification needs acceleration.' },
+                'penchicalpet-m': { saturation: 73.34, lagDays: 45.0, target: 78.0, progressDetail: 'Beneficiary identification ongoing. Administrative bottlenecks.' },
+                'chintalamanepally-m': { saturation: 62.59, lagDays: 38.0, target: 69.0, progressDetail: 'Minor operational delays. Need to boost awareness for scheme uptake.' }
+            },
+            gps: {
+                'kosara-gp': { saturation: 80.89, lagDays: 47.0, target: 86.0, progressDetail: 'Requires improved reporting on payment status. High lag.' },
+                'malangondi-gp': { saturation: 78.1, lagDays: 30.0, target: 85.0, progressDetail: 'Beneficiary identification ongoing. Manual verification slows process.' },
+                'venkatapur-gp': { saturation: 70.52, lagDays: 32.0, target: 78.0, progressDetail: 'Consistent progress in enrollment. Payment processing is slower.' },
+                'tumpalli-gp': { saturation: 53.98, lagDays: 24.0, target: 63.0, progressDetail: 'Focus on last-mile connectivity. Low registration due to awareness.' },
+                'appapally-gp': { saturation: 84.45, lagDays: 26.0, target: 88.0, progressDetail: 'Strong community engagement. Good registration rates.' },
+                'koutaguda-gp': { saturation: 73.53, lagDays: 38.0, target: 78.0, progressDetail: 'Requires improved reporting on document submission. High lag.' },
+                'chilatiguda-gp': { saturation: 62.27, lagDays: 36.0, target: 69.0, progressDetail: 'Minor operational delays. Verification of documents is slow.' },
+                'motuguda-gp': { saturation: 70.16, lagDays: 53.0, target: 75.0, progressDetail: 'Consistent progress in registrations, but very high payment lag.' },
+                'govindapur-gp': { saturation: 66.88, lagDays: 37.0, target: 72.0, progressDetail: 'Beneficiary identification ongoing. Payments have significant delays.' },
+                'padibanda-gp': { saturation: 53.69, lagDays: 48.0, target: 63.0, progressDetail: 'Minor operational delays. Very low saturation and high lag.' },
+                'manikguda-gp': { saturation: 80.7, lagDays: 20.0, target: 84.0, progressDetail: 'Strong community engagement. Payment processing is efficient here.' },
+                'babapur-gp': { saturation: 85.94, lagDays: 15.0, target: 86.0, progressDetail: 'Requires improved reporting on payment receipt. High registration.' },
+                'wavudam-gp': { saturation: 74.21, lagDays: 54.0, target: 80.0, progressDetail: 'Focus on last-mile connectivity. Very high payment lag.' },
+                'ankusapur-gp': { saturation: 61.34, lagDays: 52.0, target: 68.0, progressDetail: 'Beneficiary identification ongoing. Payments are severely delayed.' },
+                'ada-dasnapur-gp': { saturation: 87.27, lagDays: 24.0, target: 92.0, progressDetail: 'Consistent progress in registration. Verification needs acceleration.' },
+                'gundi-gp': { saturation: 60.15, lagDays: 14.0, target: 67.0, progressDetail: 'Minor operational delays. Good on-site registration rates.' },
+                'yellaram-gp': { saturation: 68.35, lagDays: 53.0, target: 75.0, progressDetail: 'Requires improved reporting. Payments are significantly lagged.' },
+                'routsankepalle-gp': { saturation: 83.49, lagDays: 28.0, target: 85.0, progressDetail: 'Strong community engagement. Good progress on registrations.' },
+                'buruguda-gp': { saturation: 65.52, lagDays: 36.0, target: 71.0, progressDetail: 'Minor operational delays. Delays in linking Aadhaar with bank accounts.' },
+                'mowad-gp': { saturation: 60.62, lagDays: 23.0, target: 67.0, progressDetail: 'Beneficiary identification ongoing. Verification bottlenecks.' },
+                'ada-gp': { saturation: 60.27, lagDays: 56.0, target: 69.0, progressDetail: 'Focus on last-mile connectivity. Very high payment lag affecting uptake.' },
+                'chirrakunta-gp': { saturation: 76.54, lagDays: 45.0, target: 82.0, progressDetail: 'Requires improved reporting. Manual verification slows progress.' },
+                'asifabad-gp': { saturation: 84.27, lagDays: 42.0, target: 86.0, progressDetail: 'Strong community engagement. Urban area payment delays.' },
+                'chorpalli-gp': { saturation: 64.91, lagDays: 55.0, target: 70.0, progressDetail: 'Minor operational delays. Severe payment lag impacting saturation.' },
+                'edulawada-gp': { saturation: 73.15, lagDays: 26.0, target: 78.0, progressDetail: 'Consistent progress in registrations. Payments are reasonably on time.' },
+                'rahapally-gp': { saturation: 80.89, lagDays: 39.0, target: 84.0, progressDetail: 'Beneficiary identification ongoing. High payment processing lag.' },
+                'saleguda-gp': { saturation: 78.36, lagDays: 12.0, target: 84.0, progressDetail: 'Focus on last-mile connectivity. Good payment and registration rate.' },
+                'andhugulaguda-gp': { saturation: 58.74, lagDays: 30.0, target: 65.0, progressDetail: 'Requires improved reporting. Payment verification challenges.' },
+                'outsarangipalle-gp': { saturation: 55.43, lagDays: 25.0, target: 63.0, progressDetail: 'Consistent progress, but overall low uptake due to payment delays.' },
+                'kukuda-gp': { saturation: 68.75, lagDays: 29.0, target: 73.0, progressDetail: 'Minor operational delays. Payment processing needs streamlining.' },
+                'pothepally-gp': { saturation: 69.95, lagDays: 12.0, target: 74.0, progressDetail: 'Beneficiary identification ongoing. Timely payments here.' },
+                'kushnepalle-gp': { saturation: 69.95, lagDays: 55.0, target: 75.0, progressDetail: 'Strong community engagement, but very high payment lag.' },
+                'kuntalamanepalli-gp': { saturation: 73.09, lagDays: 22.0, target: 79.0, progressDetail: 'Minor operational delays. Documentation errors causing delays.' },
+                'mogavelly-gp': { saturation: 79.8, lagDays: 57.0, target: 86.0, progressDetail: 'Requires improved reporting on payments. Critical lag.' },
+                'rebbena-gp': { saturation: 71.07, lagDays: 49.0, target: 76.0, progressDetail: 'Consistent progress, but significant payment disbursement delays.' },
+                'sushmir-gp': { saturation: 84.45, lagDays: 25.0, target: 91.0, progressDetail: 'Focus on last-mile connectivity. Good overall performance.' },
+                'somini-gp': { saturation: 61.21, lagDays: 17.0, target: 68.0, progressDetail: 'Beneficiary identification ongoing. Payment issues affecting uptake.' },
+                'ambhaghat-gp': { saturation: 71.39, lagDays: 35.0, target: 78.0, progressDetail: 'Strong community engagement. Verification process is slow.' },
+                'thummalaguda-gp': { saturation: 63.58, lagDays: 58.0, target: 70.0, progressDetail: 'Minor operational delays. Very high payment lag.' },
+                'talai-gp': { saturation: 56.76, lagDays: 20.0, target: 66.0, progressDetail: 'Consistent progress, but manual verification of documents causes lag.' },
+                'bareguda-gp': { saturation: 71.93, lagDays: 25.0, target: 79.0, progressDetail: 'Requires improved reporting. Data reconciliation is slow.' },
+                'katepalli-gp': { saturation: 61.64, lagDays: 11.0, target: 66.0, progressDetail: 'Focus on last-mile connectivity. Good registration rates.' },
+                'marthadi-gp': { saturation: 62.77, lagDays: 27.0, target: 69.0, progressDetail: 'Beneficiary identification ongoing. Payments sometimes delayed.' },
+                'bejjur-gp': { saturation: 83.21, lagDays: 39.0, target: 87.0, progressDetail: 'Strong community engagement. High payment processing time.' },
+                'munjampalle-gp': { saturation: 58.74, lagDays: 20.0, target: 66.0, progressDetail: 'Minor operational delays. Payment process needs acceleration.' },
+                'papanpet-gp': { saturation: 80.07, lagDays: 36.0, target: 85.0, progressDetail: 'Consistent progress. Documentation issues lead to payment lags.' },
+                'sulugupalli-gp': { saturation: 66.7, lagDays: 12.0, target: 74.0, progressDetail: 'Requires improved reporting. Payments are on time here.' },
+                'pedda-siddapur-gp': { saturation: 55.85, lagDays: 52.0, target: 63.0, progressDetail: 'Focus on last-mile connectivity. Very high lag impacting saturation.' },
+                'lambadiguda-gp': { saturation: 70.83, lagDays: 45.0, target: 75.0, progressDetail: 'Strong community engagement, but manual verification of payments is slow.' },
+                'chinnaraspalle-gp': { saturation: 60.03, lagDays: 18.0, target: 67.0, progressDetail: 'Minor operational delays. Good on-site registration.' },
+                'borlakunta-gp': { saturation: 82.25, lagDays: 29.0, target: 88.0, progressDetail: 'Consistent progress. Digital payment tracking needs improvement.' },
+                'kothmir-gp': { saturation: 59.8, lagDays: 44.0, target: 67.0, progressDetail: 'Beneficiary identification ongoing. High payment lag.' },
+                'pesarikunta-gp': { saturation: 81.33, lagDays: 34.0, target: 86.0, progressDetail: 'Strong community engagement. Data reflects good payment rates.' },
+                'digida-gp': { saturation: 73.7, lagDays: 40.0, target: 79.0, progressDetail: 'Minor operational delays. Challenges in data verification.' },
+                'dahegaon-gp': { saturation: 62.4, lagDays: 21.0, target: 69.0, progressDetail: 'Consistent progress. Need to improve payment notification system.' },
+                'chandrapalle-gp': { saturation: 58.94, lagDays: 15.0, target: 65.0, progressDetail: 'Requires improved reporting. Payments are mostly on time.' },
+                'rampur-gp': { saturation: 69.41, lagDays: 10.0, target: 76.0, progressDetail: 'Focus on last-mile connectivity. Excellent payment processing here.' },
+                'motleguda-gp': { saturation: 74.07, lagDays: 54.0, target: 80.0, progressDetail: 'Strong community engagement. Very high payment processing lag.' },
+                'kamarpally-gp': { saturation: 74.77, lagDays: 42.0, target: 81.0, progressDetail: 'Minor operational delays. Data collection for payments is slow.' },
+                'gerre-gp': { saturation: 61.27, lagDays: 23.0, target: 68.0, progressDetail: 'Consistent progress. Payment verification takes time.' },
+                'kalwada-gp': { saturation: 75.69, lagDays: 37.0, target: 82.0, progressDetail: 'Beneficiary identification ongoing. Payment disbursement needs acceleration.' },
+                'laggaon-gp': { saturation: 79.52, lagDays: 56.0, target: 86.0, progressDetail: 'Requires improved reporting. Critical lag in payments impacting new registrations.' },
+                'ainam-gp': { saturation: 65.34, lagDays: 20.0, target: 72.0, progressDetail: 'Focus on last-mile connectivity. Payment delays affecting enrollment.' },
+                'vodduguda-gp': { saturation: 79.4, lagDays: 17.0, target: 85.0, progressDetail: 'Strong community engagement. Timely payment processing.' },
+                'hathni-gp': { saturation: 75.8, lagDays: 51.0, target: 80.0, progressDetail: 'Minor operational delays. Very high payment lag.' },
+                'kunchavelli-gp': { saturation: 60.19, lagDays: 24.0, target: 67.0, progressDetail: 'Consistent progress. Manual bank linking causes delays.' },
+                'chowka-gp': { saturation: 59.81, lagDays: 48.0, target: 66.0, progressDetail: 'Requires improved reporting. High payment lag.' },
+                'beebra-gp': { saturation: 72.76, lagDays: 32.0, target: 79.0, progressDetail: 'Focus on last-mile connectivity. Payment processing is slow.' },
+                'pp-rao-colony-gp': { saturation: 61.26, lagDays: 38.0, target: 68.0, progressDetail: 'Strong community engagement. Payment verification process is manual.' },
+                'ityal-gp': { saturation: 76.01, lagDays: 27.0, target: 81.0, progressDetail: 'Minor operational delays. Payment processing is moderate.' },
+                'kharji-gp': { saturation: 80.9, lagDays: 12.0, target: 85.0, progressDetail: 'Consistent progress. Payments are almost always on time.' },
+                'girvelli-gp': { saturation: 65.02, lagDays: 54.0, target: 72.0, progressDetail: 'Beneficiary identification ongoing. Critical payment lag.' },
+                'bhamanagar-gp': { saturation: 60.9, lagDays: 34.0, target: 67.0, progressDetail: 'Strong community engagement. Payment transfer delays.' },
+                'pocham-loddi-gp': { saturation: 73.19, lagDays: 17.0, target: 78.0, progressDetail: 'Minor operational delays. Good payment processing.' },
+                'raoji-guda-gp': { saturation: 59.94, lagDays: 49.0, target: 66.0, progressDetail: 'Requires improved reporting. Very high payment lag.' },
+                'dubbaguda-gp': { saturation: 75.47, lagDays: 20.0, target: 80.0, progressDetail: 'Focus on last-mile connectivity. Smooth payment distribution.' },
+                'ushegaon-gp': { saturation: 64.6, lagDays: 35.0, target: 71.0, progressDetail: 'Strong community engagement. Payments have moderate lag.' },
+                'power-guda-gp': { saturation: 70.36, lagDays: 40.0, target: 75.0, progressDetail: 'Minor operational delays. Payments are consistently delayed.' },
+                'andh-guda-gp': { saturation: 70.18, lagDays: 23.0, target: 75.0, progressDetail: 'Consistent progress. Payment verification takes time.' },
+                'maniguda-gp': { saturation: 59.72, lagDays: 45.0, target: 66.0, progressDetail: 'Requires improved reporting. Payments are significantly lagged.' },
+                'panapatar-gp': { saturation: 58.74, lagDays: 17.0, target: 65.0, progressDetail: 'Focus on last-mile connectivity. Good registration, but payment delays.' },
+                'jamni-gp': { saturation: 77.94, lagDays: 30.0, target: 83.0, progressDetail: 'Strong community engagement. Payments are sometimes delayed.' },
+                'para-gp': { saturation: 81.71, lagDays: 12.0, target: 87.0, progressDetail: 'Minor operational delays. Payment processing is efficient.' },
+                'chinthakara-gp': { saturation: 63.85, lagDays: 50.0, target: 70.0, progressDetail: 'Consistent progress. Very high payment lag.' },
+                'rasimatta-gp': { saturation: 71.39, lagDays: 46.0, target: 77.0, progressDetail: 'Requires improved reporting. Payments are consistently late.' },
+                'gudamamda-gp': { saturation: 77.6, lagDays: 24.0, target: 83.0, progressDetail: 'Focus on last-mile connectivity. Payments have moderate lag.' },
+                'bhusimetta-gp': { saturation: 70.09, lagDays: 16.0, target: 76.0, progressDetail: 'Strong community engagement. Payments are mostly on time.' },
+                'gowri-kolamguda-gp': { saturation: 62.4, lagDays: 37.0, target: 69.0, progressDetail: 'Minor operational delays. Payments consistently delayed.' },
+                'shivnoor-gp': { saturation: 75.78, lagDays: 51.0, target: 81.0, progressDetail: 'Consistent progress. Critical payment lag.' },
+                'addesara-gp': { saturation: 70.21, lagDays: 21.0, target: 75.0, progressDetail: 'Requires improved reporting. Payment verification takes time.' },
+                'daboli-gp': { saturation: 60.59, lagDays: 15.0, target: 67.0, progressDetail: 'Focus on last-mile connectivity. Payments are largely on time.' },
+                'ashapalle-gp': { saturation: 66.38, lagDays: 45.0, target: 73.0, progressDetail: 'Strong community engagement. High payment lag.' },
+                'jamgaon-gp': { saturation: 78.89, lagDays: 28.0, target: 84.0, progressDetail: 'Minor operational delays. Payment processing needs review.' },
+                'patnapur-gp': { saturation: 59.8, lagDays: 33.0, target: 66.0, progressDetail: 'Consistent progress. Manual payment reconciliation.' },
+                'mankuguda-gp': { saturation: 68.42, lagDays: 14.0, target: 74.0, progressDetail: 'Requires improved reporting. Payments generally on time.' },
+                'sirpur-u-gp': { saturation: 81.0, lagDays: 21.0, target: 86.0, progressDetail: 'Consistent progress. Payment verification takes time.' },
+                'mandaguda-gp': { saturation: 68.0, lagDays: 15.0, target: 73.0, progressDetail: 'Focus on last-mile connectivity. Payments mostly on time.' }
+            }
         }
     },
     {
         id: 'anganwadi-services-scheme',
         name: 'Anganwadi Services Scheme',
-        description: 'Provides supplementary nutrition, preschool education, and primary healthcare to children and mothers.',
-        overall: { saturation: 92, lagDays: 8, target: 95, progressDetail: 'Excellent outreach, minor challenges in new AWC construction completion.' },
-        districts: {
-            'kb-asifabad': { saturation: 95, lagDays: 5, target: 97 },
-            'nirmal': { saturation: 89, lagDays: 12, target: 92 },
-        },
-        mandals: {
-            'sirpur-t-m': { saturation: 96, lagDays: 4, target: 98 },
-            'tiryani-m': { saturation: 90, lagDays: 9, target: 93 },
-        },
-        gps: {
-            'gp-sirpur-t': { saturation: 98, lagDays: 2, target: 99 },
-            'gp-tumpalli': { saturation: 87, lagDays: 15, target: 90 },
+        description: 'Provides supplementary nutrition, preschool education, and primary healthcare to children and mothers. Core activities include daily attendance tracking and food distribution. Data from DWO reports on AWC opened status and attendance.',
+        overall: { saturation: 92.0, lagDays: 8.0, target: 95.0, progressDetail: 'Excellent outreach and high service uptake. Minor challenges in new AWC construction completion and digital reporting adoption.' },
+        geographicalData: {
+            districts: {
+                'kb-asifabad': { saturation: 95.0, lagDays: 5.0, target: 97.0, progressDetail: 'Consistent high performance in AWC operations and beneficiary coverage.' },
+                'mancherial': { saturation: 91.0, lagDays: 10.0, target: 93.0, progressDetail: 'Steady progress, minor reporting delays due to remote areas.' },
+                'nirmal': { saturation: 90.0, lagDays: 13.0, target: 92.0, progressDetail: 'Good outreach, some staffing challenges impacting daily operations and reporting frequency.' }
+            },
+            mandals: {
+                'asifabad-m': { saturation: 96.0, lagDays: 4.0, target: 98.0, progressDetail: 'Exceptional performance in AWC opening and attendance submission. Model Mandal.' },
+                'bejjur-m': { saturation: 88.0, lagDays: 15.0, target: 92.0, progressDetail: 'Needs focus on remote AWCs connectivity for digital reporting and supply chain.' },
+                'dahegaon-m': { saturation: 92.0, lagDays: 8.0, target: 95.0, progressDetail: 'Consistent high saturation in daily services and timely reporting.' },
+                'jainoor-m': { saturation: 89.0, lagDays: 12.0, target: 92.0, progressDetail: 'Steady progress in attendance. Minor issues with AWC infrastructure.' },
+                'kagaznagar-m': { saturation: 90.0, lagDays: 10.0, target: 93.0, progressDetail: 'Good progress in nutrition distribution and preschool education enrollment.' },
+                'kerameri-m': { saturation: 94.0, lagDays: 6.0, target: 96.0, progressDetail: 'High attendance rates and effective service delivery.' },
+                'kouthala-m': { saturation: 93.0, lagDays: 7.0, target: 95.0, progressDetail: 'Strong community participation and support for AWCs.' },
+                'rebbena-m': { saturation: 87.0, lagDays: 18.0, target: 90.0, progressDetail: 'Some delays in facility upgrades and timely report submissions.' },
+                'sirpur-t-m': { saturation: 96.0, lagDays: 4.0, target: 98.0, progressDetail: 'Model performance in AWC management and reporting efficiency.' },
+                'sirpur-u-m': { saturation: 88.0, lagDays: 15.0, target: 92.0, progressDetail: 'Requires improved reporting quality from field workers. Data validation takes time.' },
+                'tiryani-m': { saturation: 90.0, lagDays: 11.0, target: 93.0, progressDetail: 'Consistent service delivery. Minor challenges in biometric attendance.' },
+                'wankidi-m': { saturation: 85.0, lagDays: 20.0, target: 88.0, progressDetail: 'Focus needed on remote AWC accessibility and digital connectivity for reporting.' },
+                'lingapur-m': { saturation: 82.0, lagDays: 25.0, target: 85.0, progressDetail: 'Progress is slow; need intensified efforts in AWC outreach and staffing.' },
+                'penchicalpet-m': { saturation: 89.0, lagDays: 13.0, target: 92.0, progressDetail: 'Good progress in beneficiary enrollment and service uptake.' },
+                'chintalamanepally-m': { saturation: 91.0, lagDays: 9.0, target: 94.0, progressDetail: 'Strong community support ensuring AWC functionality and data flow.' }
+            },
+            gps: {
+                'kosara-gp': { saturation: 98.0, lagDays: 2.0, target: 99.0, progressDetail: 'Exemplary performance in all AWC services and near real-time reporting.' },
+                'malangondi-gp': { saturation: 92.0, lagDays: 8.0, target: 95.0, progressDetail: 'High attendance, timely reporting. Consistently meets program goals.' },
+                'venkatapur-gp': { saturation: 85.0, lagDays: 20.0, target: 90.0, progressDetail: 'Needs minor improvements in infrastructure and digital reporting rates.' },
+                'tumpalli-gp': { saturation: 90.0, lagDays: 10.0, target: 93.0, progressDetail: 'Consistent nutrition distribution and preschool attendance. Good data accuracy.' },
+                'appapally-gp': { saturation: 95.0, lagDays: 5.0, target: 97.0, progressDetail: 'Very high beneficiary satisfaction and effective daily operations.' },
+                'koutaguda-gp': { saturation: 88.0, lagDays: 15.0, target: 92.0, progressDetail: 'Requires focused home visits and improved digital attendance recording.' },
+                'chilatiguda-gp': { saturation: 91.0, lagDays: 9.0, target: 94.0, progressDetail: 'Good preschool enrollment and high engagement in daily activities.' },
+                'motuguda-gp': { saturation: 86.0, lagDays: 17.0, target: 90.0, progressDetail: 'Addressing minor staffing issues. Reporting consistency can improve.' },
+                'govindapur-gp': { saturation: 93.0, lagDays: 7.0, target: 96.0, progressDetail: 'Excellent overall delivery. Timely data synchronization.' },
+                'padibanda-gp': { saturation: 87.0, lagDays: 14.0, target: 91.0, progressDetail: 'Steady progress, good reporting. Some delays in photo uploads.' },
+                'manikguda-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'High impact on child health and nutrition. Efficient data flow.' },
+                'babapur-gp': { saturation: 89.0, lagDays: 11.0, target: 93.0, progressDetail: 'Consistent service uptake. Minor manual data reconciliation needed.' },
+                'wavudam-gp': { saturation: 82.0, lagDays: 25.0, target: 85.0, progressDetail: 'Needs improved access for beneficiaries due to remote location. Reporting lags.' },
+                'ankusapur-gp': { saturation: 90.0, lagDays: 10.0, target: 93.0, progressDetail: 'Strong community engagement. Data reflects high program adoption.' },
+                'ada-dasnapur-gp': { saturation: 85.0, lagDays: 18.0, target: 88.0, progressDetail: 'Requires minor data entry improvements. Data verification needs focus.' },
+                'gundi-gp': { saturation: 93.0, lagDays: 7.0, target: 96.0, progressDetail: 'Excellent service coverage. Timely and accurate reporting.' },
+                'yellaram-gp': { saturation: 88.0, lagDays: 12.0, target: 92.0, progressDetail: 'Consistent follow-up activities. Data capture is robust.' },
+                'routsankepalle-gp': { saturation: 91.0, lagDays: 9.0, target: 94.0, progressDetail: 'High community participation. Real-time data updates for daily activities.' },
+                'buruguda-gp': { saturation: 86.0, lagDays: 15.0, target: 90.0, progressDetail: 'Addressing reporting discrepancies. Needs better data validation tools.' },
+                'mowad-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'Model AWC practices. Highly efficient in data submission.' },
+                'ada-gp': { saturation: 89.0, lagDays: 11.0, target: 93.0, progressDetail: 'Good supplementary nutrition delivery. Data flow is consistent.' },
+                'chirrakunta-gp': { saturation: 83.0, lagDays: 22.0, target: 86.0, progressDetail: 'Needs focus on preschool attendance. Some manual data entry processes persist.' },
+                'asifabad-gp': { saturation: 90.0, lagDays: 10.0, target: 93.0, progressDetail: 'Strong urban outreach. Digital reporting adoption is high.' },
+                'chorpalli-gp': { saturation: 85.0, lagDays: 18.0, target: 88.0, progressDetail: 'Requires improved infrastructure for better service and data capture.' },
+                'edulawada-gp': { saturation: 92.0, lagDays: 8.0, target: 95.0, progressDetail: 'Excellent overall performance. Data reflects comprehensive coverage.' },
+                'rahapally-gp': { saturation: 87.0, lagDays: 14.0, target: 91.0, progressDetail: 'Consistent service delivery. Minor delays in monthly summary reports.' },
+                'saleguda-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'High impact on health outcomes. Data is very reliable.' },
+                'andhugulaguda-gp': { saturation: 89.0, lagDays: 11.0, target: 93.0, progressDetail: 'Good community response. Data quality remains consistent.' },
+                'outsarangipalle-gp': { saturation: 84.0, lagDays: 19.0, target: 87.0, progressDetail: 'Needs targeted home visits. Challenges in digital reporting adoption.' },
+                'kukuda-gp': { saturation: 91.0, lagDays: 9.0, target: 94.0, progressDetail: 'Strong implementation. Data is consistently updated.' },
+                'pothepally-gp': { saturation: 86.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent high saturation. Data validation is a manual process.' },
+                'kushnepalle-gp': { saturation: 93.0, lagDays: 7.0, target: 96.0, progressDetail: 'Excellent overall delivery. Real-time data insights available.' },
+                'kuntalamanepalli-gp': { saturation: 88.0, lagDays: 12.0, target: 92.0, progressDetail: 'Strong community engagement. Data accuracy is a priority.' },
+                'mogavelly-gp': { saturation: 90.0, lagDays: 10.0, target: 93.0, progressDetail: 'High beneficiary enrollment. Timely data submissions.' },
+                'rebbena-gp': { saturation: 85.0, lagDays: 18.0, target: 88.0, progressDetail: 'Requires minor infrastructure support for better connectivity. Data lags slightly.' },
+                'sushmir-gp': { saturation: 92.0, lagDays: 8.0, target: 95.0, progressDetail: 'Excellent overall performance. Robust data collection system.' },
+                'somini-gp': { saturation: 87.0, lagDays: 14.0, target: 91.0, progressDetail: 'Consistent service delivery. Some manual verification needed for reports.' },
+                'ambhaghat-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'High impact on health outcomes. Data is highly reliable.' },
+                'thummalaguda-gp': { saturation: 89.0, lagDays: 11.0, target: 93.0, progressDetail: 'Good community response. Minor delays in consolidating monthly reports.' },
+                'talai-gp': { saturation: 84.0, lagDays: 19.0, target: 87.0, progressDetail: 'Needs targeted home visits. Challenges in digital data transmission.' },
+                'bareguda-gp': { saturation: 91.0, lagDays: 9.0, target: 94.0, progressDetail: 'Strong implementation. Data accuracy and timeliness are key strengths.' },
+                'katepalli-gp': { saturation: 86.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent high saturation. Data is well-maintained.' },
+                'marthadi-gp': { saturation: 93.0, lagDays: 7.0, target: 96.0, progressDetail: 'Excellent overall delivery. Real-time insights are available.' },
+                'bejjur-gp': { saturation: 88.0, lagDays: 12.0, target: 92.0, progressDetail: 'Strong community engagement. Data reflects positive program impact.' },
+                'munjampalle-gp': { saturation: 90.0, lagDays: 10.0, target: 93.0, progressDetail: 'High beneficiary enrollment. Data submission is timely.' },
+                'papanpet-gp': { saturation: 85.0, lagDays: 18.0, target: 88.0, progressDetail: 'Requires minor infrastructure support. Some reporting inconsistencies.' },
+                'sulugupalli-gp': { saturation: 92.0, lagDays: 8.0, target: 95.0, progressDetail: 'Excellent overall performance. Data validates broad coverage.' },
+                'pedda-siddapur-gp': { saturation: 87.0, lagDays: 14.0, target: 91.0, progressDetail: 'Consistent service delivery. Some manual data entry leads to delays.' },
+                'lambadiguda-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'High impact on health outcomes. Robust data collection.' },
+                'chinnaraspalle-gp': { saturation: 89.0, lagDays: 11.0, target: 93.0, progressDetail: 'Good community response. Data quality is consistently high.' },
+                'borlakunta-gp': { saturation: 84.0, lagDays: 19.0, target: 87.0, progressDetail: 'Needs targeted home visits. Data transmission faces network issues.' },
+                'kothmir-gp': { saturation: 91.0, lagDays: 9.0, target: 94.0, progressDetail: 'Strong implementation. Data is consistently updated.' },
+                'pesarikunta-gp': { saturation: 86.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent high saturation. Data validation is thorough.' },
+                'digida-gp': { saturation: 93.0, lagDays: 7.0, target: 96.0, progressDetail: 'Excellent overall delivery. Real-time data for daily activities.' },
+                'dahegaon-gp': { saturation: 88.0, lagDays: 12.0, target: 92.0, progressDetail: 'Strong community engagement. Data reflects positive program impact.' },
+                'chandrapalle-gp': { saturation: 90.0, lagDays: 10.0, target: 93.0, progressDetail: 'High beneficiary enrollment. Data submission is generally timely.' },
+                'rampur-gp': { saturation: 85.0, lagDays: 18.0, target: 88.0, progressDetail: 'Requires minor infrastructure support. Some inconsistencies in reporting.' },
+                'motleguda-gp': { saturation: 92.0, lagDays: 8.0, target: 95.0, progressDetail: 'Excellent overall performance. Data validates comprehensive coverage.' },
+                'kamarpally-gp': { saturation: 87.0, lagDays: 14.0, target: 91.0, progressDetail: 'Consistent service delivery. Minor delays in monthly summary reports.' },
+                'gerre-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'High impact on health outcomes. Data is highly reliable.' },
+                'kalwada-gp': { saturation: 89.0, lagDays: 11.0, target: 93.0, progressDetail: 'Good community response. Data quality remains consistently high.' },
+                'laggaon-gp': { saturation: 84.0, lagDays: 19.0, target: 87.0, progressDetail: 'Needs targeted home visits. Data transmission faces network issues.' },
+                'ainam-gp': { saturation: 91.0, lagDays: 9.0, target: 94.0, progressDetail: 'Strong implementation. Data accuracy and timeliness are key strengths.' },
+                'vodduguda-gp': { saturation: 86.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent high saturation. Data is well-maintained.' },
+                'hathni-gp': { saturation: 93.0, lagDays: 7.0, target: 96.0, progressDetail: 'Excellent overall delivery. Real-time insights are available.' },
+                'kunchavelli-gp': { saturation: 88.0, lagDays: 12.0, target: 92.0, progressDetail: 'Strong community engagement. Data reflects positive program impact.' },
+                'chowka-gp': { saturation: 90.0, lagDays: 10.0, target: 93.0, progressDetail: 'High beneficiary enrollment. Data submission is timely.' },
+                'beebra-gp': { saturation: 85.0, lagDays: 18.0, target: 88.0, progressDetail: 'Requires minor infrastructure support. Some reporting inconsistencies.' },
+                'pp-rao-colony-gp': { saturation: 92.0, lagDays: 8.0, target: 95.0, progressDetail: 'Excellent overall performance. Data validates comprehensive coverage.' },
+                'ityal-gp': { saturation: 87.0, lagDays: 14.0, target: 91.0, progressDetail: 'Consistent service delivery. Minor delays in monthly summary reports.' },
+                'kharji-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'High impact on health outcomes. Data is highly reliable.' },
+                'girvelli-gp': { saturation: 89.0, lagDays: 11.0, target: 93.0, progressDetail: 'Good community response. Data quality remains consistently high.' },
+                'bhamanagar-gp': { saturation: 84.0, lagDays: 19.0, target: 87.0, progressDetail: 'Needs targeted home visits. Data transmission faces network issues.' },
+                'pocham-loddi-gp': { saturation: 91.0, lagDays: 9.0, target: 94.0, progressDetail: 'Strong implementation. Data is consistently updated.' },
+                'raoji-guda-gp': { saturation: 86.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent high saturation. Data validation is thorough.' },
+                'dubbaguda-gp': { saturation: 93.0, lagDays: 7.0, target: 96.0, progressDetail: 'Excellent overall delivery. Real-time data for daily activities.' },
+                'ushegaon-gp': { saturation: 88.0, lagDays: 12.0, target: 92.0, progressDetail: 'Strong community engagement. Data reflects positive program impact.' },
+                'power-guda-gp': { saturation: 90.0, lagDays: 10.0, target: 93.0, progressDetail: 'High beneficiary enrollment. Data submission is timely.' },
+                'andh-guda-gp': { saturation: 85.0, lagDays: 18.0, target: 88.0, progressDetail: 'Requires minor infrastructure support. Some inconsistencies in reporting.' },
+                'maniguda-gp': { saturation: 92.0, lagDays: 8.0, target: 95.0, progressDetail: 'Excellent overall performance. Data validates comprehensive coverage.' },
+                'panapatar-gp': { saturation: 87.0, lagDays: 14.0, target: 91.0, progressDetail: 'Consistent service delivery. Minor delays in monthly summary reports.' },
+                'jamni-gp': { saturation: 94.0, lagDays: 6.0, target: 97.0, progressDetail: 'High impact on health outcomes. Data is highly reliable.' },
+                'para-gp': { saturation: 89.0, lagDays: 11.0, target: 93.0, progressDetail: 'Good community response. Data quality remains consistently high.' },
+                'chinthakara-gp': { saturation: 84.0, lagDays: 19.0, target: 87.0, progressDetail: 'Needs targeted home visits. Data transmission faces network issues.' },
+                'rasimatta-gp': { saturation: 91.0, lagDays: 9.0, target: 94.0, progressDetail: 'Strong implementation. Data accuracy and timeliness are key strengths.' },
+                'gudamamda-gp': { saturation: 86.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent high saturation. Data is well-maintained.' },
+                'bhusimetta-gp': { saturation: 93.0, lagDays: 7.0, target: 96.0, progressDetail: 'Excellent overall delivery. Real-time insights are available.' },
+                'gowri-kolamguda-gp': { saturation: 88.0, lagDays: 12.0, target: 92.0, progressDetail: 'Strong community engagement. Data reflects positive program impact.' }
+            }
         }
     },
     {
         id: 'mission-shakti-sumbal',
-        name: 'Mission Shakti (Sambal)', // From Mission Shakti data
-        description: 'A sub-scheme of Mission Shakti, focusing on women empowerment and protection.',
-        overall: { saturation: 80, lagDays: 25, target: 85, progressDetail: 'Awareness campaigns are picking up, but participant conversion needs boost.' },
-        districts: {
-            'kb-asifabad': { saturation: 82, lagDays: 20, target: 87 },
-        },
-        mandals: {
-            'asifabad-m': { saturation: 85, lagDays: 18, target: 90 },
-        },
-        gps: {
-            'gp-kosara': { saturation: 88, lagDays: 15, target: 90 },
+        name: 'Mission Shakti (Sambal)',
+        description: 'A sub-scheme of Mission Shakti, focusing on women empowerment, safety, and protection through awareness and support services. Data influenced by DWO reports on activities and awareness campaigns.',
+        overall: { saturation: 80.0, lagDays: 25.0, target: 85.0, progressDetail: 'Awareness campaigns are picking up, but participant conversion needs boost. Support services are consistent but verification has delays.' },
+        geographicalData: {
+            districts: {
+                'kb-asifabad': { saturation: 82.0, lagDays: 20.0, target: 87.0, progressDetail: 'Good progress in workshops and counseling sessions. Case closure rates are moderate.' },
+                'mancherial': { saturation: 77.0, lagDays: 30.0, target: 82.0, progressDetail: 'Needs more active community outreach programs. Reporting of case outcomes needs acceleration.' },
+                'nirmal': { saturation: 75.0, lagDays: 37.0, target: 80.0, progressDetail: 'Challenges in reaching remote areas for awareness drives. Data from field is often delayed.' }
+            },
+            mandals: {
+                'asifabad-m': { saturation: 85.0, lagDays: 18.0, target: 90.0, progressDetail: 'Strong participation in legal awareness camps. Case registration is high.' },
+                'bejjur-m': { saturation: 70.0, lagDays: 45.0, target: 75.0, progressDetail: 'Significant lag in support group formation and reporting their activities.' },
+                'dahegaon-m': { saturation: 78.0, lagDays: 25.0, target: 83.0, progressDetail: 'Steady progress in helpline utilization. Reporting on calls is timely.' },
+                'jainoor-m': { saturation: 65.0, lagDays: 38.0, target: 70.0, progressDetail: 'Requires more grassroots level awareness. Data on new beneficiaries is slow.' },
+                'kagaznagar-m': { saturation: 80.0, lagDays: 23.0, target: 85.0, progressDetail: 'Good engagement in urban areas. Case follow-up data has minor lags.' },
+                'kerameri-m': { saturation: 72.0, lagDays: 32.0, target: 77.0, progressDetail: 'Challenges in ensuring follow-ups for reported cases. Data shows pending actions.' },
+                'kouthala-m': { saturation: 83.0, lagDays: 20.0, target: 88.0, progressDetail: 'High success rate in rescue operations. Data reflects quick response.' },
+                'rebbena-m': { saturation: 68.0, lagDays: 40.0, target: 73.0, progressDetail: 'Needs capacity building for local volunteers. Data shows delays in training reports.' },
+                'sirpur-t-m': { saturation: 88.0, lagDays: 15.0, target: 92.0, progressDetail: 'Strong collaboration with local police. Case resolution data is good.' },
+                'sirpur-u-m': { saturation: 80.0, lagDays: 25.0, target: 85.0, progressDetail: 'Consistent progress in urban outreach. Data on awareness campaign reach is good.' },
+                'tiryani-m': { saturation: 75.0, lagDays: 30.0, target: 80.0, progressDetail: 'Requires intensified awareness in tribal belts. Data from these regions is sparse.' },
+                'wankidi-m': { saturation: 62.0, lagDays: 50.0, target: 68.0, progressDetail: 'Very high lag in case resolution and reporting. Critical intervention needed.' },
+                'lingapur-m': { saturation: 70.0, lagDays: 35.0, target: 75.0, progressDetail: 'Needs improved coordination with other departments. Data shows inter-departmental delays.' },
+                'penchicalpet-m': { saturation: 81.0, lagDays: 22.0, target: 86.0, progressDetail: 'Good response to emergency calls. Case data is updated promptly.' },
+                'chintalamanepally-m': { saturation: 76.0, lagDays: 28.0, target: 81.0, progressDetail: 'Steady progress in women safety initiatives. Reporting on outcomes is consistent.' }
+            },
+            gps: {
+                'kosara-gp': { saturation: 88.0, lagDays: 15.0, target: 90.0, progressDetail: 'Consistent progress in legal awareness. Data on participation is strong.' },
+                'malangondi-gp': { saturation: 75.0, lagDays: 30.0, target: 80.0, progressDetail: 'Needs more active community participation. Follow-up data has some lag.' },
+                'venkatapur-gp': { saturation: 60.0, lagDays: 45.0, target: 68.0, progressDetail: 'Significant lag in support group formation and reporting. Requires targeted intervention.' },
+                'tumpalli-gp': { saturation: 82.0, lagDays: 20.0, target: 87.0, progressDetail: 'Good helpline utilization. Data on calls and resolutions is good.' },
+                'appapally-gp': { saturation: 90.0, lagDays: 10.0, target: 93.0, progressDetail: 'Excellent community engagement. Event data is captured timely.' },
+                'koutaguda-gp': { saturation: 70.0, lagDays: 35.0, target: 75.0, progressDetail: 'Requires improved reporting from ground workers on awareness activities.' },
+                'chilatiguda-gp': { saturation: 78.0, lagDays: 25.0, target: 83.0, progressDetail: 'Steady progress in self-defense training. Participant data is solid.' },
+                'motuguda-gp': { saturation: 65.0, lagDays: 40.0, target: 70.0, progressDetail: 'Needs more targeted awareness campaigns. Data shows low outreach in specific pockets.' },
+                'govindapur-gp': { saturation: 85.0, lagDays: 18.0, target: 90.0, progressDetail: 'Strong women’s group formation. Data on group meetings is consistent.' },
+                'padibanda-gp': { saturation: 72.0, lagDays: 33.0, target: 77.0, progressDetail: 'Addressing logistical challenges in support service delivery. Reporting delays.' },
+                'manikguda-gp': { saturation: 89.0, lagDays: 12.0, target: 92.0, progressDetail: 'High satisfaction among beneficiaries. Data accurately reflects program impact.' },
+                'babapur-gp': { saturation: 76.0, lagDays: 28.0, target: 81.0, progressDetail: 'Consistent follow-up on cases. Reporting on case status is timely.' },
+                'wavudam-gp': { saturation: 61.0, lagDays: 48.0, target: 68.0, progressDetail: 'Critical need for increased awareness. Data shows limited knowledge of services.' },
+                'ankusapur-gp': { saturation: 84.0, lagDays: 19.0, target: 89.0, progressDetail: 'Good outreach in rural areas. Data on rural beneficiaries is growing.' },
+                'ada-dasnapur-gp': { saturation: 70.0, lagDays: 35.0, target: 75.0, progressDetail: 'Requires more inter-departmental coordination. Data shows cross-functional delays.' },
+                'gundi-gp': { saturation: 78.0, lagDays: 22.0, target: 83.0, progressDetail: 'Steady progress in dispute resolution. Data on resolved cases is good.' },
+                'yellaram-gp': { saturation: 63.0, lagDays: 42.0, target: 70.0, progressDetail: 'Needs increased visibility of services. Awareness data shows gaps.' },
+                'routsankepalle-gp': { saturation: 89.0, lagDays: 11.0, target: 92.0, progressDetail: 'Strong community leadership in women safety. Incident reporting is timely.' },
+                'buruguda-gp': { saturation: 75.0, lagDays: 30.0, target: 80.0, progressDetail: 'Consistent response to gender-based violence. Data accuracy is high.' },
+                'mowad-gp': { saturation: 60.0, lagDays: 45.0, target: 68.0, progressDetail: 'High lag in reporting, needs more trust-building in the community.' },
+                'ada-gp': { saturation: 86.0, lagDays: 17.0, target: 90.0, progressDetail: 'Good support for women in distress. Case management data is strong.' },
+                'chirrakunta-gp': { saturation: 72.0, lagDays: 33.0, target: 77.0, progressDetail: 'Addressing challenges in legal aid accessibility. Data shows usage patterns.' },
+                'asifabad-gp': { saturation: 85.0, lagDays: 18.0, target: 90.0, progressDetail: 'Strong urban center for women’s safety. Data reflects high service demand.' },
+                'chorpalli-gp': { saturation: 68.0, lagDays: 37.0, target: 73.0, progressDetail: 'Needs improved coordination with police. Data on joint operations is limited.' },
+                'edulawada-gp': { saturation: 80.0, lagDays: 25.0, target: 85.0, progressDetail: 'Steady progress in awareness programs. Participant data is growing.' },
+                'rahapally-gp': { saturation: 70.0, lagDays: 35.0, target: 75.0, progressDetail: 'Requires more proactive community outreach. Data shows lower event participation.' },
+                'saleguda-gp': { saturation: 88.0, lagDays: 12.0, target: 92.0, progressDetail: 'Excellent community response for support services. Data validates effectiveness.' },
+                'andhugulaguda-gp': { saturation: 74.0, lagDays: 29.0, target: 79.0, progressDetail: 'Consistent victim support. Data on survivor assistance is comprehensive.' },
+                'outsarangipalle-gp': { saturation: 60.0, lagDays: 48.0, target: 68.0, progressDetail: 'High lag in service delivery, needs intervention. Data shows low case follow-up.' },
+                'kukuda-gp': { saturation: 82.0, lagDays: 20.0, target: 87.0, progressDetail: 'Good progress in establishing safe spaces. Usage data is increasing.' },
+                'pothepally-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Needs improved follow-up mechanisms. Data indicates cases closing slowly.' },
+                'kushnepalle-gp': { saturation: 75.0, lagDays: 30.0, target: 80.0, progressDetail: 'Steady progress in awareness and protection. Program data is solid.' },
+                'kuntalamanepalli-gp': { saturation: 62.0, lagDays: 45.0, target: 69.0, progressDetail: 'Requires intensified efforts for safety awareness. Data shows limited campaign reach.' },
+                'mogavelly-gp': { saturation: 80.0, lagDays: 25.0, target: 85.0, progressDetail: 'Good collaboration with local bodies. Data on joint initiatives is robust.' },
+                'rebbena-gp': { saturation: 67.0, lagDays: 38.0, target: 73.0, progressDetail: 'Needs more resources for support camps. Data shows limited camp frequency.' },
+                'sushmir-gp': { saturation: 73.0, lagDays: 32.0, target: 78.0, progressDetail: 'Consistent progress in safety net programs. Data indicates stable performance.' },
+                'somini-gp': { saturation: 60.0, lagDays: 42.0, target: 67.0, progressDetail: 'High lag, requires direct intervention. Data shows challenges in reaching beneficiaries.' },
+                'ambhaghat-gp': { saturation: 88.0, lagDays: 12.0, target: 92.0, progressDetail: 'Excellent safety initiatives. Data consistently high for outreach.' },
+                'thummalaguda-gp': { saturation: 74.0, lagDays: 29.0, target: 79.0, progressDetail: 'Steady progress in protection services. Data submission is timely.' },
+                'talai-gp': { saturation: 61.0, lagDays: 48.0, target: 68.0, progressDetail: 'Needs improved communication and trust-building. Data shows underreporting.' },
+                'bareguda-gp': { saturation: 82.0, lagDays: 20.0, target: 87.0, progressDetail: 'Good victim support. Data reflects successful case handling.' },
+                'katepalli-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Requires more localized safety plans. Data collection is challenging.' },
+                'marthadi-gp': { saturation: 75.0, lagDays: 30.0, target: 80.0, progressDetail: 'Consistent response to emergency cases. Data on response time is good.' },
+                'bejjur-gp': { saturation: 62.0, lagDays: 40.0, target: 69.0, progressDetail: 'Needs more resources for awareness. Data shows low campaign attendance.' },
+                'munjampalle-gp': { saturation: 83.0, lagDays: 28.0, target: 88.0, progressDetail: 'Strong community collaboration. Data on joint programs is consistent.' },
+                'papanpet-gp': { saturation: 69.0, lagDays: 33.0, target: 74.0, progressDetail: 'Minor delays in support service delivery. Data updates are slow.' },
+                'sulugupalli-gp': { saturation: 74.0, lagDays: 14.0, target: 79.0, progressDetail: 'Consistent legal aid support. Data on legal advice cases is timely.' },
+                'pedda-siddapur-gp': { saturation: 61.0, lagDays: 45.0, target: 68.0, progressDetail: 'Requires intensified safety awareness campaigns. Data shows low beneficiary knowledge.' },
+                'lambadiguda-gp': { saturation: 80.0, lagDays: 20.0, target: 85.0, progressDetail: 'Good outreach in remote areas. Data on tribal beneficiaries needs improvement.' },
+                'chinnaraspalle-gp': { saturation: 67.0, lagDays: 35.0, target: 73.0, progressDetail: 'Needs better follow-up on reported incidents. Data indicates incomplete resolutions.' },
+                'borlakunta-gp': { saturation: 73.0, lagDays: 40.0, target: 78.0, progressDetail: 'Steady progress in protective services. Data collection is manual.' },
+                'kothmir-gp': { saturation: 60.0, lagDays: 23.0, target: 67.0, progressDetail: 'Minor delays in awareness material distribution. Data shows outreach challenges.' },
+                'pesarikunta-gp': { saturation: 82.0, lagDays: 17.0, target: 87.0, progressDetail: 'Strong community engagement in safety programs. Data accuracy is high.' },
+                'digida-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Requires more local volunteers. Data shows limited new volunteer registrations.' },
+                'dahegaon-gp': { saturation: 74.0, lagDays: 40.0, target: 79.0, progressDetail: 'Consistent response to community needs. Data on participation is solid.' },
+                'chandrapalle-gp': { saturation: 61.0, lagDays: 28.0, target: 68.0, progressDetail: 'Minor delays in support camps. Data shows low camp attendance.' },
+                'rampur-gp': { saturation: 80.0, lagDays: 22.0, target: 85.0, progressDetail: 'Good progress in women safety initiatives. Data is mostly real-time.' },
+                'motleguda-gp': { saturation: 67.0, lagDays: 45.0, target: 73.0, progressDetail: 'Needs better data on incident reporting. Data shows underreporting of minor incidents.' },
+                'kamarpally-gp': { saturation: 73.0, lagDays: 19.0, target: 78.0, progressDetail: 'Steady progress in legal aid provision. Data indicates efficient legal support.' },
+                'gerre-gp': { saturation: 60.0, lagDays: 33.0, target: 67.0, progressDetail: 'Requires more focused awareness on rights. Data shows gaps in knowledge.' },
+                'kalwada-gp': { saturation: 69.0, lagDays: 38.0, target: 74.0, progressDetail: 'Consistent support for vulnerable women. Data indicates consistent follow-up.' },
+                'laggaon-gp': { saturation: 77.0, lagDays: 12.0, target: 82.0, progressDetail: 'Minor delays in awareness material distribution. Data shows good campaign reach.' },
+                'ainam-gp': { saturation: 63.0, lagDays: 50.0, target: 70.0, progressDetail: 'Requires significant intervention for safety. Data shows poor service uptake.' },
+                'vodduguda-gp': { saturation: 71.0, lagDays: 46.0, target: 76.0, progressDetail: 'Consistent efforts in protection services. Data reflects stable operations.' },
+                'hathni-gp': { saturation: 78.0, lagDays: 24.0, target: 83.0, progressDetail: 'Good community response to safety issues. Data accuracy is good.' },
+                'kunchavelli-gp': { saturation: 65.0, lagDays: 16.0, target: 72.0, progressDetail: 'Needs more training for local support groups. Data shows limited training participation.' },
+                'chowka-gp': { saturation: 72.0, lagDays: 37.0, target: 77.0, progressDetail: 'Steady progress in legal awareness camps. Data shows consistent event hosting.' },
+                'beebra-gp': { saturation: 60.0, lagDays: 51.0, target: 67.0, progressDetail: 'High lag, critical need for intervention. Data indicates low service utilization.' },
+                'pp-rao-colony-gp': { saturation: 81.0, lagDays: 21.0, target: 86.0, progressDetail: 'Good collaboration with local law enforcement. Data on joint actions is timely.' },
+                'ityal-gp': { saturation: 68.0, lagDays: 15.0, target: 73.0, progressDetail: 'Needs improved follow-up on reported incidents. Data shows incomplete case closures.' },
+                'kharji-gp': { saturation: 75.0, lagDays: 30.0, target: 80.0, progressDetail: 'Consistent support for victims. Data shows stable victim assistance.' },
+                'girvelli-gp': { saturation: 62.0, lagDays: 40.0, target: 69.0, progressDetail: 'Requires more awareness about available services. Data shows low scheme knowledge.' },
+                'bhamanagar-gp': { saturation: 83.0, lagDays: 28.0, target: 88.0, progressDetail: 'Strong community engagement in safety programs. Data accurately reflects initiatives.' },
+                'pocham-loddi-gp': { saturation: 69.0, lagDays: 33.0, target: 74.0, progressDetail: 'Minor delays in emergency response. Data indicates minor delays in rapid action.' },
+                'raoji-guda-gp': { saturation: 74.0, lagDays: 14.0, target: 79.0, progressDetail: 'Consistent support for distressed women. Data shows timely legal aid.' },
+                'dubbaguda-gp': { saturation: 61.0, lagDays: 45.0, target: 68.0, progressDetail: 'Needs more support for vulnerable women. Data indicates challenges in reaching all.' },
+                'ushegaon-gp': { saturation: 80.0, lagDays: 20.0, target: 85.0, progressDetail: 'Good outreach in remote areas. Data is reliable.' },
+                'power-guda-gp': { saturation: 67.0, lagDays: 35.0, target: 73.0, progressDetail: 'Requires improved data collection on beneficiaries. Data shows missing fields.' },
+                'andh-guda-gp': { saturation: 73.0, lagDays: 40.0, target: 78.0, progressDetail: 'Steady progress in self-defense training. Data indicates consistent training sessions.' },
+                'maniguda-gp': { saturation: 60.0, lagDays: 23.0, target: 67.0, progressDetail: 'Minor delays in awareness material provision. Data shows limited distribution.' },
+                'panapatar-gp': { saturation: 82.0, lagDays: 17.0, target: 87.0, progressDetail: 'Strong community engagement in safety awareness. Data shows high participation.' },
+                'jamni-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Requires more local support groups. Data indicates slow group formation.' },
+                'para-gp': { saturation: 74.0, lagDays: 40.0, target: 79.0, progressDetail: 'Consistent protection efforts. Data reflects stable program operations.' },
+                'chinthakara-gp': { saturation: 61.0, lagDays: 28.0, target: 68.0, progressDetail: 'Minor delays in support group meetings. Data indicates irregular meetings.' },
+                'rasimatta-gp': { saturation: 80.0, lagDays: 22.0, target: 85.0, progressDetail: 'Good progress in addressing violence against women. Data is accurate.' },
+                'gudamamda-gp': { saturation: 67.0, lagDays: 45.0, target: 73.0, progressDetail: 'Needs more resources for counseling services. Data shows resource scarcity.' }
+            }
         }
     },
-     {
+    {
         id: 'mission-shakti-samarthya',
-        name: 'Mission Shakti (Samarthya)', // From Mission Shakti data
-        description: 'Another sub-scheme of Mission Shakti, focusing on empowerment through skill development.',
-        overall: { saturation: 60, lagDays: 40, target: 70, progressDetail: 'Newer scheme, facing challenges in beneficiary identification and training infrastructure.' },
-        districts: {
-            'kb-asifabad': { saturation: 58, lagDays: 45, target: 68 },
-        },
-        mandals: {
-            'jainoor-m': { saturation: 55, lagDays: 50, target: 65 },
-        },
-        gps: {
-            'gp-marlawai': { saturation: 50, lagDays: 60, target: 60 },
+        name: 'Mission Shakti (Samarthya)',
+        description: 'Another sub-scheme of Mission Shakti, focusing on empowerment through skill development, vocational training, and entrepreneurship support. Data influenced by DWO reports on activities and outreach.',
+        overall: { saturation: 60.0, lagDays: 40.0, target: 70.0, progressDetail: 'Newer scheme, facing challenges in beneficiary identification and training infrastructure. Placement rates need significant boost.' },
+        geographicalData: {
+            districts: {
+                'kb-asifabad': { saturation: 58.0, lagDays: 45.0, target: 68.0, progressDetail: 'Significant lag in skill enrollment and training completion. Needs intensified efforts.' },
+                'mancherial': { saturation: 63.0, lagDays: 35.0, target: 73.0, progressDetail: 'Steady progress in vocational training. Challenges in post-training placement tracking.' },
+                'nirmal': { saturation: 61.0, lagDays: 50.0, target: 71.0, progressDetail: 'High lag, needs urgent focus on training centers and trainer availability. Data shows low retention.' }
+            },
+            mandals: {
+                'asifabad-m': { saturation: 65.0, lagDays: 30.0, target: 72.0, progressDetail: 'Good enrollment in basic skill courses. Data reflects interest in entry-level skills.' },
+                'bejjur-m': { saturation: 45.0, lagDays: 60.0, target: 55.0, progressDetail: 'Critical lag in skill development programs. Data shows very low participation rates.' },
+                'dahegaon-m': { saturation: 58.0, lagDays: 42.0, target: 65.0, progressDetail: 'Needs more awareness about training opportunities. Data on awareness camps is limited.' },
+                'jainoor-m': { saturation: 55.0, lagDays: 50.0, target: 65.0, progressDetail: 'High lag in tribal areas, requires specialized programs. Data shows specific community challenges.' },
+                'kagaznagar-m': { saturation: 68.0, lagDays: 35.0, target: 75.0, progressDetail: 'Steady progress in urban skill centers. Data on course completion is moderate.' },
+                'kerameri-m': { saturation: 52.0, lagDays: 55.0, target: 62.0, progressDetail: 'Significant challenges in training infrastructure. Data reflects limited facilities.' },
+                'kouthala-m': { saturation: 60.0, lagDays: 40.0, target: 70.0, progressDetail: 'Needs improved access to training materials. Data indicates resource gaps.' },
+                'rebbena-m': { saturation: 48.0, lagDays: 65.0, target: 58.0, progressDetail: 'Very high lag, critical intervention needed for skill development. Data shows program stagnation.' },
+                'sirpur-t-m': { saturation: 70.0, lagDays: 28.0, target: 78.0, progressDetail: 'Good progress in traditional craft skill development. Data shows successful niche training.' },
+                'sirpur-u-m': { saturation: 65.0, lagDays: 33.0, target: 72.0, progressDetail: 'Consistent enrollment in short-term courses. Data indicates steady uptake.' },
+                'tiryani-m': { saturation: 55.0, lagDays: 48.0, target: 62.0, progressDetail: 'Challenges in retaining trainees post-completion. Data shows high dropout rates.' },
+                'wankidi-m': { saturation: 40.0, lagDays: 70.0, target: 50.0, progressDetail: 'Extremely high lag, requires complete program overhaul. Data points to severe issues.' },
+                'lingapur-m': { saturation: 50.0, lagDays: 60.0, target: 60.0, progressDetail: 'Needs intensive awareness campaigns for skill development. Data shows low scheme visibility.' },
+                'penchicalpet-m': { saturation: 62.0, lagDays: 38.0, target: 69.0, progressDetail: 'Steady progress in livelihood generation. Data indicates early successes.' },
+                'chintalamanepally-m': { saturation: 58.0, lagDays: 45.0, target: 65.0, progressDetail: 'Requires better market linkages for trained beneficiaries. Data shows poor employment rates.' }
+            },
+            gps: {
+                'kosara-gp': { saturation: 60.0, lagDays: 45.0, target: 68.0, progressDetail: 'Needs more focus on vocational training for youth. Data indicates low youth participation.' },
+                'malangondi-gp': { saturation: 50.0, lagDays: 55.0, target: 60.0, progressDetail: 'High lag, requires community mobilization. Data shows difficulty in reaching beneficiaries.' },
+                'venkatapur-gp': { saturation: 40.0, lagDays: 65.0, target: 50.0, progressDetail: 'Critical need for skill development centers. Data shows very low program penetration.' },
+                'tumpalli-gp': { saturation: 62.0, lagDays: 38.0, target: 69.0, progressDetail: 'Steady progress in basic literacy and numeracy skills. Data reflects consistent learning.' },
+                'appapally-gp': { saturation: 70.0, lagDays: 30.0, target: 75.0, progressDetail: 'Good response to entrepreneurship workshops. Data indicates strong interest.' },
+                'koutaguda-gp': { saturation: 55.0, lagDays: 50.0, target: 62.0, progressDetail: 'Challenges in training infrastructure. Data shows limited training space.' },
+                'chilatiguda-gp': { saturation: 68.0, lagDays: 35.0, target: 74.0, progressDetail: 'Consistent enrollment in tailoring and crafts. Data indicates steady skill acquisition.' },
+                'motuguda-gp': { saturation: 48.0, lagDays: 60.0, target: 58.0, progressDetail: 'Very high lag, critical intervention needed. Data shows very slow progress.' },
+                'govindapur-gp': { saturation: 72.0, lagDays: 28.0, target: 77.0, progressDetail: 'Strong interest in digital literacy programs. Data indicates growing digital proficiency.' },
+                'padibanda-gp': { saturation: 58.0, lagDays: 42.0, target: 65.0, progressDetail: 'Needs improved access to advanced skill training. Data shows basic skills only.' },
+                'manikguda-gp': { saturation: 69.0, lagDays: 33.0, target: 74.0, progressDetail: 'Good uptake for livelihood support. Data reflects successful initial enterprise.' },
+                'babapur-gp': { saturation: 53.0, lagDays: 50.0, target: 60.0, progressDetail: 'Significant challenges in post-training placement. Data shows high unemployment post-training.' },
+                'wavudam-gp': { saturation: 45.0, lagDays: 65.0, target: 55.0, progressDetail: 'Critical need for vocational guidance. Data indicates lack of career direction.' },
+                'ankusapur-gp': { saturation: 75.0, lagDays: 25.0, target: 80.0, progressDetail: 'Excellent progress in skill certification. Data shows high completion rates.' },
+                'ada-dasnapur-gp': { saturation: 60.0, lagDays: 40.0, target: 68.0, progressDetail: 'Needs more customized training programs. Data shows generic training is not effective.' },
+                'gundi-gp': { saturation: 68.0, lagDays: 35.0, target: 74.0, progressDetail: 'Consistent skill development workshops. Data indicates regular workshop attendance.' },
+                'yellaram-gp': { saturation: 52.0, lagDays: 55.0, target: 60.0, progressDetail: 'High lag, requires direct intervention for training. Data indicates low training access.' },
+                'routsankepalle-gp': { saturation: 70.0, lagDays: 30.0, target: 75.0, progressDetail: 'Steady progress in self-employment initiatives. Data shows small business growth.' },
+                'buruguda-gp': { saturation: 58.0, lagDays: 45.0, target: 65.0, progressDetail: 'Needs better follow-up on trained beneficiaries. Data shows limited long-term support.' },
+                'mowad-gp': { saturation: 42.0, lagDays: 68.0, target: 52.0, progressDetail: 'Extremely high lag, critical overhaul needed. Data indicates severe program shortcomings.' },
+                'ada-gp': { saturation: 78.0, lagDays: 22.0, target: 83.0, progressDetail: 'Good response to entrepreneurship development. Data shows successful startups.' },
+                'chirrakunta-gp': { saturation: 65.0, lagDays: 38.0, target: 72.0, progressDetail: 'Challenges in securing training infrastructure. Data indicates facility limitations.' },
+                'asifabad-gp': { saturation: 70.0, lagDays: 30.0, target: 75.0, progressDetail: 'Consistent support for skill development centers. Data reflects reliable program hubs.' },
+                'chorpalli-gp': { saturation: 55.0, lagDays: 50.0, target: 62.0, progressDetail: 'Needs more targeted outreach for skill training. Data shows low awareness.' },
+                'edulawada-gp': { saturation: 72.0, lagDays: 28.0, target: 77.0, progressDetail: 'Steady progress in vocational education. Data indicates consistent student progress.' },
+                'rahapally-gp': { saturation: 59.0, lagDays: 42.0, target: 66.0, progressDetail: 'Requires improved market linkages for trainees. Data shows limited employment options.' },
+                'saleguda-gp': { saturation: 80.0, lagDays: 20.0, target: 85.0, progressDetail: 'Excellent skill enhancement programs. Data reflects high skill acquisition.' },
+                'andhugulaguda-gp': { saturation: 67.0, lagDays: 35.0, target: 73.0, progressDetail: 'Needs more diversified skill courses. Data indicates limited course variety.' },
+                'outsarangipalle-gp': { saturation: 73.0, lagDays: 40.0, target: 78.0, progressDetail: 'Consistent progress in livelihood generation. Data shows steady income growth.' },
+                'kukuda-gp': { saturation: 60.0, lagDays: 23.0, target: 67.0, progressDetail: 'Minor delays in providing training kits. Data shows delays in material supply.' },
+                'pothepally-gp': { saturation: 82.0, lagDays: 17.0, target: 87.0, progressDetail: 'Strong community engagement in skill training. Data reflects active participation.' },
+                'kushnepalle-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Requires better data on post-training employment. Data indicates gaps in tracking.' },
+                'kuntalamanepalli-gp': { saturation: 74.0, lagDays: 40.0, target: 79.0, progressDetail: 'Steady progress in micro-enterprise development. Data shows slow but sure growth.' },
+                'mogavelly-gp': { saturation: 61.0, lagDays: 28.0, target: 68.0, progressDetail: 'Minor delays in securing training venues. Data indicates facility limitations.' },
+                'rebbena-gp': { saturation: 80.0, lagDays: 22.0, target: 85.0, progressDetail: 'Good progress in upskilling programs. Data shows successful skill improvements.' },
+                'sushmir-gp': { saturation: 67.0, lagDays: 45.0, target: 73.0, progressDetail: 'Needs more resources for advanced courses. Data indicates limited advanced training.' },
+                'somini-gp': { saturation: 73.0, lagDays: 19.0, target: 78.0, progressDetail: 'Consistent progress in entrepreneurship. Data reflects positive startup trends.' },
+                'ambhaghat-gp': { saturation: 60.0, lagDays: 33.0, target: 67.0, progressDetail: 'Requires more tailored training for local needs. Data shows mismatch in skills.' },
+                'thummalaguda-gp': { saturation: 69.0, lagDays: 38.0, target: 74.0, progressDetail: 'Steady progress in providing financial literacy. Data indicates improved financial knowledge.' },
+                'talai-gp': { saturation: 77.0, lagDays: 12.0, target: 82.0, progressDetail: 'Minor delays in distributing startup kits. Data indicates some supply chain issues.' },
+                'bareguda-gp': { saturation: 63.0, lagDays: 50.0, target: 70.0, progressDetail: 'High lag, critical need for skill-building initiatives. Data shows very slow program uptake.' },
+                'katepalli-gp': { saturation: 71.0, lagDays: 46.0, target: 76.0, progressDetail: 'Consistent efforts in employment generation. Data shows steady job creation.' },
+                'marthadi-gp': { saturation: 78.0, lagDays: 24.0, target: 83.0, progressDetail: 'Good community response to training programs. Data is accurate for attendance.' },
+                'bejjur-gp': { saturation: 65.0, lagDays: 16.0, target: 72.0, progressDetail: 'Needs more training for specific trades. Data indicates limited trade variety.' },
+                'munjampalle-gp': { saturation: 72.0, lagDays: 37.0, target: 77.0, progressDetail: 'Steady progress in vocational skill development. Data shows consistent skill upgrades.' },
+                'papanpet-gp': { saturation: 60.0, lagDays: 51.0, target: 67.0, progressDetail: 'High lag, requires intensive outreach. Data indicates very low enrollment.' },
+                'sulugupalli-gp': { saturation: 81.0, lagDays: 21.0, target: 86.0, progressDetail: 'Excellent participation in skill development workshops. Data shows strong engagement.' },
+                'pedda-siddapur-gp': { saturation: 68.0, lagDays: 15.0, target: 73.0, progressDetail: 'Needs improved follow-up on trained individuals. Data shows gaps in post-training support.' },
+                'lambadiguda-gp': { saturation: 75.0, lagDays: 30.0, target: 80.0, progressDetail: 'Consistent support for micro-enterprises. Data reflects stable business growth.' },
+                'chinnaraspalle-gp': { saturation: 62.0, lagDays: 40.0, target: 69.0, progressDetail: 'Requires more diversified skill training. Data shows limited course options.' },
+                'borlakunta-gp': { saturation: 83.0, lagDays: 28.0, target: 88.0, progressDetail: 'Strong community engagement in livelihood programs. Data reflects high program impact.' },
+                'kothmir-gp': { saturation: 69.0, lagDays: 33.0, target: 74.0, progressDetail: 'Minor delays in distributing tools/equipment. Data shows logistical challenges.' },
+                'pesarikunta-gp': { saturation: 74.0, lagDays: 14.0, target: 79.0, progressDetail: 'Consistent guidance for self-employment. Data indicates timely advice.' },
+                'digida-gp': { saturation: 61.0, lagDays: 45.0, target: 68.0, progressDetail: 'Needs more resources for advanced training. Data shows resource scarcity.' },
+                'dahegaon-gp': { saturation: 80.0, lagDays: 20.0, target: 85.0, progressDetail: 'Good progress in connecting beneficiaries to markets. Data reflects successful linkages.' },
+                'chandrapalle-gp': { saturation: 67.0, lagDays: 35.0, target: 73.0, progressDetail: 'Requires better tracking of trained individuals. Data shows gaps in follow-up.' },
+                'rampur-gp': { saturation: 73.0, lagDays: 40.0, target: 78.0, progressDetail: 'Steady progress in skill development infrastructure. Data indicates consistent facility upgrades.' },
+                'motleguda-gp': { saturation: 60.0, lagDays: 23.0, target: 67.0, progressDetail: 'Minor delays in releasing training funds. Data shows some financial bottlenecks.' },
+                'kamarpally-gp': { saturation: 82.0, lagDays: 17.0, target: 87.0, progressDetail: 'Strong community engagement in skill acquisition. Data reflects high skill uptake.' },
+                'gerre-gp': { saturation: 69.0, lagDays: 35.0, target: 74.0, progressDetail: 'Needs more diverse vocational courses. Data shows limited course options.' },
+                'kalwada-gp': { saturation: 74.0, lagDays: 40.0, target: 79.0, progressDetail: 'Consistent efforts in job placement. Data indicates steady employment.' },
+                'laggaon-gp': { saturation: 61.0, lagDays: 28.0, target: 68.0, progressDetail: 'Minor delays in providing post-training support. Data shows some support gaps.' },
+                'ainam-gp': { saturation: 80.0, lagDays: 22.0, target: 85.0, progressDetail: 'Good progress in promoting women entrepreneurship. Data reflects growing self-sufficiency.' },
+                'vodduguda-gp': { saturation: 67.0, lagDays: 45.0, target: 73.0, progressDetail: 'Requires increased awareness about available schemes. Data shows low program visibility.' },
+                'hathni-gp': { saturation: 73.0, lagDays: 19.0, target: 78.0, progressDetail: 'Steady progress in skill upgrading programs. Data indicates consistent skill improvement.' },
+                'kunchavelli-gp': { saturation: 60.0, lagDays: 33.0, target: 67.0, progressDetail: 'Minor delays in securing expert trainers. Data shows limited trainer availability.' },
+                'chowka-gp': { saturation: 69.0, lagDays: 38.0, target: 74.0, progressDetail: 'Consistent support for trainees. Data reflects stable program operations.' },
+                'beebra-gp': { saturation: 77.0, lagDays: 12.0, target: 82.0, progressDetail: 'Minor delays in distributing incentives. Data shows some payment processing issues.' }
+            }
         }
-    },
+    }
 ];
 
 const getSchemeStatusColor = (saturation, lagDays) => {
@@ -2455,65 +3144,100 @@ const MissionShaktiDashboard = () => (
     </div>
 );
 
-// SchemeOverviewTab Component
-const SchemeOverviewTab = ({ selectedMandal, selectedGramPanchayat, selectedMunicipality, mandals, gramPanchayats, municipalities }) => {
+const ProgressBar = ({ value, label, colorClass }) => (
+    <div className="flex flex-col items-start w-full">
+        <div className="flex justify-between w-full text-sm font-medium">
+            <span>{label}</span>
+            <span>{value}%</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className={`h-full rounded-full ${colorClass}`} style={{ width: `${value}%` }}></div>
+        </div>
+    </div>
+);
+
+// Helper for visual lag days bar (improved HTML/CSS based)
+const LagBar = ({ value, label }) => (
+    <div className="flex flex-col items-start w-full">
+        <div className="flex justify-between w-full text-sm font-medium">
+            <span>{label}</span>
+            <span>{value} days</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className={`h-full rounded-full ${value > 30 ? 'bg-red-500' : value > 10 ? 'bg-orange-500' : 'bg-green-500'}`} style={{ width: `${Math.min(100, value * 1.5)}%` }}></div> {/* Adjusted scaling for visual */}
+        </div>
+    </div>
+);
+
+
+const SchemeOverviewTab = ({ selectedMandal, selectedGramPanchayat, municipalities, mandals, gramPanchayats }) => {
     const [selectedScheme, setSelectedScheme] = useState(allSchemesData[0]?.id || '');
     const [displayLevel, setDisplayLevel] = useState('overall'); // 'overall', 'district', 'mandal', 'gp'
 
     const currentScheme = allSchemesData.find(s => s.id === selectedScheme);
 
-    // Filtered data based on selected level
+    // Helper function to get readable names from IDs
+    const getGeoName = (id, level) => {
+        if (level === 'district') return districts.find(d => d.id === id)?.name || id;
+        if (level === 'mandal') return mandals.find(m => m.id === id)?.name || id;
+        if (level === 'gp') return gramPanchayats.find(gp => gp.id === id)?.name || id;
+        return id;
+    };
+
     const getFilteredSchemeData = () => {
-        if (!currentScheme) return [];
+        if (!currentScheme || !currentScheme.geographicalData) return [];
 
         let data = [];
         if (displayLevel === 'overall') {
             return [{
                 id: 'overall',
-                name: 'Overall',
+                name: 'Overall Performance',
                 saturation: currentScheme.overall.saturation,
                 lagDays: currentScheme.overall.lagDays,
                 target: currentScheme.overall.target,
                 progressDetail: currentScheme.overall.progressDetail
             }];
         } else if (displayLevel === 'district') {
-            data = Object.entries(currentScheme.districts || {}).map(([key, value]) => ({
+            data = Object.entries(currentScheme.geographicalData.districts || {}).map(([key, value]) => ({
                 id: key,
-                name: districts.find(d => d.id === key)?.name || key,
+                name: getGeoName(key, 'district'),
                 ...value
             }));
         } else if (displayLevel === 'mandal') {
-            // Filter mandals if a specific district is selected (not implemented in top filter yet, but structure for it)
-            data = Object.entries(currentScheme.mandals || {}).map(([key, value]) => ({
+            data = Object.entries(currentScheme.geographicalData.mandals || {}).map(([key, value]) => ({
                 id: key,
-                name: mandals.find(m => m.id === key)?.name || key,
+                name: getGeoName(key, 'mandal'),
                 ...value
             }));
-            // Further filter by selectedMandal if needed here
-            if (selectedMandal) {
+            if (selectedMandal && mandals.some(m => m.id === selectedMandal)) {
                  data = data.filter(item => item.id === selectedMandal);
             }
         } else if (displayLevel === 'gp') {
-            // Filter GPs based on selected mandal
-            data = Object.entries(currentScheme.gps || {}).map(([key, value]) => ({
+            data = Object.entries(currentScheme.geographicalData.gps || {}).map(([key, value]) => ({
                 id: key,
-                name: gramPanchayats.find(gp => gp.id === key)?.name || key,
+                name: getGeoName(key, 'gp'),
                 ...value
             }));
-            // Further filter by selectedGramPanchayat if needed here
-            if (selectedGramPanchayat) {
+            if (selectedGramPanchayat && gramPanchayats.some(gp => gp.id === selectedGramPanchayat)) {
                 data = data.filter(item => item.id === selectedGramPanchayat);
             }
         }
 
-        // Sort by saturation for ranking
-        return data.sort((a, b) => b.saturation - a.saturation);
+        if (displayLevel !== 'overall') {
+            return data.sort((a, b) => b.saturation - a.saturation);
+        }
+        return data;
     };
 
     const displayData = getFilteredSchemeData();
     const currentLevelName = displayLevel === 'district' ? 'District' :
                              displayLevel === 'mandal' ? 'Mandal' :
                              displayLevel === 'gp' ? 'Gram Panchayat' : 'Overall';
+
+    // To prevent the "jsx" warning, ensure your style tag does not have the jsx prop
+    // if you are not using styled-jsx or similar CSS-in-JS library.
+    // If you need the hide-scrollbar class, define it in your global CSS.
+    // For this direct code, I'll assume global CSS for hide-scrollbar or remove jsx.
 
     return (
         <div className="space-y-6">
@@ -2542,32 +3266,51 @@ const SchemeOverviewTab = ({ selectedMandal, selectedGramPanchayat, selectedMuni
 
             {currentScheme && (
                 <>
-                    {/* Cumulative Indicators & Insights for Selected Scheme */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Info className="h-5 w-5 text-indigo-600" />
-                                {currentScheme.name} - Key Performance Indicators (Overall)
-                            </CardTitle>
-                            <p className="text-sm text-muted-foreground">{currentScheme.description}</p>
-                        </CardHeader>
-                        <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="text-center p-4 bg-blue-50 rounded-lg">
-                                <p className="text-sm text-blue-700">Overall Saturation</p>
-                                <p className="text-3xl font-bold text-blue-800">{currentScheme.overall.saturation}%</p>
-                                <p className="text-xs text-muted-foreground">Target: {currentScheme.overall.target}%</p>
-                            </div>
-                            <div className="text-center p-4 bg-orange-50 rounded-lg">
-                                <p className="text-sm text-orange-700">Overall Lag Days</p>
-                                <p className="text-3xl font-bold text-orange-800">{currentScheme.overall.lagDays} days</p>
-                                <p className="text-xs text-muted-foreground">Ideal: &lt;10 days</p>
-                            </div>
-                            <div className="text-center p-4 bg-green-50 rounded-lg">
-                                <p className="text-sm text-green-700">Progress Detail</p>
-                                <p className="text-md font-semibold text-green-800 mt-2">{currentScheme.overall.progressDetail}</p>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    {/* Enhanced KPI Cards for Overall Scheme Performance */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <Card>
+                            <CardHeader className="pb-2">
+                                <CardTitle className="text-md flex items-center gap-2">
+                                    <TrendingUp className="h-5 w-5 text-green-600" />
+                                    Overall Saturation
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-4xl font-bold text-green-700">{currentScheme.overall.saturation}%</p>
+                                <p className="text-sm text-muted-foreground mt-1">Target: {currentScheme.overall.target}%</p>
+                                <ProgressBar value={currentScheme.overall.saturation} label="Current" colorClass="bg-green-600" />
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader className="pb-2">
+                                <CardTitle className="text-md flex items-center gap-2">
+                                    <AlertTriangle className="h-5 w-5 text-orange-600" />
+                                    Overall Lag Days
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-4xl font-bold text-orange-700">{currentScheme.overall.lagDays} days</p>
+                                <p className="text-sm text-muted-foreground mt-1">Ideal: &lt;10 days</p>
+                                <LagBar value={currentScheme.overall.lagDays} label="Current Lag" />
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader className="pb-2">
+                                <CardTitle className="text-md flex items-center gap-2">
+                                    <Info className="h-5 w-5 text-blue-600" />
+                                    Overall Progress Status
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-md font-semibold text-blue-800 leading-snug mt-2">
+                                    {currentScheme.overall.progressDetail}
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-2">Overall progress and challenges.</p>
+                            </CardContent>
+                        </Card>
+                    </div>
 
                     {/* Interactive Table for Split Data */}
                     <Card>
@@ -2576,7 +3319,7 @@ const SchemeOverviewTab = ({ selectedMandal, selectedGramPanchayat, selectedMuni
                                 <BarChart3 className="h-5 w-5" />
                                 {currentScheme.name} - Performance by {currentLevelName}
                             </CardTitle>
-                            <div className="flex space-x-2 mt-2">
+                            <div className="flex flex-wrap gap-2 mt-2">
                                 <button
                                     onClick={() => setDisplayLevel('overall')}
                                     className={`px-3 py-1 rounded-full text-xs font-semibold ${displayLevel === 'overall' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
@@ -2602,6 +3345,35 @@ const SchemeOverviewTab = ({ selectedMandal, selectedGramPanchayat, selectedMuni
                                     GP Wise
                                 </button>
                             </div>
+                            {/* Visuals for the current table data - Top 3/Bottom 3 visual summary */}
+                            {displayData.length > 1 && displayLevel !== 'overall' && (
+                                <div className="mt-4 p-4 bg-muted/50 rounded-lg">
+                                    <h4 className="font-semibold text-md mb-2">Top Performing {currentLevelName}s (by Saturation)</h4>
+                                    <div className="space-y-2">
+                                        {displayData.slice(0, 3).map((item, index) => (
+                                            <div key={item.id} className="flex items-center text-sm">
+                                                <Medal className="inline-block h-4 w-4 mr-2 text-amber-500" />
+                                                <span className="font-medium">{item.name}:</span>
+                                                <span className="ml-auto text-green-700 font-bold">{item.saturation}% Saturation</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {displayData.length > 3 && (
+                                        <div className="mt-4">
+                                            <h4 className="font-semibold text-md mb-2">Areas for Improvement (Highest Lag)</h4>
+                                            <div className="space-y-2">
+                                                {displayData.slice(Math.max(0, displayData.length - 3)).sort((a,b) => b.lagDays - a.lagDays).map((item, index) => ( // Sort bottom items by lag days
+                                                    <div key={item.id} className="flex items-center text-sm">
+                                                        <AlertTriangle className="h-4 w-4 text-red-500 mr-2" />
+                                                        <span className="font-medium">{item.name}:</span>
+                                                        <span className="ml-auto text-red-700 font-bold">{item.lagDays} days Lag</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </CardHeader>
                         <CardContent>
                             {displayData.length > 0 ? (
@@ -2615,15 +3387,19 @@ const SchemeOverviewTab = ({ selectedMandal, selectedGramPanchayat, selectedMuni
                                                 <th className="text-center p-3 font-semibold">Lag (Days)</th>
                                                 <th className="text-center p-3 font-semibold">Target (%)</th>
                                                 <th className="text-left p-3 font-semibold">Status</th>
-                                                {displayLevel === 'overall' && <th className="text-left p-3 font-semibold">Progress Detail</th>}
+                                                <th className="text-left p-3 font-semibold">Progress Detail</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {displayData.map((item, index) => (
                                                 <tr key={item.id} className="border-b hover:bg-muted/30">
                                                     <td className="p-3 text-center font-bold">
-                                                        {displayLevel !== 'overall' && <Medal className="inline-block h-4 w-4 mr-1 text-yellow-500" /> }
-                                                        {displayLevel !== 'overall' ? (index + 1) : '-'}
+                                                        {displayLevel !== 'overall' ? (
+                                                            <>
+                                                                <span className="inline-block w-4">{index + 1}</span>
+                                                                {index === 0 && <Medal className="inline-block h-4 w-4 ml-1 text-yellow-500" />}
+                                                            </>
+                                                        ) : '-'}
                                                     </td>
                                                     <td className="p-3 font-medium">{item.name}</td>
                                                     <td className="p-3 text-center">{item.saturation}%</td>
@@ -2634,14 +3410,14 @@ const SchemeOverviewTab = ({ selectedMandal, selectedGramPanchayat, selectedMuni
                                                             {item.lagDays > 30 ? 'High Lag' : item.saturation < item.target ? 'Below Target' : 'On Track'}
                                                         </span>
                                                     </td>
-                                                    {displayLevel === 'overall' && <td className="p-3 text-sm">{item.progressDetail}</td>}
+                                                    <td className="p-3 text-sm max-w-xs overflow-hidden text-ellipsis whitespace-nowrap" title={item.progressDetail}>{item.progressDetail}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
                                     </table>
                                 </div>
                             ) : (
-                                <p className="text-muted-foreground text-center p-4">No data available for the selected scheme and geographical level.</p>
+                                <p className="text-muted-foreground text-center p-4">No data available for the selected scheme and geographical level. Please check the selected filters or try a different scheme.</p>
                             )}
                         </CardContent>
                     </Card>

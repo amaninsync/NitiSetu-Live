@@ -29,7 +29,7 @@ const AppHeader: React.FC = () => {
         
         <div className="flex items-center">
           <h1 className="font-bold text-lg">
-            <span className="text-sequence-teal-500">NitiSetu Asifabad</span>
+            <span className="text-sequence-teal-500">NitiSetu</span>
           </h1>
           <span className="ml-3 text-sm text-muted-foreground font-medium hidden md:inline-block">
             Dashboard

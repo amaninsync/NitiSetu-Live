@@ -130,7 +130,7 @@ const TableViewPage: React.FC = () => {
                   <TableBody>
                     <TableRow>
                       <TableCell className="font-medium">Rural Development</TableCell>
-                      <TableCell>Sri Venkatesh Dhotre</TableCell>
+                      <TableCell>User</TableCell>
                       <TableCell className="text-right">₹ 245.80 Cr</TableCell>
                       <TableCell className="text-right">₹ 142.30 Cr</TableCell>
                       <TableCell className="text-right">24</TableCell>

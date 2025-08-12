@@ -17,10 +17,17 @@ import {
   Home,
   Database,
   Wrench,
-  Menu,
-  X,
-  ChevronLeft
+  ChevronLeft,
+  ChevronRight as ChevronRightIcon,
+  Eye,
+  TrendingUp,
+  PieChart,
+  UserCheck,
+  CreditCard,
+  ShieldCheck
 } from 'lucide-react';
+
+
 
 import {
   Sidebar,
@@ -53,7 +60,7 @@ interface NavSection {
   requiresDepartmentAccess?: boolean;
 }
 
-// Individual nav items
+// Individual nav items with proper icons
 const dashboardItems: NavItem[] = [
   {
     title: 'District Dashboard',
@@ -68,10 +75,16 @@ const dashboardItems: NavItem[] = [
     roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin', 'contract'],
     requiresDepartmentAccess: true
   },
+    {
+    title: 'Dharti Aaba Abhiyan', // New Link
+    path: '/abhiyan-dashboard', // New Path
+    icon: ShieldCheck, // New Icon
+    roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin', 'contract']
+  },
   {
     title: 'Department Overview',
     path: '/department-view',
-    icon: Building,
+    icon: Eye,
     roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin', 'contract'],
     requiresDepartmentAccess: true
   }
@@ -88,7 +101,7 @@ const projectItems: NavItem[] = [
   {
     title: 'SHG Financing',
     path: '/shg-financing',
-    icon: Users,
+    icon: CreditCard,
     roles: ['district_collector', 'additional_collector', 'department_lead', 'government_official', 'admin'],
     requiresDepartmentAccess: true
   },
@@ -98,14 +111,14 @@ const monitoringItems: NavItem[] = [
   {
     title: 'M&E Dashboard',
     path: '/monitoring',
-    icon: CheckSquare,
+    icon: TrendingUp,
     roles: ['district_collector', 'additional_collector', 'department_lead', 'admin'],
     requiresDepartmentAccess: true
   },
   {
     title: 'Intelligence',
     path: '/insights',
-    icon: CheckSquare,
+    icon: PieChart,
     roles: ['district_collector', 'additional_collector', 'department_lead', 'admin'],
     requiresDepartmentAccess: true
   },
@@ -205,7 +218,6 @@ const AppSidebar: React.FC = () => {
   const currentPath = location.pathname;
 
   // State for managing which sections are expanded
-  // Initialize with sections that are active or 'Dashboards'
   const [expandedSections, setExpandedSections] = useState<string[]>(() => {
     const initialExpanded: string[] = [];
     navSections.forEach(section => {
@@ -222,7 +234,6 @@ const AppSidebar: React.FC = () => {
     }
     return initialExpanded;
   });
-
 
   // Helper function to check if a route or its child routes are active
   const isActive = (path: string) => {
@@ -255,10 +266,10 @@ const AppSidebar: React.FC = () => {
       const hasRoleAccess = user?.role && item.roles.includes(user.role);
       if (!hasRoleAccess) return false;
 
-      if (user.role === 'admin' || user.role === 'district_collector') return true;
+      if (user?.role === 'admin' || user?.role === 'district_collector') return true;
 
       if (item.requiresDepartmentAccess) {
-        return user.departmentId !== undefined;
+        return user?.departmentId !== undefined;
       }
 
       return true;
@@ -271,10 +282,10 @@ const AppSidebar: React.FC = () => {
     const hasRoleAccess = user?.role && section.roles.includes(user.role);
     if (!hasRoleAccess) return false;
 
-    if (user.role === 'admin' || user.role === 'district_collector') return true;
+    if (user?.role === 'admin' || user?.role === 'district_collector') return true;
 
     if (section.requiresDepartmentAccess) {
-      return user.departmentId !== undefined;
+      return user?.departmentId !== undefined;
     }
 
     return true;
@@ -292,11 +303,11 @@ const AppSidebar: React.FC = () => {
   const getLinkClassName = (path: string) => {
     const active = isActive(path);
     return cn(
-      "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all duration-200 group relative", // Added group and relative for tooltip
+      "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all duration-200 group relative",
       active
         ? "bg-sequence-green-500 text-white font-medium shadow-sm"
         : "text-white hover:bg-sequence-teal-600 hover:text-white",
-      collapsed && "justify-center w-full" // Center icon and ensure full width when collapsed
+      collapsed && "justify-center w-full"
     );
   };
 
@@ -304,169 +315,95 @@ const AppSidebar: React.FC = () => {
   const getIconClassName = (path: string) => {
     const active = isActive(path);
     return cn(
-      "h-4 w-4",
-      active ? "opacity-100 text-white" : "opacity-80 text-white",
-      collapsed && "mx-auto" // Center icon within its container when collapsed
+      "h-4 w-4 flex-shrink-0",
+      active ? "opacity-100 text-white" : "opacity-80 text-white"
     );
   };
 
+  // Tooltip component for collapsed state
+  const Tooltip = ({ children, content }: { children: React.ReactNode; content: string }) => (
+    <div className="relative group">
+      {children}
+      {collapsed && (
+        <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 delay-200 pointer-events-none z-50">
+          <div className="bg-gray-900 text-white px-3 py-2 rounded-lg shadow-2xl text-sm font-medium whitespace-nowrap border border-gray-700">
+            {content}
+          </div>
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45 border-l border-b border-gray-700"></div>
+        </div>
+      )}
+    </div>
+  );
 
   return (
-    <Sidebar
+    <div
       className={cn(
-        "border-r bg-sequence-teal-500 text-white transition-all duration-300 ease-in-out",
+        "border-r bg-sequence-teal-500 text-white transition-all duration-300 ease-in-out flex flex-col h-full",
         collapsed ? "w-[70px]" : "w-64"
       )}
     >
-      <SidebarContent className="flex flex-col h-full">
-        {/* Top Section with Toggle Button and Home */}
-        <div className="pt-2">
-          <SidebarGroup>
-            <SidebarMenu>
-              {/* Sidebar Toggle Button */}
-              <SidebarMenuItem className="mb-4">
-                <SidebarMenuButton
-                  onClick={toggleSidebar}
-                  className={cn(
-                    "relative flex items-center justify-center w-full transition-all duration-300 ease-in-out group",
-                    collapsed
-                      ? "h-12 w-12 mx-auto rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm shadow-lg hover:shadow-xl border border-white/20"
-                      : "px-4 py-3 rounded-xl bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 backdrop-blur-sm shadow-lg hover:shadow-xl border border-white/20"
+      <div className="flex flex-col h-full overflow-y-auto">
+        {/* Header Section */}
+        <div className="pt-4 pb-2 border-b border-white/10">
+          <div>
+            <div>
+              {/* App Title and Toggle */}
+              <div className="mb-4">
+                <div className="flex items-center justify-between px-3">
+                  {!collapsed && (
+                    <h1 className="text-lg font-bold text-white">
+                      NitiSetu
+                    </h1>
                   )}
-                >
-                  <div className="flex items-center gap-3">
-                    {collapsed ? (
-                      <Menu className="h-5 w-5 text-white transition-transform duration-300 group-hover:scale-110" />
-                    ) : (
-                      <>
-                        <div className="p-1 rounded-lg bg-white/10 transition-all duration-200 group-hover:bg-white/20">
-                          <ChevronLeft className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-0.5" />
-                        </div>
-                        <span className="font-medium text-white/90 group-hover:text-white transition-colors duration-200">
-                          {/* This span can be empty or contain a subtle label */}
-                        </span>
-                      </>
-                    )}
-                  </div>
-
-                  {/* Enhanced tooltip for collapsed state */}
-                  {collapsed && (
-                    <div className="absolute left-[60px] top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 delay-200 pointer-events-none z-50">
-                      <div className="relative">
-                        <div className="bg-gray-900 text-white px-3 py-2 rounded-lg shadow-2xl text-sm font-medium whitespace-nowrap border border-gray-700">
-                          {collapsed ? "Expand Sidebar" : ""} {/* Ensure tooltip text is only for collapsed state */}
-                        </div>
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45 border-l border-b border-gray-700"></div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Subtle glow effect on hover */}
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              {/* Homepage Button */}
-              <SidebarMenuItem className="mb-4">
-                <SidebarMenuButton asChild>
-                  <NavLink
-                    to="/product" // Changed to /product as per user's request for landing page
-                    className={getLinkClassName('/product')} // Use helper function
-                    end
-                  >
-                    <Home
-                      className={getIconClassName('/product')} // Use helper function
-                    />
-                    {!collapsed && (
-                      <span className="font-medium">Home</span>
-                    )}
-                    {/* Tooltip for collapsed state */}
-                    {collapsed && (
-                      <div className="absolute left-[70px] bg-sequence-teal-700 text-white px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none">
-                        Home
-                      </div>
-                    )}
-                  </NavLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              {/* Top Navigation Sections */}
-              {topSections.map((section) => (
-                <SidebarMenuItem key={section.title} className="mb-2">
-                  {/* Section Header */}
-                  <SidebarMenuButton
-                    onClick={() => toggleSection(section.title)}
+                  <button
+                    onClick={toggleSidebar}
                     className={cn(
-                      "flex items-center justify-between w-full px-3 py-2.5 text-sm transition-all duration-200 rounded-md group relative",
-                      // Active if any child is active OR if it's explicitly expanded
-                      (isSectionActive(section.items) || expandedSections.includes(section.title))
-                        ? "bg-sequence-green-500/20 text-white font-medium"
-                        : "text-white hover:bg-sequence-teal-600 hover:text-white",
-                      collapsed && "justify-center"
+                      "flex items-center justify-center transition-all duration-300 ease-in-out group",
+                      collapsed
+                        ? "h-10 w-10 rounded-lg bg-white/10 hover:bg-white/20 mx-auto"
+                        : "h-8 w-8 rounded-lg bg-white/10 hover:bg-white/20"
                     )}
                   >
-                    <div className="flex items-center gap-3">
-                      <section.icon
-                        className={cn(
-                          "h-5 w-5",
-                          collapsed ? "opacity-100 mx-auto" : (isSectionActive(section.items) ? "opacity-100" : "opacity-80")
-                        )}
-                      />
-                      {!collapsed && (
-                        <span className="font-medium">{section.title}</span>
+                    <Tooltip content={collapsed ? "Expand Sidebar" : "Collapse Sidebar"}>
+                      {collapsed ? (
+                        <ChevronRightIcon className="h-4 w-4 text-white" />
+                      ) : (
+                        <ChevronLeft className="h-4 w-4 text-white" />
                       )}
-                    </div>
-                    {!collapsed && ( // Only show chevron when not collapsed
-                      expandedSections.includes(section.title) ?
-                        <ChevronDown className="h-4 w-4" /> :
-                        <ChevronRight className="h-4 w-4" />
-                    )}
-                    {/* Tooltip for collapsed section header */}
-                    {collapsed && (
-                      <div className="absolute left-[70px] bg-sequence-teal-700 text-white px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none">
-                        {section.title}
-                      </div>
-                    )}
-                  </SidebarMenuButton>
+                    </Tooltip>
+                  </button>
+                </div>
+              </div>
 
-                  {/* Section Items - Always render the container if expanded or collapsed, control visibility/content INSIDE NavLink */}
-                  {(expandedSections.includes(section.title) || collapsed) && (
-                    <div className={cn("mt-1 space-y-1", collapsed ? "" : "ml-6")}>
-                      {section.items.map((item) => (
-                        <SidebarMenuButton key={item.path} asChild>
-                          <NavLink
-                            to={item.path}
-                            className={getLinkClassName(item.path)} // getLinkClassName already handles 'collapsed' for centering
-                            end={item.path === '/'}
-                          >
-                            <item.icon className={getIconClassName(item.path)} />
-                            {!collapsed && ( // Only show text when not collapsed
-                              <span className="text-sm">{item.title}</span>
-                            )}
-                            {collapsed && ( // Only show tooltip when collapsed
-                              <div className="absolute left-[70px] bg-sequence-teal-700 text-white px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none">
-                                {item.title}
-                              </div>
-                            )}
-                          </NavLink>
-                        </SidebarMenuButton>
-                      ))}
-                    </div>
-                  )}
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroup>
+              {/* Landing Page Button */}
+              <div className="mb-4">
+                <div>
+                  <Tooltip content="Landing Page">
+                    <NavLink
+                      to="/"
+                      className={getLinkClassName('/')}
+                      end
+                    >
+                      <Home className={getIconClassName('/')} />
+                      {!collapsed && (
+                        <span className="font-medium">Landing Page</span>
+                      )}
+                    </NavLink>
+                  </Tooltip>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Bottom Section - Data Management and System */}
-        <div className="mt-auto pb-4">
-          <SidebarGroup>
-            <SidebarMenu>
-              {bottomSections.map((section) => (
-                <SidebarMenuItem key={section.title} className="mb-2">
+        {/* Top Navigation Sections */}
+        <div className="flex-1 pt-2">
+          <div>
+            <div>
+              {topSections.map((section) => (
+                <div key={section.title} className="mb-2">
                   {/* Section Header */}
-                  <SidebarMenuButton
+                  <button
                     onClick={() => toggleSection(section.title)}
                     className={cn(
                       "flex items-center justify-between w-full px-3 py-2.5 text-sm transition-all duration-200 rounded-md group relative",
@@ -476,63 +413,122 @@ const AppSidebar: React.FC = () => {
                       collapsed && "justify-center"
                     )}
                   >
-                    <div className="flex items-center gap-3">
-                      <section.icon
-                        className={cn(
-                          "h-5 w-5",
-                          collapsed ? "opacity-100 mx-auto" : (isSectionActive(section.items) ? "opacity-100" : "opacity-80")
+                    <Tooltip content={section.title}>
+                      <div className="flex items-center gap-3 w-full">
+                        <section.icon
+                          className={cn(
+                            "h-5 w-5 flex-shrink-0",
+                            isSectionActive(section.items) ? "opacity-100" : "opacity-80"
+                          )}
+                        />
+                        {!collapsed && (
+                          <>
+                            <span className="font-medium flex-1 text-left">{section.title}</span>
+                            {expandedSections.includes(section.title) ? (
+                              <ChevronDown className="h-4 w-4 flex-shrink-0" />
+                            ) : (
+                              <ChevronRight className="h-4 w-4 flex-shrink-0" />
+                            )}
+                          </>
                         )}
-                      />
-                      {!collapsed && (
-                        <span className="font-medium">{section.title}</span>
-                      )}
-                    </div>
-                    {!collapsed && (
-                      expandedSections.includes(section.title) ?
-                        <ChevronDown className="h-4 w-4" /> :
-                        <ChevronRight className="h-4 w-4" />
-                    )}
-                    {/* Tooltip for collapsed state */}
-                    {collapsed && (
-                      <div className="absolute left-[70px] bg-sequence-teal-700 text-white px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none">
-                        {section.title}
                       </div>
-                    )}
-                  </SidebarMenuButton>
+                    </Tooltip>
+                  </button>
 
                   {/* Section Items */}
                   {(expandedSections.includes(section.title) || collapsed) && (
                     <div className={cn("mt-1 space-y-1", collapsed ? "" : "ml-6")}>
                       {section.items.map((item) => (
-                        <SidebarMenuButton key={item.path} asChild>
-                          <NavLink
-                            to={item.path}
-                            className={getLinkClassName(item.path)} // Use helper function
-                            end={item.path === '/'}
-                          >
-                            <item.icon
-                              className={getIconClassName(item.path)} // Use helper function
-                            />
-                            {!collapsed && (
-                              <span className="text-sm">{item.title}</span>
-                            )}
-                            {collapsed && (
-                              <div className="absolute left-[70px] bg-sequence-teal-700 text-white px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none">
-                                {item.title}
-                              </div>
-                            )}
-                          </NavLink>
-                        </SidebarMenuButton>
+                        <div key={item.path}>
+                          <Tooltip content={item.title}>
+                            <NavLink
+                              to={item.path}
+                              className={getLinkClassName(item.path)}
+                              end={item.path === '/'}
+                            >
+                              <item.icon className={getIconClassName(item.path)} />
+                              {!collapsed && (
+                                <span className="text-sm">{item.title}</span>
+                              )}
+                            </NavLink>
+                          </Tooltip>
+                        </div>
                       ))}
                     </div>
                   )}
-                </SidebarMenuItem>
+                </div>
               ))}
-            </SidebarMenu>
-          </SidebarGroup>
+            </div>
+          </div>
         </div>
-      </SidebarContent>
-    </Sidebar>
+
+        {/* Bottom Section - Data Management and System */}
+        <div className="pb-4 border-t border-white/10 pt-4">
+          <div>
+            <div>
+              {bottomSections.map((section) => (
+                <div key={section.title} className="mb-2">
+                  {/* Section Header */}
+                  <button
+                    onClick={() => toggleSection(section.title)}
+                    className={cn(
+                      "flex items-center justify-between w-full px-3 py-2.5 text-sm transition-all duration-200 rounded-md group relative",
+                      (isSectionActive(section.items) || expandedSections.includes(section.title))
+                        ? "bg-sequence-green-500/20 text-white font-medium"
+                        : "text-white hover:bg-sequence-teal-600 hover:text-white",
+                      collapsed && "justify-center"
+                    )}
+                  >
+                    <Tooltip content={section.title}>
+                      <div className="flex items-center gap-3 w-full">
+                        <section.icon
+                          className={cn(
+                            "h-5 w-5 flex-shrink-0",
+                            isSectionActive(section.items) ? "opacity-100" : "opacity-80"
+                          )}
+                        />
+                        {!collapsed && (
+                          <>
+                            <span className="font-medium flex-1 text-left">{section.title}</span>
+                            {expandedSections.includes(section.title) ? (
+                              <ChevronDown className="h-4 w-4 flex-shrink-0" />
+                            ) : (
+                              <ChevronRight className="h-4 w-4 flex-shrink-0" />
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </Tooltip>
+                  </button>
+
+                  {/* Section Items */}
+                  {(expandedSections.includes(section.title) || collapsed) && (
+                    <div className={cn("mt-1 space-y-1", collapsed ? "" : "ml-6")}>
+                      {section.items.map((item) => (
+                        <div key={item.path}>
+                          <Tooltip content={item.title}>
+                            <NavLink
+                              to={item.path}
+                              className={getLinkClassName(item.path)}
+                              end={item.path === '/'}
+                            >
+                              <item.icon className={getIconClassName(item.path)} />
+                              {!collapsed && (
+                                <span className="text-sm">{item.title}</span>
+                              )}
+                            </NavLink>
+                          </Tooltip>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

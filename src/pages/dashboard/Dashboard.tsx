@@ -158,7 +158,7 @@ const Dashboard = () => {
           >
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <Link to="/" className="text-primary font-heading font-bold text-xl">NitiSetu Asifabad</Link> {/* Updated to use primary color */}
+          <Link to="/" className="text-primary font-heading font-bold text-xl">NitiSetu</Link> {/* Updated to use primary color */}
         </div>
         <div className="flex items-center space-x-4">
           <select className="bg-gray-100 border border-gray-300 rounded px-3 py-1 text-sm">

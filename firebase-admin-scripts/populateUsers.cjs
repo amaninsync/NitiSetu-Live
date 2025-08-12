@@ -17,7 +17,7 @@ const usersToPopulate = [
   {
     email: "dm@asifabad.nitisetu.com",
     password: "nsasifabad@2025", // IMPORTANT: Use a strong, temporary password here.
-    displayName: "Sri Venkatesh Dhotre",
+    displayName: "User",
     role: "district_collector",
     permissions: ["view_all", "edit_all", "approve_all", "create_all", "delete_all"]
   },

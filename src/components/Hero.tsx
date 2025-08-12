@@ -37,7 +37,7 @@ const Hero = () => {
         {/* Left column: text */}
         <div ref={textRef} className="fade-in">
           <span className="inline-block px-3 py-1 text-sm font-medium bg-gov-lightblue text-gov-blue rounded-full mb-4">
-            Kumuram Bheem Asifabad Governance Data Platform
+            Governance Data Platform
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             Transforming Asifabad's District Governance through <span className="text-gov-blue">Intelligent Data</span>

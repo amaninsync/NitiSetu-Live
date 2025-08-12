@@ -27,6 +27,9 @@ import Product from "./pages/Product"
 
 import AnonymousGrievanceForm from './components/forms/AnonymousGrievanceForm'; // Adjust this path
 import NitisetuFeedbackForm from './components/forms/NitisetuFeedbackForm';    // Adjust this path
+
+import { AbhiyanDashboardPage } from './pages/AbhiyanDashboardPage'; // New Import
+
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
 
@@ -60,6 +63,7 @@ function App() {
                 <Route path="/district-stats" element={<DistrictStats />} />
                 <Route path="/district-dashboard" element={<DistrictDashboard />} />
                 <Route path="/insights" element={<InsightsView />} />
+                <Route path="/abhiyan-dashboard" element={<AbhiyanDashboardPage />} /> {/* New Route */}
               </Route>
               
               {/* Catch-all route */}
